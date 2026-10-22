@@ -1,0 +1,12 @@
+,importancia
+cat__ExerciseAngina,0.4761060331951221
+cat__ST_Slope,0.4378143685708602
+cat__ChestPainType,0.04320944816425267
+num__Cholesterol,0.02597229947071982
+num__RestingBP,0.016897850599045226
+num__Age,0.0
+num__FastingBS,0.0
+num__MaxHR,0.0
+num__Oldpeak,0.0
+cat__Sex,0.0
+cat__RestingECG,0.0

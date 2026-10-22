@@ -1,0 +1,20 @@
+{
+  "onehot": {
+    "class_weight": "balanced",
+    "criterion": "entropy",
+    "max_depth": "3",
+    "max_features": "None",
+    "min_samples_leaf": "1",
+    "min_samples_split": "2",
+    "imp__strategy": "median"
+  },
+  "ordinal": {
+    "class_weight": "None",
+    "criterion": "gini",
+    "max_depth": "3",
+    "max_features": "sqrt",
+    "min_samples_leaf": "1",
+    "min_samples_split": "2",
+    "imp__strategy": "most_frequent"
+  }
+}

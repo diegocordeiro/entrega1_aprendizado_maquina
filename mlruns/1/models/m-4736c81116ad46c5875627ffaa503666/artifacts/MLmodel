@@ -1,0 +1,26 @@
+artifact_path: "/Users/diegocordeirodeoliveira/Documents/mestrado/ufpi2025/Disciplinas/Aprendizado\
+  \ de ma\u0301quina/trabalho/mlruns/1/models/m-4736c81116ad46c5875627ffaa503666/artifacts"
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.12.9
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.9.1
+    skops_trusted_types:
+    - numpy.dtype
+    - sklearn.tree._tree.Tree
+mlflow_version: 3.17.2
+model_id: m-4736c81116ad46c5875627ffaa503666
+model_size_bytes: 157273
+model_uuid: m-4736c81116ad46c5875627ffaa503666
+prompts: null
+run_id: 02ed2a13009b4e9b89f54cad4f75e63d
+utc_time_created: '2026-10-22 11:44:01.943826'
