@@ -715,10 +715,10 @@
     <img src="img/logo_full.png" alt="PPGCC">
     <span class="txt"><strong>Doença Cardíaca</strong> · Aprendizado de Máquina — PPGCC/UFPI</span>
   </footer>
-  <nav class="ctr">
-    <button class="bc" onclick="tn()" id="bn">Notas do apresentador</button>
-    <button class="bz" onclick="pv()">Anterior</button>
-    <button class="bv" onclick="nx()">Próximo</button>
+  <nav class="ctr" aria-label="Navegação da apresentação">
+    <button class="bz" id="bprev" onclick="pv()">Anterior</button>
+    <div class="dots" id="dots" role="group" aria-label="Ir para o slide"></div>
+    <button class="bv" id="bnext" onclick="nx()">Próximo</button>
   </nav>
   <script src="script.js"></script>
 </body>

@@ -349,10 +349,6 @@ body.modo-presenter .ft {
     display: none
 }
 
-body.modo-presenter .bc {
-    display: none
-}
-
 body.modo-presenter .fz,
 body.modo-presenter #bp {
     display: none
@@ -373,6 +369,22 @@ body.modo-presenter .ctr .bv {
 
 body.modo-presenter .ctr .bz {
     background: #3E7CB6;
+    color: #fff
+}
+
+body.modo-presenter .ctr .dot {
+    background: #1E2B36;
+    border-color: #2C3C49;
+    color: #E6EDF3
+}
+
+body.modo-presenter .ctr .dot:hover {
+    background: #2A3B49
+}
+
+body.modo-presenter .ctr .dot.ac {
+    background: var(--ve);
+    border-color: var(--ve);
     color: #fff
 }
 
@@ -401,6 +413,52 @@ body.modo-presenter .ctr .bz {
     transform: scale(1.04)
 }
 
+.ctr button:disabled {
+    opacity: .45;
+    cursor: default
+}
+
+.ctr button:disabled:hover {
+    transform: none
+}
+
+.dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 2px
+}
+
+.dots .dot {
+    flex: 0 0 auto;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 6px;
+    border: 1px solid #C7D1D9;
+    border-radius: 8px;
+    background: #F2F5F8;
+    color: var(--c);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform .15s, background .15s, color .15s
+}
+
+.dots .dot:hover {
+    transform: scale(1.08);
+    background: #E1E8EF
+}
+
+.dots .dot.ac {
+    background: var(--az);
+    border-color: var(--az);
+    color: #fff
+}
+
 .bv {
     background: var(--az);
     color: #fff
@@ -409,11 +467,6 @@ body.modo-presenter .ctr .bz {
 .bz {
     background: var(--ve);
     color: #fff
-}
-
-.bc {
-    background: var(--bg);
-    color: var(--aze)
 }
 
 .dc {
@@ -1025,6 +1078,7 @@ pre.pc .nb {
     }
 
     .ctr {
+        flex-wrap: wrap;
         padding: 8px;
         gap: 6px
     }
@@ -1032,6 +1086,24 @@ pre.pc .nb {
     .ctr button {
         padding: 8px 14px;
         font-size: 14px
+    }
+
+    .dots {
+        gap: 4px
+    }
+
+    .dots .dot {
+        min-width: 24px;
+        height: 24px;
+        padding: 0 4px;
+        font-size: 12px
+    }
+
+    .dots {
+        order: 3;
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+        justify-content: center
     }
 
     .divisor .in {
