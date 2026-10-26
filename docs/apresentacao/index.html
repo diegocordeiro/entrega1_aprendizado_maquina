@@ -22,7 +22,7 @@
         <button onclick="fz(1)" title="Aumentar tamanho da fonte">A+</button>
       </div>
       <button class="bpb" id="bp" onclick="openPresenter()">Modo apresentador</button>
-      <span class="ct" id="ctr">1 / 15</span>
+      <span class="ct" id="ctr">1 / 16</span>
       <span class="modo-tag">APRESENTAÇÃO</span>
     </div>
   </header>
@@ -368,7 +368,7 @@
       </div>
     </div>
 
-    <!-- SLIDE 10 - ENGENHARIA DE FEATURES TESTADA (3.4) -->
+    <!-- SLIDE 9 - ENGENHARIA DE FEATURES TESTADA (3.4) -->
     <div class="sl" id="s9">
       <div class="slhd"><span class="num">9</span>
         <h2>Engenharia de features</h2>
@@ -597,9 +597,32 @@
       </div>
     </div>
 
-    <!-- SLIDE 13 - MLFLOW / EVOLUCAO -->
+    <!-- SLIDE 13 - ARVORES DOS MODELOS PROMISSORES -->
     <div class="sl" id="s13">
       <div class="slhd"><span class="num">13</span>
+        <h2>Árvore de decisão: os dois modelos promissores</h2>
+      </div>
+      <div class="slbd">
+        <div class="abas" role="tablist" aria-label="Modelo">
+          <button type="button" class="aba ac" id="aba-eng" role="tab" aria-selected="true"
+            aria-controls="arvore-painel" onclick="mostraArvore('eng')">com_engenharia · 8 FN</button>
+          <button type="button" class="aba" id="aba-ord" role="tab" aria-selected="false"
+            aria-controls="arvore-painel" onclick="mostraArvore('ord')">ordinal · 11 FN</button>
+        </div>
+        <div id="arvore-painel" role="tabpanel" aria-labelledby="aba-eng">
+          <img id="arvore-img" class="arvore" src="img/arvore_com_engenharia.png"
+            alt="Árvore de decisão do modelo com engenharia de atributos, profundidade 3">
+          <p class="arvore-cap" id="arvore-cap">Raiz na feature derivada <code>Oldpeak_por_FC</code>; abaixo
+            <code>ExerciseAngina</code>, <code>ChestPainType</code>, <code>Sex</code> e <code>MaxHR</code>. Ajustada
+            em <strong>734 registros (80%)</strong>, árvore completa (profundidade 3): <strong>8 FN</strong> · 24 FP ·
+            F1_c1 0,8545 · F1_CV 0,7946. Hiperparâmetros herdados do ajuste ordinal; sem refit nos 918.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14 - MLFLOW / EVOLUCAO -->
+    <div class="sl" id="s14">
+      <div class="slhd"><span class="num">14</span>
         <h2>MLflow e evolução das execuções</h2>
       </div>
       <div class="slbd">
@@ -645,9 +668,9 @@
       </div>
     </div>
 
-    <!-- SLIDE 14 - TRABALHOS RELACIONADOS -->
-    <div class="sl" id="s14">
-      <div class="slhd"><span class="num">14</span>
+    <!-- SLIDE 15 - TRABALHOS RELACIONADOS -->
+    <div class="sl" id="s15">
+      <div class="slhd"><span class="num">15</span>
         <h2>Trabalhos relacionados</h2>
       </div>
       <div class="slbd">
@@ -686,9 +709,9 @@
       </div>
     </div>
 
-    <!-- SLIDE 15 - CONCLUSAO -->
-    <div class="sl" id="s15">
-      <div class="slhd"><span class="num">15</span>
+    <!-- SLIDE 16 - CONCLUSAO -->
+    <div class="sl" id="s16">
+      <div class="slhd"><span class="num">16</span>
         <h2>Conclusão</h2>
       </div>
       <div class="slbd">

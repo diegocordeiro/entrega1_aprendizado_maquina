@@ -34,6 +34,37 @@ function buildDots(){
   });
 }
 
+const ARVORES = {
+  eng: {
+    src: 'img/arvore_com_engenharia.png',
+    alt: 'Árvore de decisão do modelo com engenharia de atributos, profundidade 3',
+    cap: 'Raiz na feature derivada <code>Oldpeak_por_FC</code>; abaixo <code>ExerciseAngina</code>, ' +
+      '<code>ChestPainType</code>, <code>Sex</code> e <code>MaxHR</code>. Ajustada em ' +
+      '<strong>734 registros (80%)</strong>, árvore completa (profundidade 3): <strong>8 FN</strong> · ' +
+      '24 FP · F1_c1 0,8545 · F1_CV 0,7946. Hiperparâmetros herdados do ajuste ordinal; sem refit nos 918.'
+  },
+  ord: {
+    src: 'img/arvore_ordinal.png',
+    alt: 'Árvore de decisão do modelo ordinal, profundidade 3',
+    cap: 'Raiz em <code>ExerciseAngina</code>; abaixo <code>ST_Slope</code> e <code>ChestPainType</code>, ' +
+      'com cortes em <code>Cholesterol</code> e <code>RestingBP</code>. Ajustada em ' +
+      '<strong>734 registros (80%)</strong>, árvore completa (profundidade 3): <strong>11 FN</strong> · ' +
+      '24 FP · F1_c1 0,8387 · F1_CV 0,8604 (mais robusto na CV).'
+  }
+};
+
+function mostraArvore(k){
+  var d=ARVORES[k];if(!d)return;
+  var img=document.getElementById('arvore-img'),cap=document.getElementById('arvore-cap');
+  var pa=document.getElementById('arvore-painel');
+  var be=document.getElementById('aba-eng'),bo=document.getElementById('aba-ord');
+  if(img){img.src=d.src;img.alt=d.alt}
+  if(cap)cap.innerHTML=d.cap;
+  if(pa)pa.setAttribute('aria-labelledby',k==='eng'?'aba-eng':'aba-ord');
+  if(be){be.classList.toggle('ac',k==='eng');be.setAttribute('aria-selected',k==='eng')}
+  if(bo){bo.classList.toggle('ac',k==='ord');bo.setAttribute('aria-selected',k==='ord')}
+}
+
 let fzLevel=2;
 const fzSteps=[0.85,1,1.15,1.3,1.45,1.6];
 function fz(d){fzLevel=Math.max(0,Math.min(fzSteps.length-1,fzLevel+(d||0)));applyZoom();sync()}
