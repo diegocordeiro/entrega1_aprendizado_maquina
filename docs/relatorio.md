@@ -95,7 +95,7 @@ A base é a **Heart Failure Prediction** (Kaggle, fedesoriano), derivada do **UC
 | **Total** | **918** | **100%** |
 
 - **Desbalanceamento leve:** a classe 1 é majoritária (55,34%).
-- **Valores ausentes:** não há `NaN` original; porém `Cholesterol` tem **172 zeros** e `RestingBP` tem **1 zero**, fisiologicamente implausíveis. Esses zeros foram convertidos em `NaN` e imputados **dentro do pipeline** (sem vazamento).
+- **Valores ausentes:** não há `NaN` original; porém `Cholesterol` tem **172 zeros** e `RestingBP` tem **1 zero**, fisiologicamente implausíveis. Esses zeros foram convertidos em `NaN` e imputados **dentro do pipeline** (sem vazamento). Como `Chol_por_Idade` depende de `Cholesterol`, esses registros também são imputados no atributo derivado. A base **não contém triglicerídeos**, variável usada em alguns estudos clínicos (ex.: Page et al., 1970).
 - **Duplicatas:** 0.
 - **Split:** 80/20 estratificado → 734 treino e 184 teste (102 da classe 1 e 82 da classe 0 no teste).
 
@@ -319,15 +319,15 @@ Todos os experimentos foram registrados no MLflow, no experimento **`heart_failu
 | Trabalho | Contribuição | Relação com este trabalho |
 |---|---|---|
 | Qadri et al. (2023), IEEE Access | Técnica de engenharia de atributos (*feature engineering*) para predição de doença cardíaca | Justifica a criação de atributos derivados |
-| Abass & Bathla (2025), Springer | Aprendizado de máquina + engenharia de atributos | Reforça a engenharia como etapa |
+| Abass et al. (2025), Springer | Compara LR, SVM, KNN, DT e RF com engenharia de atributos | Reforça a engenharia como etapa |
 | Gárate-Escamilla et al. (2020), Informatics in Medicine Unlocked | Seleção de atributos + PCA | Compara seleção/transformação |
 | Hasnat et al. (2025), arXiv | Engenharia de atributos + SHAP + árvores substitutas | Interpretabilidade |
-| Page et al. (1970), Circulation | Idade, colesterol e triglicerídeos na predição de DAC | Base para `Chol_por_Idade` |
+| Page et al. (1970), Circulation | Idade e colesterol total como preditores de DAC | Fundamenta idade e colesterol; a razão `Chol_por_Idade` é proposta deste trabalho |
 | Folsom et al. (2003), Diabetes Care | Fatores de risco para DAC | Contexto clínico |
 | Detrano et al. (1989) / Janosi et al. (1988) | Base UCI Heart Disease | Origem dos dados |
 | Fox et al. (1971) | Fórmula `FCmax ≈ 220 − idade` | Base de `FC_pct_teorica` |
 
-**Justificativa das razões:** as variáveis originais (`MaxHR`, `Oldpeak`, `Cholesterol`, `RestingBP`, `ExerciseAngina`) são indicadores clínicos conhecidos. As razões buscam normalizar por idade/FC e capturar interações (angina × depressão ST), o que ajuda a árvore a representar relações "diagonais" com menos cortes. A literatura apoia a engenharia de atributos em doença cardíaca, mas **as razões específicas aqui testadas são hipóteses exploratórias** e precisam de validação externa.
+**Justificativa das razões:** as variáveis originais (`MaxHR`, `Oldpeak`, `Cholesterol`, `RestingBP`, `ExerciseAngina`) são indicadores clínicos conhecidos. As razões buscam normalizar por idade/FC e capturar interações (angina × depressão ST), o que ajuda a árvore a representar relações "diagonais" com menos cortes. A literatura apoia a engenharia de atributos em doença cardíaca, mas **as razões específicas aqui testadas são hipóteses exploratórias** e precisam de validação externa. Em particular, Page et al. (1970) fundamentam **idade e colesterol total** como preditores de DAC, mas **não propõem** a razão `Chol_por_Idade`; essa razão é uma **proposta deste trabalho**. Além disso, a base do Kaggle **não contém triglicerídeos** e apresenta **172 registros com `Cholesterol = 0`**, tratados como valores ausentes (`NaN`) e imputados **dentro do pipeline**. Como `Chol_por_Idade` depende de `Cholesterol`, esses registros também recebem imputação no atributo derivado.
 
 **Limitações:**
 - Base pequena (918) e teste de apenas 184 pacientes → intervalos de confiança largos.
@@ -354,10 +354,10 @@ Todos os experimentos foram registrados no MLflow, no experimento **`heart_failu
 2. DETRANO, R. et al. International application of a new probability algorithm for the diagnosis of coronary artery disease. **American Journal of Cardiology**, 1989.
 3. JANOSI, A.; STEINBRUNN, W.; PFISTERER, M.; DETRANO, R. **Heart Disease**. UCI Machine Learning Repository, 1988.
 4. QADRI, A. M. et al. Effective Feature Engineering Technique for Heart Disease Prediction With Machine Learning. **IEEE Access**, 2023.
-5. ABASS, A.; BATHLA, G. Heart Disease Prediction Using Machine Learning with Feature Engineering. **Springer**, 2025.
+5. ABASS, A.; BATHLA, G.; WASSON, V. Heart Disease Prediction Using Machine Learning with Feature Engineering. In: Soft Computing and Signal Processing (ICSCSP 2024). Lecture Notes in Networks and Systems, v. 1221. Springer, 2025, p. 697–709. DOI: https://doi.org/10.1007/978-981-96-0924-6_55.
 6. GÁRATE-ESCAMILLA, A. K.; HAJJAM EL HASSANI, A.; ANDRÈS, E. Classification models for heart disease prediction using feature selection and PCA. **Informatics in Medicine Unlocked**, 2020.
 7. HASNAT, M. A. et al. Interpretable Heart Disease Prediction via a Weighted Ensemble Model. **arXiv:2511.01947**, 2025.
-8. PAGE, I. H. et al. Prediction of Coronary Heart Disease Based on Clinical Suspicion, Age, Total Cholesterol, and Triglyceride. **Circulation**, 1970.
+8. PAGE, I. H. et al. Prediction of Coronary Heart Disease Based on Clinical Suspicion, Age, Total Cholesterol, and Triglyceride. **Circulation**, v. 42, n. 4, p. 625–645, 1970. DOI: https://doi.org/10.1161/01.cir.42.4.625.
 9. FOLSOM, A. R. et al. Prediction of Coronary Heart Disease in Middle-Aged Adults With Diabetes. **Diabetes Care**, 2003.
 10. FOX, S. M.; NAUGHTON, J. P.; HASKELL, W. L. Physical activity and the prevention of coronary heart disease. **Annals of Clinical Research**, 1971.
 

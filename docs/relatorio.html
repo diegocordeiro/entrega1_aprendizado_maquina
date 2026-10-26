@@ -368,7 +368,11 @@ ventricular esquerda (<em>Left Ventricular Hypertrophy</em>).</p>
 porém <code>Cholesterol</code> tem <strong>172 zeros</strong> e
 <code>RestingBP</code> tem <strong>1 zero</strong>, fisiologicamente
 implausíveis. Esses zeros foram convertidos em <code>NaN</code> e
-imputados <strong>dentro do pipeline</strong> (sem vazamento).</li>
+imputados <strong>dentro do pipeline</strong> (sem vazamento). Como
+<code>Chol_por_Idade</code> depende de <code>Cholesterol</code>, esses
+registros também são imputados no atributo derivado. A base <strong>não
+contém triglicerídeos</strong>, variável usada em alguns estudos
+clínicos (ex.: Page et al., 1970).</li>
 <li><strong>Duplicatas:</strong> 0.</li>
 <li><strong>Split:</strong> 80/20 estratificado → 734 treino e 184 teste
 (102 da classe 1 e 82 da classe 0 no teste).</li>
@@ -1282,8 +1286,8 @@ para predição de doença cardíaca</td>
 <td>Justifica a criação de atributos derivados</td>
 </tr>
 <tr>
-<td>Abass &amp; Bathla (2025), Springer</td>
-<td>Aprendizado de máquina + engenharia de atributos</td>
+<td>Abass et al. (2025), Springer</td>
+<td>Compara LR, SVM, KNN, DT e RF com engenharia de atributos</td>
 <td>Reforça a engenharia como etapa</td>
 </tr>
 <tr>
@@ -1299,8 +1303,9 @@ Unlocked</td>
 </tr>
 <tr>
 <td>Page et al. (1970), Circulation</td>
-<td>Idade, colesterol e triglicerídeos na predição de DAC</td>
-<td>Base para <code>Chol_por_Idade</code></td>
+<td>Idade e colesterol total como preditores de DAC</td>
+<td>Fundamenta idade e colesterol; a razão <code>Chol_por_Idade</code> é
+proposta deste trabalho</td>
 </tr>
 <tr>
 <td>Folsom et al. (2003), Diabetes Care</td>
@@ -1327,7 +1332,16 @@ interações (angina × depressão ST), o que ajuda a árvore a representar
 relações “diagonais” com menos cortes. A literatura apoia a engenharia
 de atributos em doença cardíaca, mas <strong>as razões específicas aqui
 testadas são hipóteses exploratórias</strong> e precisam de validação
-externa.</p>
+externa. Em particular, Page et al. (1970) fundamentam <strong>idade e
+colesterol total</strong> como preditores de DAC, mas <strong>não
+propõem</strong> a razão <code>Chol_por_Idade</code>; essa razão é uma
+<strong>proposta deste trabalho</strong>. Além disso, a base do Kaggle
+<strong>não contém triglicerídeos</strong> e apresenta <strong>172
+registros com <code>Cholesterol = 0</code></strong>, tratados como
+valores ausentes (<code>NaN</code>) e imputados <strong>dentro do
+pipeline</strong>. Como <code>Chol_por_Idade</code> depende de
+<code>Cholesterol</code>, esses registros também recebem imputação no
+atributo derivado.</p>
 <p><strong>Limitações:</strong> - Base pequena (918) e teste de apenas
 184 pacientes → intervalos de confiança largos. - Uma única árvore (sem
 ensemble) e sem validação externa. - A engenharia apresentou melhora no
@@ -1374,8 +1388,11 @@ Disease</strong>. UCI Machine Learning Repository, 1988.</li>
 <li>QADRI, A. M. et al. Effective Feature Engineering Technique for
 Heart Disease Prediction With Machine Learning. <strong>IEEE
 Access</strong>, 2023.</li>
-<li>ABASS, A.; BATHLA, G. Heart Disease Prediction Using Machine
-Learning with Feature Engineering. <strong>Springer</strong>, 2025.</li>
+<li>ABASS, A.; BATHLA, G.; WASSON, V. Heart Disease Prediction Using
+Machine Learning with Feature Engineering. In: Soft Computing and Signal
+Processing (ICSCSP 2024). Lecture Notes in Networks and Systems, v.
+1221. Springer, 2025, p. 697–709. DOI:
+https://doi.org/10.1007/978-981-96-0924-6_55.</li>
 <li>GÁRATE-ESCAMILLA, A. K.; HAJJAM EL HASSANI, A.; ANDRÈS, E.
 Classification models for heart disease prediction using feature
 selection and PCA. <strong>Informatics in Medicine Unlocked</strong>,
@@ -1384,7 +1401,8 @@ selection and PCA. <strong>Informatics in Medicine Unlocked</strong>,
 Weighted Ensemble Model. <strong>arXiv:2511.01947</strong>, 2025.</li>
 <li>PAGE, I. H. et al. Prediction of Coronary Heart Disease Based on
 Clinical Suspicion, Age, Total Cholesterol, and Triglyceride.
-<strong>Circulation</strong>, 1970.</li>
+<strong>Circulation</strong>, v. 42, n. 4, p. 625–645, 1970. DOI:
+https://doi.org/10.1161/01.cir.42.4.625.</li>
 <li>FOLSOM, A. R. et al. Prediction of Coronary Heart Disease in
 Middle-Aged Adults With Diabetes. <strong>Diabetes Care</strong>,
 2003.</li>
