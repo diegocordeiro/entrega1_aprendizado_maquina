@@ -82,7 +82,7 @@ Abra <http://127.0.0.1:5000>. O experimento `heart_failure_arvore_decisao` reún
 O notebook inclui uma seção de **ablação** que remove **um atributo por vez** (seleção de
 features) e reajusta a árvore com os melhores hiperparâmetros já encontrados (sem
 balanceamento). Cada cenário é registrado no MLflow como run filha de `ablacao_atributos`,
-e a tabela consolidada (acurácia, precisão, recall e F1 da classe 1) é salva em
+e a tabela consolidada (acurácia, precisão, recall e F1 para as duas classes, mais F1 macro) é salva em
 `resultados/execucao_<timestamp>/ablacao_atributos.csv`.
 
 A classe majoritária é a **1 (HeartDisease)**, com 55,3% dos registros; o baseline
@@ -95,7 +95,7 @@ O notebook compara o melhor modelo **sem** e **com** features clínicas derivada
 (`FC_pct_teorica`, `Chol_por_Idade`, `BP_por_Idade`, `Oldpeak_por_FC`, `Angina_x_Oldpeak`).
 As razões são calculadas linha a linha (sem vazamento) e entram no pipeline numérico.
 Cada cenário é uma run filha de `engenharia_features`, e a tabela é salva em
-`resultados/execucao_<timestamp>/engenharia_features.csv`.
+`resultados/execucao_<timestamp>/engenharia_features.csv` com métricas para as duas classes.
 
 Cada run contém parâmetros (tratamento dos dados + hiperparâmetros), métricas de
 validação cruzada e de teste (acurácia, precisão, recall, F1 e IC 95%), o modelo

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Apresentação — Exploração e priorização | IFGuia · PPGCC/UFPI</title>
+    <link rel="stylesheet" href="estilo.css">
+    <!-- Importação do Font Awesome para o ícone funcionar (adicione no seu <head>) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+  <body>
+    <header class="tb">
+      <div class="tb-left">
+        <img src="img/logo.png" class="tb-logo" alt="PPGCC UFPI">
+        <h2>Apresentação — Exploração e priorização · Projeto IFGuia</h2>
+      </div>
+      <div class="tb-right">
+        <div class="fz" aria-label="Tamanho do texto">
+          <button onclick="fz(-1)" title="Diminuir tamanho da fonte">A−</button>
+          <span id="fzpct">100%</span>
+          <button onclick="fz(1)" title="Aumentar tamanho da fonte">A+</button>
+        </div>
+        <button class="bpb" id="bp" onclick="openPresenter()">Modo apresentador</button>
+        <span class="ct" id="ctr">1 / 19</span>
+        <span class="modo-tag">APRESENTAÇÃO</span>
+      </div>
+    </header>
+    <div class="fita"></div>
+    <div class="sc">
+      <!-- SLIDE 1 - CAPA -->
+      <div class="sl" id="s1">
+        <div class="capa">
+          <div class="esq">
+            <div class="rot">IFGuia · Fase I — Exploração</div>
+            <h1>M1 — Documento de Exploração e priorização</h1>
+            <div class="meta">
+              <span>Disciplina Tópicos Avançados em Computação Inteligente</span>
+              <span>PPGCC · UFPI</span>
+            </div>
+            <div class="faixa"></div>
+              <div class="sub">Equipe: 
+                <ul>
+                  <li>Diego Cordeiro de Oliveira</li>
+                  <li>Guilherme Nonato de Sá Ribeiro</li>
+                  <li>Luis Felipe Ferreira de Castro</li>
+                  <li>Sharon Wendy Feitosa Franca Rocha</li>
+                </ul>
+              </div>
+              <div class="sub">Professor Orientador: 
+                <ul>
+                  <li>Guilherme Amaral Avelino</li>
+                </ul>
+              </div>
+          </div>
+          <div class="dir">
+            <img src="img/logo_full.png" alt="PPGCC — Programa de Pós-Graduação em Ciência da Computação">
+            <img class="marca" src="img/marca.png" alt="">
+          </div>
+        </div>
+      </div>
+      <!-- SLIDE 2 - CONTROLE DO DOCUMENTO -->
+      <div class="sl" id="s2">
+        <div class="slhd"><span class="num">2</span>
+          <h2>Apresentação do Documento</h2>
+        </div>
+        <div class="slbd">
+          <table class="tb2">
+            <tr><td><strong>Projeto</strong></td><td>IFGuia</td></tr>
+            <tr><td><strong>Órgão demandante</strong></td><td>Pró-Reitoria de Ensino, Instituto Federal do Piauí (IFPI)</td></tr>
+            <tr><td><strong>Responsável do demandante</strong></td><td>Odimógenes Soares Lopes</td></tr>
+            <tr><td><strong>Engenharia de Dados</strong></td><td>Sharon Wendy Feitosa Franca Rocha</td></tr>
+            <tr><td><strong>Engenharia de ML</strong></td><td>Diego Cordeiro de Oliveira e Guilherme Nonato de Sá Ribeiro</td></tr>
+            <tr><td><strong>Engenharia de Software</strong></td><td>Luis Felipe Ferreira de Castro</td></tr>
+            <tr><td><strong>Data de elaboração</strong></td><td>27/08/2026</td></tr>
+            <tr><td><strong>Versão</strong></td><td>1.0</td></tr>
+            <tr><td><strong>Status</strong></td><td>Validado</td></tr>
+          </table>
+          <div class="nt" id="n2"><strong>Notas do apresentador:</strong> Apresentar a equipe e o papel de cada um. Destacar que o demandante é a Pró-Reitoria de Ensino do IFPI e que este documento é a entrada da Fase II.</div>
+        </div>
+      </div>
+      <!-- SLIDE 3 - SOBRE E RASTREABILIDADE -->
+      <div class="sl" id="s3">
+        <div class="slhd"><span class="num">3</span>
+          <h2>Sobre o documento e rastreabilidade</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <p>Consolida os principais registros da <strong>Fase I — Exploração</strong>: caracterizar a demanda, identificar stakeholders, registrar a ideação, comparar problemas candidatos e delimitar o problema priorizado, <strong>sem antecipar uma solução tecnológica fechada</strong>.</p>
+          </div>
+          <div class="dc"><strong>Origem no fluxo:</strong> Fase I — atividades de exploração e priorização. <strong>Entrada:</strong> demanda identificada pelo grupo. <strong>Uso no fluxo:</strong> entrada da Fase II — viabilidade e concepção.</div>
+          <div class="dc"><strong>Finalidade:</strong> registrar e priorizar os problemas de negócio identificados para apoiar a decisão de avançar para a Fase II.</div>
+          <div class="nt" id="n3"><strong>Notas:</strong> Posicionar o M1 no fluxo do projeto: da exploração (Fase I) para a viabilidade/concepção (Fase II).</div>
+        </div>
+      </div>
+      <!-- SLIDE 4 - CONTEXTO E DEMANDA -->
+      <div class="sl" id="s4">
+        <div class="slhd"><span class="num">4</span>
+          <h2>Contexto e demanda (F1.DO1) — Situação atual</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <p>As normativas que regem o ensino no IFPI (Organização Didática, Regulamento de Colação de Grau, resoluções de autorização de cursos, entre outras) estão publicadas de forma <strong>dispersa</strong> no repositório de Resoluções do CONSUP e em PDFs, sem mecanismo de busca, filtragem por assunto ou consulta orientada por caso concreto.</p>
+          </div>
+          <p>Servidores e discentes <strong>frequentemente não conseguem localizar nem interpretar</strong>, sozinhos, quais normas se aplicam a uma determinada situação.</p>
+          <div class="c2">
+            <div class="cd">
+              <h3>Exemplo — discente</h3>
+              <p>Um discente de Licenciatura em Informática que precisa compreender os requisitos e o fluxo para <strong>colação de grau</strong> depende de consultar manualmente várias resoluções ou acionar um especialista da secretaria acadêmica/Pró-Reitoria de Ensino.</p>
+            </div>
+            <div class="cd">
+              <h3>Exemplo — oferta de cursos</h3>
+              <p>O processo é <strong>manual e centralizado</strong>: a Pró-Reitoria solicita a oferta por ofício, e a conferência da conformidade frente às normativas é feita caso a caso, sem verificação automatizada.</p>
+            </div>
+          </div>
+          <div class="nt" id="n4"><strong>Notas:</strong> Traduzir a situação atual em dor de negócio. Enfatizar que a demanda não deve ser formulada como tecnologia (evitar "criar um chatbot").</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5 - PROBLEMA E CONSEQUENCIAS -->
+      <div class="sl" id="s5">
+        <div class="slhd"><span class="num">5</span>
+          <h2>Problema percebido e consequências</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <h3>Problema ou oportunidade percebida</h3>
+            <p><strong>Falta de acesso transparente, centralizado e pesquisável</strong> às normativas que regem o ensino, gerando dependência de interpretação manual, retrabalho, respostas demoradas e risco de interpretações divergentes entre os campi. O processo de oferta de cursos é manual, moroso e sem verificação automática de conformidade, sujeito a inconsistências e a ofertas em desacordo com os cursos autorizados.</p>
+          </div>
+          <h3>Consequências de não tratar o problema</h3>
+          <ul>
+            <li>Atraso no atendimento a servidores e discentes e na resposta a dúvidas normativas.</li>
+            <li>Risco de interpretação equivocada das normas, com impactos legais, acadêmicos e reputacionais.</li>
+            <li>Aplicação não uniforme das regras entre os campi e dependência excessiva de especialistas da PROEN.</li>
+            <li>Tramitação lenta e retrabalho na oferta de cursos, com risco de autorizar ofertas em desacordo com as normativas.</li>
+            <li>Baixa transparência e rastreabilidade dos atos administrativos de ensino.</li>
+          </ul>
+          <div class="nt" id="n5"><strong>Notas:</strong> Fazer a ponte entre a dor e o valor: mais transparência, agilidade e conformidade. Ressaltar o impacto no serviço público.</div>
+        </div>
+      </div>
+      <!-- SLIDE 6 - PROCESSO, PUBLICO E VALOR -->
+      <div class="sl" id="s6">
+        <div class="slhd"><span class="num">6</span>
+          <h2>Processo, público e valor esperado</h2>
+        </div>
+        <div class="slbd">
+          <table class="tb2">
+            <tr><th>Aspecto</th><th>Descrição preliminar</th></tr>
+            <tr><td><strong>Processo afetado</strong></td><td>Governança e regulação do ensino no IFPI: (1) atendimento e orientação normativa a servidores e discentes (colação de grau, matrícula, integralização curricular); (2) processo de oferta e autorização de cursos/vagas pelos campi.</td></tr>
+            <tr><td><strong>Público</strong></td><td>Servidores docentes e técnico-administrativos, coordenadores de curso, direções de ensino, secretarias acadêmicas e discentes; indiretamente, a comunidade acadêmica e a sociedade.</td></tr>
+            <tr><td><strong>Valor esperado</strong></td><td>Transparência, agilidade, conformidade normativa, uniformidade de interpretação, redução de custos operacionais e de retrabalho, melhoria da qualidade do serviço público de ensino.</td></tr>
+            <tr><td><strong>Indicadores</strong></td><td>Tempo médio de resposta a dúvidas (hoje não sistematizado); volume de ofícios por ciclo letivo; taxa de inconsistências/retrabalho nas ofertas; nº de resoluções do CONSUP.</td></tr>
+            <tr><td><strong>Urgência</strong></td><td>Necessidade recorrente a cada ciclo letivo (matrícula, colação de grau e oferta); janela de modernização do fluxo da PROEN com apoio da Fábrica de IA.</td></tr>
+          </table>
+          <div class="nt" id="n6"><strong>Notas:</strong> Conectar público e valor esperado à justificativa de avançar para a Fase II.</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 7 - STAKEHOLDERS -->
+      <div class="sl" id="s7">
+        <div class="slhd"><span class="num">7</span>
+          <h2>Stakeholders e usuários (F1.DO2)</h2>
+        </div>
+        <div class="slbd">
+          <table class="tb2">
+            <tr><th>Ator</th><th>Papel</th><th>Interesse</th><th>Influência</th></tr>
+            <tr><td><strong>Odimógenes Soares Lopes</strong></td><td>Pró-Reitor de Ensino (PROEN)</td><td>Alta</td><td>Alta</td></tr>
+            <tr><td><strong>Diego Mendes Pinheiro</strong></td><td>Ponto focal — Procuradoria Institucional</td><td>Alta</td><td>Alta</td></tr>
+            <tr><td><strong>Francisco Assunção Cardoso</strong></td><td>Diretor de Tecnologia da Informação (DTI)</td><td>Médio</td><td>Média</td></tr>
+            <tr><td><strong>Servidores</strong></td><td>PROEN, coordenadores, direções de ensino, secretarias</td><td>Alta</td><td>Média</td></tr>
+            <tr><td><strong>Discentes</strong></td><td>Alunos do IFPI</td><td>Médio</td><td>Baixa</td></tr>
+            <tr><td><strong>Público externo</strong></td><td>Comunidade acadêmica e sociedade</td><td>Baixa</td><td>Baixa</td></tr>
+          </table>
+          <div class="dc"><strong>Quem decidiria adotar:</strong> Pró-Reitor de Ensino do IFPI (PROEN).</div>
+          <div class="nt" id="n7"><strong>Notas:</strong> Destacar os dois papéis de alta influência (PROEN e Procuradoria) — importantes para validar e para mitigar riscos jurídicos/LGPD.</div>
+        </div>
+      </div>
+      <!-- SLIDE 8 - IDEAÇÃO: DORES E OPORTUNIDADES -->
+      <div class="sl" id="s8">
+        <div class="slhd"><span class="num">8</span>
+          <h2>Registro Workshop ideação (F1.DO3)</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <p>Reunião de levantamento de demandas em <strong>20/08/2026</strong>, com representantes do projeto e servidores da área de ensino e tecnologia. O board/material da oficina está no repositório do projeto IFGuia e contém dores, oportunidades e os documentos analisados (CONSUP, Organização Didática, Catálogo de cursos, SUAP, PEN-SUAP).</p>
+          </div>
+          <div class="c2">
+            <div class="bege">
+              <h3>Dores identificadas</h3>
+              <ul>
+                <li>Dificuldade de localizar rapidamente a norma aplicável (qual resolução, qual está vigente, se houve revogação/alteração).</li>
+                <li>Dispersão das consultas em múltiplos canais (WhatsApp, e-mail, processos), gerando retrabalho e perda de histórico.</li>
+                <li>Documentos de diferentes períodos, com digitalizados e normas alteradas, dificultando saber a norma válida.</li>
+                <li>Processo manual de oferta de cursos, sem verificação automatizada de conformidade.</li>
+                <li>Dependência de especialistas da PROEN (estimativa de 30% a 40% do tempo).</li>
+              </ul>
+            </div>
+            <div class="bege">
+              <h3>Oportunidades</h3>
+              <ul>
+                <li>Assistente para consulta de legislação e normas do ensino.</li>
+                <li>Consulta a informações sobre cursos e oferta (campi, modalidades, ingresso).</li>
+                <li>Verificação automática de conformidade da oferta frente ao catálogo autorizado.</li>
+                <li>Futuro: comparar alterações normativas e apontar documentos internos afetados (ex.: PPCs).</li>
+              </ul>
+            </div>
+          </div>
+          <div class="nt" id="n8"><strong>Notas:</strong> Mostrar que a ideação nasce de dores reais relatadas pelos servidores, não de uma solução pré-definida.</div>
+        </div>
+      </div>
+
+      
+      <!-- SLIDE 9 - MATERIAL DA OFICINA - ROTEIRO E MATERIAIS -->
+      <div class="sl" id="s9">
+        <div class="slhd"><span class="num">9</span>
+          <h2>Material da oficina</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <h3>Material da oficina</h3>
+            <p>Artefato produzido com apoio de <strong>agente de IA</strong> para conduzir o <strong>workshop de exploração</strong></p>
+            <iframe class="padf" src="../../../documentos_workshop/roteiro_e_materiais_da_oficina_de_exploracao.pdf" title="Roteiro e materiais da oficina de exploração"></iframe>
+            <a class="blink" href="../../../documentos_workshop/roteiro_e_materiais_da_oficina_de_exploracao.pdf" target="_blank" rel="noopener">Abrir o PDF em nova aba ↗</a>
+          </div>
+          <div class="nt" id="n9"><strong>Notas:</strong> Apresentar o roteiro e os materiais da oficina de exploração, gerados com o apoio do agente de IA, destacando como orientam a condução do workshop.</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 10 - RESTRICOES E HIPOTESES -->
+<div class="sl" id="s10">
+        <div class="slhd"><span class="num">10</span>
+          <h2>Restrições e hipóteses levantadas</h2>
+        </div>
+        <div class="slbd">
+          <div class="c2">
+            <div class="ca">
+              <h3>Restrições</h3>
+              <ul>
+                <li>Prazo aproximado de <strong>três meses</strong> para desenvolvimento.</li>
+                <li>Avaliar a <strong>LGPD</strong>, especialmente para dados de estudantes e menores.</li>
+                <li>Possível submissão ao <strong>Comitê de Ética</strong>, que pode comprometer o cronograma.</li>
+                <li>Escopo limitado ao ensino da instituição, evitando toda a legislação federal.</li>
+                <li>Infraestrutura própria, com avaliação de modelos de linguagem <strong>locais</strong> para reduzir custos.</li>
+              </ul>
+            </div>
+            <div class="cd">
+              <h3>Hipóteses</h3>
+              <ul>
+                <li>Uma arquitetura <strong>RAG</strong> sobre o repositório do CONSUP recupera trechos relevantes e apresenta respostas confiáveis com citação das fontes.</li>
+                <li>A apresentação de fontes/trechos reduz o risco de alucinação e permite conferência humana.</li>
+                <li>É possível começar com um conjunto controlado de documentos e dados públicos, sem dados pessoais.</li>
+                <li>A verificação automática de conformidade pode reduzir o retrabalho e eliminar ofertas irregulares.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="dc"><strong>Estimativa não formal:</strong> 30% a 40% do tempo de trabalho dos servidores pode ser ocupado com atendimento e resposta a demandas normativas.</div>
+          <div class="nt" id="n10"><strong>Notas:</strong> Separar claramente restrições (fronteiras de projeto) e hipóteses (o que se acredita, a validar na Fase II).</div>
+        </div>
+      </div>
+      <!-- SLIDE 11 - PORTFOLIO DE CANDIDATOS -->
+      <div class="sl" id="s11">
+        <div class="slhd"><span class="num">11</span>
+          <h2>Portfólio de candidatos (F1.DO4 + F1.DO5)</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <p>Três problemas candidatos formulados e comparados de maneira consistente, com escala nominal explicitada pelo grupo.</p>
+          </div>
+          <table class="tb2">
+            <tr><th>#</th><th>Problema candidato</th><th>Impacto</th><th>Complexidade</th><th>Risco</th><th>Nota</th></tr>
+            <tr><td>1</td><td><strong>OP-01</strong> — Automação e verificação normativa da oferta de cursos pelos campi</td><td>Alto</td><td>Média</td><td>Médio</td><td><strong>7,5</strong></td></tr>
+            <tr><td>2</td><td><strong>OP-02</strong> — Consulta e interpretação das normativas de ensino: resoluções e resoluções normativas</td><td>Alto</td><td>Alta</td><td>Médio</td><td><strong>8,9</strong></td></tr>
+            <tr><td>3</td><td><strong>OP-03</strong> — Consulta a informações sobre normativas para uso interno da PROEN</td><td>Médio</td><td>Média</td><td>Médio</td><td><strong>7,6</strong></td></tr>
+          </table>
+          <div class="nt" id="n11"><strong>Notas:</strong> A nota final é a média aritmética das notas por critério. Antecipar que OP-02 vence — detalhado nos próximos slides.</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 12 - MATRIZ DE PRIORIZACAO -->
+      <div class="sl" id="s12">
+        <div class="slhd"><span class="num">12</span>
+          <h2>Matriz de priorização</h2>
+        </div>
+        <div class="slbd">
+          <table class="tb2">
+            <tr><th>Critério</th><th>OP-01</th><th>OP-02</th><th>OP-03</th></tr>
+            <tr><td>Relevância do problema</td><td>10</td><td>10</td><td>6</td></tr>
+            <tr><td>Disponibilidade e qualidade dos dados</td><td>6</td><td>9</td><td>6</td></tr>
+            <tr><td>Viabilidade técnica</td><td>7</td><td>9</td><td>9</td></tr>
+            <tr><td>Disponibilidade de infraestrutura</td><td>7</td><td>7</td><td>7</td></tr>
+            <tr><td>Possibilidade de utilização de IA</td><td>8</td><td>10</td><td>7</td></tr>
+            <tr><td>Riscos LGPD e necessidade de avaliação ética</td><td>8</td><td>8</td><td>8</td></tr>
+            <tr><td>Complexidade da solução</td><td>9</td><td>7</td><td>7</td></tr>
+            <tr><td>Prazo disponível</td><td>7</td><td>9</td><td>9</td></tr>
+            <tr><td>Possibilidade de validação com usuários</td><td>5</td><td>10</td><td>10</td></tr>
+            <tr><td>Potencial de solução útil para a instituição</td><td>8</td><td>10</td><td>7</td></tr>
+            <tr><td><strong>Média — Nota final</strong></td><td><strong>7,5</strong></td><td><strong>8,9</strong></td><td><strong>7,6</strong></td></tr>
+          </table>
+          <div class="ca">
+            <p>Escala de <strong>1 a 10</strong> em dez critérios; a nota final é a média aritmética. Para os critérios "Riscos LGPD/ética" e "Complexidade", <strong>notas mais altas indicam menor risco e menor complexidade</strong>.</p>
+          </div>
+          <div class="nt" id="n12"><strong>Notas:</strong> Destacar a consistência da avaliação. OP-02 se destaca em viabilidade, dados, utilização de IA e validação com usuários.</div>
+        </div>
+      </div>
+      <!-- SLIDE 13 - JUSTIFICATIVA DA ESCOLHA -->
+      <div class="sl" id="s13">
+        <div class="slhd"><span class="num">13</span>
+          <h2>Justificativa da escolha e descartes</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <h3>Por que OP-02 venceu</h3>
+            <p>Alta <strong>relevância institucional</strong>, dados de partida viáveis (repositório do CONSUP em HTML/PDF), prazo compatível com três meses e <strong>validação facilitada</strong> pelos próprios servidores da PROEN. Pode iniciar com dados públicos, reduzindo riscos de LGPD e de Comitê de Ética.</p>
+          </div>
+          <div class="bd">Adiados</div>
+          <ul>
+            <li><strong>OP-01 (7,5):</strong> adiado por depender de integrações com sistemas institucionais (PEN-SUAP) e de dados que exigem tratamento mais aprofundado.</li>
+            <li><strong>OP-03 (7,6):</strong> adiado por envolver maior diversidade de fontes e menor impacto institucional, sem atender diretamente a demanda de servidores e discentes.</li>
+          </ul>
+          <div class="nt" id="n13"><strong>Notas:</strong> Explicar que a priorização é uma decisão de portfólio, não de solução: o vencedor é o problema mais bem posicionado para avançar.</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 14 - DELIMITACAO -->
+      <div class="sl" id="s14">
+        <div class="slhd"><span class="num">14</span>
+          <h2>Problema priorizado — Delimitação (F1.DO6)</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <p><strong>Problema priorizado:</strong> a consulta e interpretação das <strong>normativas de ensino do IFPI</strong>, englobando localização, filtragem e explicação das resoluções do CONSUP.</p>
+          </div>
+          <div class="c2">
+            <div class="cd">
+              <h3>Dentro do escopo</h3>
+              <ul>
+                <li>Repositório de Resoluções do CONSUP e a Organização Didática do IFPI.</li>
+                <li>Demais regulamentos de ensino da instituição.</li>
+                <li>Atendimento a servidores e discentes.</li>
+              </ul>
+            </div>
+            <div class="ca">
+              <h3>Fora do escopo inicial</h3>
+              <ul>
+                <li>Automação da oferta de cursos.</li>
+                <li>Consulta a toda a legislação federal externa.</li>
+                <li>Decisão autônoma e tramitação de processos administrativos.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="nt" id="n14"><strong>Notas:</strong> A delimitação é essencial para manter o foco. O escopo invertido aqui é o mesmo que define o MVP na Fase II.</div>
+        </div>
+      </div>
+      <!-- SLIDE 15 - HIPOTESE DE IA -->
+      <div class="sl" id="s15">
+        <div class="slhd"><span class="num">15</span>
+          <h2>Hipótese inicial de aplicação de IA</h2>
+        </div>
+        <div class="slbd">
+          <div class="c2">
+            <div class="bege">
+              <h3>Tipos de apoio imaginado</h3>
+              <p><span class="tga">IA generativa + FMware</span></p>
+              <div class="fluxograma">
+                <div class="f-etapa fim">Pergunta do usuário</div>
+                <div class="f-seta">↓</div>
+                <div class="f-etapa">Busca nas normativas (RAG)</div>
+                <div class="f-seta">↓</div>
+                <div class="f-etapa">Resposta com citação da fonte</div>
+                <div class="f-seta">↓</div>
+                <div class="f-etapa fim">Validação humana</div>
+              </div>
+            </div>
+            <div class="bege">
+              <h3>Decisão ou tarefa a apoiar</h3>
+              <p>Busca, filtragem e explicação das normativas de ensino aplicáveis a cada caso (ex.: colação de grau) e, futuramente, apoio à verificação de conformidade da oferta de cursos.</p>
+            </div>
+          </div>
+          <div class="nt" id="n15"><strong>Notas:</strong> Enfatizar os limites e a supervisão humana para validar a qualidade com citação da fonte normativa.</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 16 - POR QUE IA -->
+      <div class="sl" id="s16">
+        <div class="slhd"><span class="num">16</span>
+          <h2>Por que IA, e não regras determinísticas?</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <p>O problema envolve <strong>linguagem natural não estruturada</strong>: normas em formatos heterogêneos (HTML e PDF, incl. digitalizados) sem indexação semântica, e dúvidas variadas, em linguagem coloquial e vocabulário imprevisível. Determinar quais dispositivos se aplicam a um caso concreto é uma tarefa <strong>essencialmente semântica e dependente de contexto</strong>.</p>
+          </div>
+          <h3>Por que regras fixas não bastam</h3>
+          <ul>
+            <li><strong>(i) Não escala:</strong> exigiria catalogar manualmente todas as combinações entre casos e normas, refazendo o esforço a cada nova resolução do CONSUP.</li>
+            <li><strong>(ii) Frágil diante da variação:</strong> a mesma dúvida formulada de formas distintas não é reconhecida por padrões fixos; termos técnicos/sinônimos quebram correspondências exatas.</li>
+            <li><strong>(iii) Sem relevância relativa:</strong> não capturam a probabilidade de aderência de cada trecho normativo ao caso concreto.</li>
+          </ul>
+          <div class="dc"><strong>Hipótese testável:</strong> a tarefa exige lidar com linguagem natural e estimar relevância de trechos, características em que abordagens de recuperação e geração (RAG) têm vantagem.</div>
+          <div class="nt" id="n16"><strong>Notas:</strong> Sustentar por que IA (e não um fluxograma fixo) é a hipótese adequada, sem já "escolher" a solução.</div>
+        </div>
+      </div>
+      <!-- SLIDE 17 - SINTESE -->
+      <div class="sl" id="s17">
+        <div class="slhd"><span class="num">17</span>
+          <h2>Síntese do problema priorizado</h2>
+        </div>
+        <div class="slbd">
+          <div class="ca">
+            <p>Dificuldade de servidores e discentes do IFPI em <strong>localizar e interpretar as normativas de ensino</strong>, hoje dispersas e consultadas de forma manual. Afeta docentes, técnicos-administrativos, coordenadores, gestores, secretarias acadêmicas e discentes. Espera-se <strong>maior agilidade, transparência, uniformidade e conformidade</strong> nas consultas, com redução de retrabalho.</p>
+          </div>
+          <div class="dc"><strong>Hipótese de IA:</strong> solução baseada em <strong>RAG</strong>, capaz de recuperar trechos relevantes das normativas vigentes e responder com citações das fontes — restrita ao âmbito do CONSUP/IFPI, sem interpretações não fundamentadas ou decisões autônomas, com supervisão humana para validação.</div>
+          <div class="nt" id="n17"><strong>Notas:</strong> Fechar o M1 com a síntese clara e mostrar que ela alimenta diretamente a Fase II.</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 18 - DADOS -->
+      <div class="sl" id="s18">
+        <div class="slhd"><span class="num">18</span>
+          <h2>Dados inicialmente conhecidos</h2>
+        </div>
+        <div class="slbd">
+          <table class="tb2">
+            <tr><th>Fonte</th><th>Formato</th><th>Responsável</th><th>Acesso/restrições</th></tr>
+            <tr><td>Repositório de Resoluções do CONSUP</td><td>HTML/PDF</td><td>CONSUP / PROEN</td><td>Dispersas, sem API/indexação estruturada</td></tr>
+            <tr><td>Organização Didática do IFPI</td><td>PDF</td><td>PROEN</td><td>Norma central do ensino; base p/ colação de grau</td></tr>
+            <tr><td>Catálogo de cursos por campus</td><td>Portal institucional</td><td>PROEN / Direções de Ensino</td><td>Base p/ conformidade da oferta</td></tr>
+            <tr><td>SUAP (módulo acadêmico)</td><td>Banco de dados</td><td>DTI/IFPI</td><td>Dados de matrícula e situação acadêmica</td></tr>
+            <tr><td>PEN-SUAP</td><td>Documentos/ofícios</td><td>Reitoria</td><td>Histórico de solicitações de oferta</td></tr>
+          </table>
+          <div class="dc"><strong>Pontos de atenção:</strong> dados de discentes/servidores implicam LGPD; modelos iniciais podem partir de dados públicos (resoluções e OD).</div>
+          <div class="nt" id="n18"><strong>Notas:</strong> Destacar que dados públicos permitem mitigar riscos de LGPD e de Comitê de Ética no início do projeto.</div>
+        </div>
+      </div>
+      <!-- SLIDE 19 - CRITERIOS, VALIDACAO E RESULTADO -->
+      <div class="sl" id="s19">
+        <div class="slhd"><span class="num">19</span>
+          <h2>Encerramento</h2>
+        </div>
+        <div class="slbd" style="text-align: center;">
+          <h3>Obrigado!</h3>
+          <p>
+            <a href="https://github.com/SE4AI-UFPI/IFGuia" target="_blank" class="btn-github">
+              <!-- Ícone oficial do GitHub via Font Awesome -->
+              <i class="fab fa-github"></i>
+              Nosso repositório no GitHub
+            </a>
+            <p><img src="img/qrcode.png" style="margin-top: 20px; max-width: 200px;"></p>
+          </p>
+        </div>
+      </div>
+    </div>
+    <footer class="ft">
+      <img src="img/logo_full.png" alt="PPGCC">
+      <span class="txt"><strong>IFGuia</strong> · Programa de Pós-Graduação em Ciência da Computação — UFPI · Fase I — Exploração</span>
+    </footer>
+    <nav class="ctr">
+      <button class="bc" onclick="tn()" id="bn">Notas do apresentador</button>
+      <button class="bz" onclick="pv()">Anterior</button>
+      <button class="bv" onclick="nx()">Próximo</button>
+    </nav>
+    <script src="script.js"></script>
+  </body>
+</html>
