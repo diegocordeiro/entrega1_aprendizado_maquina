@@ -1,5 +1,5 @@
 
-let c=0,t=19;
+let c=0,t=15;
 let isPresenter = new URLSearchParams(location.search).get('modo')==='apresentador';
 let win=null;
 

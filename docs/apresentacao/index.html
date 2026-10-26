@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Predição de Doença Cardíaca — Árvore de Decisão</title>
+  <link rel="stylesheet" href="estilo.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+  <header class="tb">
+    <div class="tb-left">
+      <img src="img/logo.png" class="tb-logo" alt="PPGCC UFPI">
+      <h2>Predição de Doença Cardíaca — Árvore de Decisão</h2>
+    </div>
+    <div class="tb-right">
+      <div class="fz" aria-label="Tamanho do texto">
+        <button onclick="fz(-1)" title="Diminuir tamanho da fonte">A−</button>
+        <span id="fzpct">100%</span>
+        <button onclick="fz(1)" title="Aumentar tamanho da fonte">A+</button>
+      </div>
+      <button class="bpb" id="bp" onclick="openPresenter()">Modo apresentador</button>
+      <span class="ct" id="ctr">1 / 15</span>
+      <span class="modo-tag">APRESENTAÇÃO</span>
+    </div>
+  </header>
+  <div class="fita"></div>
+  <div class="sc">
+
+    <!-- SLIDE 1 - CAPA -->
+    <div class="sl" id="s1">
+      <div class="capa">
+        <div class="esq">
+          <div class="rot">Aprendizado de Máquina · PPGCC/UFPI</div>
+          <h1>Predição de Doença Cardíaca com Árvore de Decisão</h1>
+          <div class="meta">
+            <span>Tratamento de dados, hiperparâmetros e engenharia de features</span>
+            <span>Base Heart Failure Prediction (Kaggle/UCI)</span>
+          </div>
+          <div class="faixa"></div>
+          <div class="sub">Integrantes:
+            <ul>
+              <li>Arthur Fernando Elvas Bohn — 20261001997</li>
+              <li>Diego Cordeiro de Oliveira — 20261002180</li>
+              <li>Keoma de Sousa Coelho — 20261004952</li>
+            </ul>
+          </div>
+          <div class="sub">Professor:
+            <ul>
+              <li>Doutor Vinicius Ponte Machado</li>
+            </ul>
+          </div>
+          <div class="sub">Disciplina:
+            <ul>
+              <li>Aprendizado de Máquina — PPGCC/UFPI</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dir">
+          <img src="img/logo_full.png" alt="PPGCC — UFPI">
+          <img class="marca" src="img/marca.png" alt="">
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 - PROBLEMA -->
+    <div class="sl" id="s2">
+      <div class="slhd"><span class="num">2</span>
+        <h2>Problema e objetivo</h2>
+      </div>
+      <div class="slbd">
+        <ul>
+          <li>Doenças cardiovasculares estão entre as principais causas de morte no mundo.</li>
+          <li>Classificação binária: <strong>1 = com doença</strong> e <strong>0 = sem doença</strong>.</li>
+          <li>O erro mais grave é o <strong>falso negativo da classe 1</strong>: paciente doente previsto como “não
+            doente”.</li>
+        </ul>
+        <div class="dc"><strong>Por que isso importa:</strong> o paciente doente sem diagnóstico fica sem tratamento e
+          pode evoluir para óbito.</div>
+        <p><strong>Objetivo:</strong> avaliar uma Árvore de Decisão combinando tratamento dos dados, ajuste de
+          hiperparâmetros e engenharia de features, com todos os experimentos registrados no <strong>MLflow</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 - DICIONARIO DE ATRIBUTOS (2.2) -->
+    <div class="sl" id="s3">
+      <div class="slhd"><span class="num">3</span>
+        <h2>Dicionário de atributos</h2>
+      </div>
+      <div class="slbd">
+        <div class="c2">
+          <table class="tb2" style="font-size:14px;">
+            <tr>
+              <th>Atributo</th>
+              <th>Tipo</th>
+              <th>Descrição</th>
+            </tr>
+            <tr>
+              <td>Age</td>
+              <td>Numérico</td>
+              <td>Idade (anos)</td>
+            </tr>
+            <tr>
+              <td>RestingBP</td>
+              <td>Numérico</td>
+              <td>Pressão em repouso (mm Hg)</td>
+            </tr>
+            <tr>
+              <td>Cholesterol</td>
+              <td>Numérico</td>
+              <td>Colesterol sérico (mm/dl)</td>
+            </tr>
+            <tr>
+              <td>FastingBS</td>
+              <td>Binário</td>
+              <td>Glicemia em jejum &gt; 120 mg/dl</td>
+            </tr>
+            <tr>
+              <td>MaxHR</td>
+              <td>Numérico</td>
+              <td>FC máxima atingida</td>
+            </tr>
+            <tr>
+              <td>Oldpeak</td>
+              <td>Numérico</td>
+              <td>Depressão ST por exercício</td>
+            </tr>
+          </table>
+          <table class="tb2" style="font-size:14px;">
+            <tr>
+              <th>Atributo</th>
+              <th>Tipo</th>
+              <th>Descrição</th>
+            </tr>
+            <tr>
+              <td>Sex</td>
+              <td>Categórico</td>
+              <td>Sexo (M/F)</td>
+            </tr>
+            <tr>
+              <td>ChestPainType</td>
+              <td>Categórico</td>
+              <td>Dor no peito (TA/ATA/NAP/ASY)</td>
+            </tr>
+            <tr>
+              <td>RestingECG</td>
+              <td>Categórico</td>
+              <td>ECG (Normal/ST/LVH)</td>
+            </tr>
+            <tr>
+              <td>ExerciseAngina</td>
+              <td>Categórico</td>
+              <td>Angina por exercício (Y/N)</td>
+            </tr>
+            <tr>
+              <td>ST_Slope</td>
+              <td>Categórico</td>
+              <td>Inclinação ST (Up/Flat/Down)</td>
+            </tr>
+            <tr>
+              <td>HeartDisease</td>
+              <td>Binário</td>
+              <td>Alvo: 1 = doença, 0 = normal</td>
+            </tr>
+          </table>
+        </div>
+        <div class="dc"><strong>11 atributos + alvo.</strong> Numéricos recebem imputação + escala; categóricos recebem
+          one-hot ou ordinal.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 - BASE -->
+    <div class="sl" id="s4">
+      <div class="slhd"><span class="num">4</span>
+        <h2>Base de dados</h2>
+      </div>
+      <div class="slbd">
+        <p><strong>Heart Failure Prediction</strong> (Kaggle/fedesoriano), derivada do UCI Heart Disease, 918 registros
+          × 12 colunas (11 atributos + alvo).</p>
+        <table class="tb2">
+          <tr>
+            <th>Classe</th>
+            <th>Registros</th>
+            <th>Proporção</th>
+          </tr>
+          <tr>
+            <td>1 — com doença</td>
+            <td>508</td>
+            <td>55,34%</td>
+          </tr>
+          <tr>
+            <td>0 — sem doença</td>
+            <td>410</td>
+            <td>44,66%</td>
+          </tr>
+        </table>
+        <ul>
+          <li>172 zeros em <code>Cholesterol</code> e 1 em <code>RestingBP</code> → tratados como ausentes (NaN).</li>
+          <li>0 duplicatas; split 80/20 estratificado (734 treino / 184 teste).</li>
+        </ul>
+        <div class="dc"><strong>Desbalanceamento leve</strong> (55/45): a classe 1 é majoritária.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 - METODOLOGIA -->
+    <div class="sl" id="s5">
+      <div class="slhd"><span class="num">5</span>
+        <h2>Metodologia</h2>
+      </div>
+      <div class="slbd">
+        <ol class="passos">
+          <li><strong>Pipeline:</strong> imputação (mediana/média/moda) + encoding (one-hot ou ordinal) +
+            <code>DecisionTreeClassifier</code>.</li>
+          <li><strong>Split</strong> 80/20 estratificado.</li>
+          <li><strong>Validação:</strong> <code>RepeatedStratifiedKFold</code> 5 folds × 2 repetições.</li>
+          <li><strong>Grid search:</strong> 864 combinações por rodada (17.280 no total), reajuste por <strong>F1 da
+              classe 1</strong>.</li>
+          <li><strong>Avaliação:</strong> acurácia, precisão, recall e F1 para as duas classes, F1 macro e IC 95%
+            bootstrap (amostragem com reposição).</li>
+        </ol>
+        <div class="dc"><strong>Sem vazamento:</strong> imputação, encoding e escala são ajustados apenas no treino de
+          cada fold.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 - FASES -->
+    <div class="sl" id="s6">
+      <div class="slhd"><span class="num">6</span>
+        <h2>Fases do notebook</h2>
+      </div>
+      <div class="slbd">
+        <ol class="passos">
+          <li><strong>Carga e limpeza:</strong> zeros → NaN.</li>
+          <li><strong>Preparação:</strong> imputação + encoding + escala, split e CV (validação cruzada).</li>
+          <li><strong>Grid search:</strong> one-hot × ordinal, 864 combinações cada.</li>
+          <li><strong>Avaliação no teste:</strong> ambas as classes, IC 95% e matriz de confusão.</li>
+          <li><strong>Ablação:</strong> remove 1 atributo por vez e compara.</li>
+          <li><strong>Engenharia de features:</strong> razões/interações clínicas.</li>
+          <li><strong>MLflow:</strong> parâmetros, métricas, modelos e artefatos.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 - GRID -->
+    <div class="sl" id="s7">
+      <div class="slhd"><span class="num">7</span>
+        <h2>Grid search e hiperparâmetros</h2>
+      </div>
+      <div class="slbd">
+        <div class="c2">
+          <table class="tb2" style="font-size:14px;">
+            <tr>
+              <th>Parâmetro</th>
+              <th>Valores testados</th>
+            </tr>
+            <tr>
+              <td>Imputação</td>
+              <td><code>median</code>, <code>mean</code>, <code>most_frequent</code></td>
+            </tr>
+            <tr>
+              <td>criterion</td>
+              <td><code>gini</code>, <code>entropy</code></td>
+            </tr>
+            <tr>
+              <td>max_depth</td>
+              <td><code>3</code>, <code>5</code>, <code>7</code>, <code>None</code></td>
+            </tr>
+            <tr>
+              <td>min_samples_split</td>
+              <td><code>2</code>, <code>5</code>, <code>10</code></td>
+            </tr>
+            <tr>
+              <td>min_samples_leaf</td>
+              <td><code>1</code>, <code>3</code>, <code>5</code></td>
+            </tr>
+            <tr>
+              <td>max_features</td>
+              <td><code>None</code>, <code>sqrt</code></td>
+            </tr>
+            <tr>
+              <td>class_weight</td>
+              <td><code>None</code>, <code>balanced</code></td>
+            </tr>
+          </table>
+          <table class="tb2" style="font-size:14px;">
+            <tr>
+              <th>Parâmetro</th>
+              <th>one-hot</th>
+              <th>ordinal</th>
+            </tr>
+            <tr>
+              <td>Imputação</td>
+              <td>median</td>
+              <td>most_frequent</td>
+            </tr>
+            <tr>
+              <td>class_weight</td>
+              <td>balanced</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td>criterion</td>
+              <td>entropy</td>
+              <td>gini</td>
+            </tr>
+            <tr>
+              <td>max_depth</td>
+              <td>3</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>max_features</td>
+              <td>None</td>
+              <td>sqrt</td>
+            </tr>
+          </table>
+        </div>
+        <ul>
+          <li>864 combinações por encoding; 8.640 fits por encoding; <strong>17.280 fits</strong> no total.</li>
+          <li>Critério de seleção: <strong>F1 da classe 1</strong> na validação cruzada.</li>
+        </ul>
+        <div class="dc"><strong>Árvore rasa (profundidade 3):</strong> a validação satura cedo, profundidades maiores
+          não generalizam melhor.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 - ONE-HOT X ORDINAL -->
+    <div class="sl" id="s8">
+      <div class="slhd"><span class="num">8</span>
+        <h2>One-hot × ordinal (teste)</h2>
+      </div>
+      <div class="slbd">
+        <table class="tb2">
+          <tr>
+            <th>Codificação</th>
+            <th>Acurácia</th>
+            <th>F1_c0</th>
+            <th>F1_c1</th>
+            <th>F1_macro</th>
+            <th>Recall_c1</th>
+          </tr>
+          <tr>
+            <td>ordinal</td>
+            <td>0,8098</td>
+            <td>0,7682</td>
+            <td><strong>0,8387</strong></td>
+            <td>0,8035</td>
+            <td><strong>0,8922</strong></td>
+          </tr>
+          <tr>
+            <td>one-hot</td>
+            <td><strong>0,8207</strong></td>
+            <td><strong>0,8092</strong></td>
+            <td>0,8308</td>
+            <td><strong>0,8200</strong></td>
+            <td>0,7941</td>
+          </tr>
+        </table>
+        <ul>
+          <li><strong>Ordinal:</strong> melhor F1_c1 e recall_c1 (menos doentes sem diagnóstico).</li>
+          <li><strong>One-hot:</strong> melhor acurácia, F1_c0 e F1_macro.</li>
+        </ul>
+        <div class="dc"><strong>IC 95% do F1_c1 se sobrepõem</strong> (ordinal 0,78–0,89; one-hot 0,77–0,89) → diferença
+          não conclusiva.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10 - ENGENHARIA DE FEATURES TESTADA (3.4) -->
+    <div class="sl" id="s9">
+      <div class="slhd"><span class="num">9</span>
+        <h2>Engenharia de features</h2>
+      </div>
+      <div class="slbd">
+        <table class="tb2">
+          <tr>
+            <th>Feature</th>
+            <th>Fórmula</th>
+            <th>Motivação</th>
+          </tr>
+          <tr>
+            <td>FC_pct_teorica</td>
+            <td>MaxHR / (220 − Age)</td>
+            <td>% da FC máxima teórica</td>
+          </tr>
+          <tr>
+            <td>Chol_por_Idade</td>
+            <td>Cholesterol / Age</td>
+            <td>Colesterol relativo à idade</td>
+          </tr>
+          <tr>
+            <td>BP_por_Idade</td>
+            <td>RestingBP / Age</td>
+            <td>Pressão relativa à idade</td>
+          </tr>
+          <tr>
+            <td>Oldpeak_por_FC</td>
+            <td>Oldpeak / MaxHR</td>
+            <td>Depressão ST por batimento</td>
+          </tr>
+          <tr>
+            <td>Angina_x_Oldpeak</td>
+            <td>(ExerciseAngina == 'Y') × Oldpeak</td>
+            <td>Interação angina × ST</td>
+          </tr>
+        </table>
+        <div class="dc">Calculadas linha a linha (só com os valores da própria linha), sem usar o alvo nem estatísticas
+          do conjunto, por isso podem ser criadas antes do split sem vazamento. Como a árvore só faz cortes retos (uma
+          variável por vez), uma razão como Oldpeak/MaxHR transforma uma relação ‘diagonal’ em um corte reto que a
+          árvore usa diretamente.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10 - ENGENHARIA -->
+    <div class="sl" id="s10">
+      <div class="slhd"><span class="num">10</span>
+        <h2>Engenharia de features</h2>
+      </div>
+      <div class="slbd">
+        <table class="tb2">
+          <tr>
+            <th>Cenário</th>
+            <th>Nº atributos</th>
+            <th>Acurácia</th>
+            <th>F1_c0</th>
+            <th>F1_c1</th>
+            <th>F1_macro</th>
+            <th>F1_CV</th>
+          </tr>
+          <tr>
+            <td>sem engenharia</td>
+            <td>11</td>
+            <td>0,8098</td>
+            <td>0,7682</td>
+            <td>0,8387</td>
+            <td>0,8035</td>
+            <td><strong>0,8604</strong></td>
+          </tr>
+          <tr>
+            <td>com engenharia</td>
+            <td>16</td>
+            <td><strong>0,8261</strong></td>
+            <td><strong>0,7838</strong></td>
+            <td><strong>0,8545</strong></td>
+            <td><strong>0,8192</strong></td>
+            <td>0,7946</td>
+          </tr>
+        </table>
+        <ul>
+          <li><strong>Ganho no teste:</strong> F1_c1 +0,0158; recall_c1 +0,0294 (0,8922 → 0,9216).</li>
+          <li><strong>Ressalva:</strong> o F1 da CV caiu (0,8604 → 0,7946) → ganho <strong>não confirmado</strong> pela
+            validação cruzada.</li>
+        </ul>
+        <div class="dc"><strong>Conclusão:</strong> promissor no teste, mas inconclusivo precisa de validação externa.
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11 - ABLACAO -->
+    <div class="sl" id="s11">
+      <div class="slhd"><span class="num">11</span>
+        <h2>Ablação de atributos</h2>
+      </div>
+      <div class="slbd">
+        <table class="tb2">
+          <tr>
+            <th>Cenário</th>
+            <th>Acurácia</th>
+            <th>F1_c0</th>
+            <th>F1_c1</th>
+            <th>F1_macro</th>
+          </tr>
+          <tr>
+            <td>todos</td>
+            <td>0,8098</td>
+            <td>0,7682</td>
+            <td><strong>0,8387</strong></td>
+            <td>0,8035</td>
+          </tr>
+          <tr>
+            <td>sem RestingBP / Cholesterol / FastingBS</td>
+            <td>0,8207</td>
+            <td><strong>0,8136</strong></td>
+            <td>0,8272</td>
+            <td><strong>0,8204</strong></td>
+          </tr>
+          <tr>
+            <td>sem ST_Slope</td>
+            <td>0,7772</td>
+            <td>0,7630</td>
+            <td>0,7897</td>
+            <td>0,7764</td>
+          </tr>
+          <tr>
+            <td>sem MaxHR</td>
+            <td>0,7500</td>
+            <td>0,6933</td>
+            <td>0,7890</td>
+            <td>0,7412</td>
+          </tr>
+          <tr>
+            <td>sem Sex / ChestPainType / RestingECG / Oldpeak</td>
+            <td>0,7391</td>
+            <td>0,7073</td>
+            <td>0,7647</td>
+            <td>0,7360</td>
+          </tr>
+        </table>
+        <ul>
+          <li><strong>Nenhuma remoção melhorou o F1_c1</strong>, o conjunto completo é o melhor.</li>
+          <li>Remover RestingBP/Cholesterol/FastingBS melhora o <strong>F1_macro</strong>, mas piora o recall da classe
+            1.</li>
+        </ul>
+        <div class="dc"><strong>ST_Slope e MaxHR são informativos:</strong> removê-los derruba o F1_c1.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12 - CONFUSAO -->
+    <div class="sl" id="s12">
+      <div class="slhd"><span class="num">12</span>
+        <h2>Matriz de confusão: melhor modelo para triagem</h2>
+      </div>
+      <div class="slbd">
+        <div class="dc"><strong>Critério de triagem:</strong> maximizar recall/F1 da classe 1 (minimizar falsos
+          negativos, doente previsto como “não doente”).</div>
+        <div style="display:flex; gap:18px; align-items:flex-start; margin-top:8px;">
+          <div style="flex:0 0 40%;">
+            <img src="img/confusion_matrix_com_engenharia.png" style="width:80%;" alt="Matriz com engenharia">
+          </div>
+          <div style="flex:1;">
+            <ul style="font-size:15px;">
+              <li>Acurácia: 0,8261</li>
+              <li>Precisão_c1: 0,7966</li>
+              <li><strong>Recall_c1: 0,9216</strong></li>
+              <li><strong>F1_c1: 0,8545</strong></li>
+            </ul>
+            <table class="tb2" style="font-size:12px;">
+              <tr>
+                <th>Modelo</th>
+                <th>FN</th>
+                <th>Recall_c1</th>
+                <th>F1_c1</th>
+                <th>F1_CV</th>
+              </tr>
+              <tr>
+                <td><strong>com_engenharia</strong></td>
+                <td><strong>8</strong></td>
+                <td><strong>0,9216</strong></td>
+                <td><strong>0,8545</strong></td>
+                <td>0,7946</td>
+              </tr>
+              <tr>
+                <td>ordinal</td>
+                <td>11</td>
+                <td>0,8922</td>
+                <td>0,8387</td>
+                <td><strong>0,8604</strong></td>
+              </tr>
+              <tr>
+                <td>one-hot</td>
+                <td>21</td>
+                <td>0,7941</td>
+                <td>0,8308</td>
+                <td>0,8550</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div
+          style="font-family: sans-serif; line-height: 1.6; color: #333; max-width: 100%; padding: 20px; border-left: 5px solid #007bff; background-color: #f8f9fa;">
+
+          <!-- Bloco de Resultados Positivos -->
+          <p style="margin-top: 0; margin-bottom: 12px;">
+            No teste atual, o modelo <code>com_engenharia</code> apresentou o melhor cenário
+            para triagem, reduzindo os Falsos Negativos para apenas <strong>8</strong> (contra 11 e 21 dos demais),
+            mantendo os Falsos Positivos estáveis em <strong>24</strong>.
+          </p>
+
+          <!-- Bloco de Alerta / Ressalva -->
+          <p
+            style="margin-bottom: 12px; padding: 10px; background-color: #fff3cd; border-left: 4px solid #ffc107; color: #856404; border-radius: 4px;">
+            <strong>Ressalva:</strong> Esse ganho não foi confirmado pela validação cruzada (onde o F1-Score
+            caiu de <strong>0,86</strong> para <strong>0,79</strong>). Como a base de teste é pequena (184 amostras), o
+            resultado positivo pode ser apenas uma oscilação estatística do sorteio.
+          </p>
+
+          <!-- Bloco de Conclusão / Próximos Passos -->
+          <p style="margin-bottom: 0;">
+            Os modelos <code>com_engenharia</code> e <code>ordinal</code> (8 e 11 FN) são os
+            dois promissores para a triagem.
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SLIDE 13 - MLFLOW / EVOLUCAO -->
+    <div class="sl" id="s13">
+      <div class="slhd"><span class="num">13</span>
+        <h2>MLflow e evolução das execuções</h2>
+      </div>
+      <div class="slbd">
+        <ul>
+          <li><strong>111 runs</strong> no experimento <code>heart_failure_arvore_decisao</code> (SQLite
+            <code>mlflow.db</code> + artefatos em <code>mlruns/</code>).</li>
+          <li>Cada run registra parâmetros, métricas, modelo e artefatos.</li>
+        </ul>
+        <table class="tb2">
+          <tr>
+            <th>Execução</th>
+            <th>O que mudou</th>
+            <th>Efeito</th>
+          </tr>
+          <tr>
+            <td>22/10 08:18</td>
+            <td>One-hot × ordinal + baseline</td>
+            <td>referência</td>
+          </tr>
+          <tr>
+            <td>22/10 08:37</td>
+            <td>+ ablação (class_weight None/balanced)</td>
+            <td>balanced ≈ None</td>
+          </tr>
+          <tr>
+            <td>22/10 09:31</td>
+            <td>+ engenharia de features</td>
+            <td>ganho no teste, CV caiu</td>
+          </tr>
+          <tr>
+            <td>22/10 09:48</td>
+            <td>variação de hiperparâmetros one-hot</td>
+            <td><strong>piorou</strong></td>
+          </tr>
+          <tr>
+            <td>26/10 07:55</td>
+            <td>métricas para as duas classes</td>
+            <td>versão final</td>
+          </tr>
+        </table>
+        <div class="dc"><strong>Lição:</strong> a engenharia melhorou o teste mas não a CV, a variação de
+          hiperparâmetros piorou o teste.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14 - TRABALHOS RELACIONADOS -->
+    <div class="sl" id="s14">
+      <div class="slhd"><span class="num">14</span>
+        <h2>Trabalhos relacionados</h2>
+      </div>
+      <div class="slbd">
+        <table class="tb2">
+          <tr>
+            <th>Trabalho</th>
+            <th>Contribuição</th>
+          </tr>
+          <tr>
+            <td>Qadri et al. (2023), IEEE Access</td>
+            <td>Feature engineering para doença cardíaca</td>
+          </tr>
+          <tr>
+            <td>Abass &amp; Bathla (2025), Springer</td>
+            <td>ML + feature engineering</td>
+          </tr>
+          <tr>
+            <td>Gárate-Escamilla et al. (2020)</td>
+            <td>Seleção de features + PCA</td>
+          </tr>
+          <tr>
+            <td>Hasnat et al. (2025), arXiv</td>
+            <td>Feature engineering + SHAP</td>
+          </tr>
+          <tr>
+            <td>Page et al. (1970), Circulation</td>
+            <td>Idade/colesterol na predição de DAC</td>
+          </tr>
+          <tr>
+            <td>Fox et al. (1971)</td>
+            <td>Fórmula FCmax ≈ 220 − idade</td>
+          </tr>
+        </table>
+        <div class="dc"><strong>As razões testadas são hipóteses exploratórias</strong>, apoiadas pela literatura
+          clínica, mas precisam de validação externa.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 15 - CONCLUSAO -->
+    <div class="sl" id="s15">
+      <div class="slhd"><span class="num">15</span>
+        <h2>Conclusão</h2>
+      </div>
+      <div class="slbd">
+        <ul>
+          <li><strong>Melhor no teste para triagem:</strong> <code>com_engenharia</code>: 8 FN, recall_c1 0,9216 e
+            F1_c1 0,8545; o <code>ordinal</code> é a alternativa mais robusta por possuir a melhor validação cruzada (11 FN, F1_CV 0,8604).</li>
+          <li><strong>Engenharia de features:</strong> melhorou o teste (F1_c1 0,8545), mas <strong>piorou a CV</strong>
+            → inconclusivo.</li>
+          <li><strong>Ablação:</strong> manter todos os atributos maximiza o F1_c1. Remover alguns melhora o F1_macro,
+            mas aumenta o risco de falso negativo.</li>
+          <li><strong>MLflow:</strong> 111 runs registradas, permitindo reproduzir e comparar todas as execuções.</li>
+        </ul>
+        <p style="margin-bottom: 0;">
+          Os modelos <code>com_engenharia</code> e <code>ordinal</code> (8 e 11 FN) são os
+          dois promissores para a triagem. O próximo passo é <strong>validar em uma base de dados
+            externa</strong>.
+        </p>
+        <div class="dc" style="text-align:center; margin-top: 18px;"><strong>Obrigado!</strong></div>
+      </div>
+    </div>
+
+  </div>
+  <footer class="ft">
+    <img src="img/logo_full.png" alt="PPGCC">
+    <span class="txt"><strong>Doença Cardíaca</strong> · Aprendizado de Máquina — PPGCC/UFPI</span>
+  </footer>
+  <nav class="ctr">
+    <button class="bc" onclick="tn()" id="bn">Notas do apresentador</button>
+    <button class="bz" onclick="pv()">Anterior</button>
+    <button class="bv" onclick="nx()">Próximo</button>
+  </nav>
+  <script src="script.js"></script>
+</body>
+
+</html>

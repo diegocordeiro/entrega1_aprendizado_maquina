@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Predição de Doença Cardíaca com Árvore de Decisão</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Predição de Doença Cardíaca com Árvore de Decisão</h1>
+</header>
+<div id="title-block-header">
+<h1 class="title"
+id="predição-de-doença-cardíaca-com-árvore-de-decisão">Predição de
+Doença Cardíaca com Árvore de Decisão</h1>
+</div>
+<ul>
+<li><a
+href="#predição-de-doença-cardíaca-com-árvore-de-decisão-tratamento-de-dados-hiperparâmetros-e-engenharia-de-atributos"
+id="toc-predição-de-doença-cardíaca-com-árvore-de-decisão-tratamento-de-dados-hiperparâmetros-e-engenharia-de-atributos">Predição
+de Doença Cardíaca com Árvore de Decisão: tratamento de dados,
+hiperparâmetros e engenharia de atributos</a>
+<ul>
+<li><a href="#lista-de-siglas-e-abreviaturas"
+id="toc-lista-de-siglas-e-abreviaturas">Lista de siglas e
+abreviaturas</a></li>
+<li><a href="#introdução-e-problema" id="toc-introdução-e-problema">1.
+Introdução e problema</a></li>
+<li><a href="#base-de-dados" id="toc-base-de-dados">2. Base de
+dados</a></li>
+<li><a href="#metodologia" id="toc-metodologia">3. Metodologia</a></li>
+<li><a href="#resultados" id="toc-resultados">4. Resultados</a></li>
+<li><a href="#mlflow-registro-e-tabulação-dos-experimentos"
+id="toc-mlflow-registro-e-tabulação-dos-experimentos">5. MLflow:
+registro e tabulação dos experimentos</a></li>
+<li><a href="#avaliação-comparativa-entre-execuções"
+id="toc-avaliação-comparativa-entre-execuções">6. Avaliação comparativa
+entre execuções</a></li>
+<li><a href="#discussão-e-trabalhos-relacionados"
+id="toc-discussão-e-trabalhos-relacionados">7. Discussão e trabalhos
+relacionados</a></li>
+<li><a href="#conclusão-e-recomendações"
+id="toc-conclusão-e-recomendações">8. Conclusão e recomendações</a></li>
+<li><a href="#referências" id="toc-referências">9. Referências</a></li>
+</ul></li>
+</ul>
+<h1
+id="predição-de-doença-cardíaca-com-árvore-de-decisão-tratamento-de-dados-hiperparâmetros-e-engenharia-de-atributos">Predição
+de Doença Cardíaca com Árvore de Decisão: tratamento de dados,
+hiperparâmetros e engenharia de atributos</h1>
+<p><strong>Disciplina:</strong> Aprendizado de Máquina —
+PPGCC/UFPI<br />
+<strong>Professor:</strong> Doutor Vinicius Ponte Machado<br />
+<strong>Data:</strong> 26/10/2026</p>
+<p><strong>Integrantes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Integrante</th>
+<th>Matrícula</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arthur Fernando Elvas Bohn</td>
+<td>20261001997</td>
+</tr>
+<tr>
+<td>Diego Cordeiro de Oliveira</td>
+<td>20261002180</td>
+</tr>
+<tr>
+<td>Keoma de Sousa Coelho</td>
+<td>20261004952</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Base:</strong> <a
+href="https://www.kaggle.com/datasets/fedesoriano/heart-failure-prediction">Heart
+Failure Prediction — Kaggle</a><br />
+<strong>Notebook:</strong>
+<code>Arvore_Decisao_Heart_Failure_mlflow.ipynb</code></p>
+<hr />
+<h2 id="lista-de-siglas-e-abreviaturas">Lista de siglas e
+abreviaturas</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Sigla</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BP</strong></td>
+<td>Pressão arterial (<em>Blood Pressure</em>)</td>
+</tr>
+<tr>
+<td><strong>CV</strong></td>
+<td>Validação cruzada (<em>Cross-Validation</em>)</td>
+</tr>
+<tr>
+<td><strong>DAC</strong></td>
+<td>Doença arterial coronariana</td>
+</tr>
+<tr>
+<td><strong>ECG</strong></td>
+<td>Eletrocardiograma</td>
+</tr>
+<tr>
+<td><strong>F1</strong></td>
+<td>Média harmônica entre precisão e revocação</td>
+</tr>
+<tr>
+<td><strong>FC</strong></td>
+<td>Frequência cardíaca</td>
+</tr>
+<tr>
+<td><strong>FN</strong></td>
+<td>Falso negativo</td>
+</tr>
+<tr>
+<td><strong>FP</strong></td>
+<td>Falso positivo</td>
+</tr>
+<tr>
+<td><strong>HR</strong></td>
+<td>Frequência cardíaca (<em>Heart Rate</em>)</td>
+</tr>
+<tr>
+<td><strong>IC 95%</strong></td>
+<td>Intervalo de confiança de 95%</td>
+</tr>
+<tr>
+<td><strong>LVH</strong></td>
+<td>Hipertrofia ventricular esquerda (<em>Left Ventricular
+Hypertrophy</em>)</td>
+</tr>
+<tr>
+<td><strong>M/F</strong></td>
+<td>Masculino/feminino</td>
+</tr>
+<tr>
+<td><strong>MLflow</strong></td>
+<td>Plataforma de rastreamento de experimentos de aprendizado de
+máquina</td>
+</tr>
+<tr>
+<td><strong>PCA</strong></td>
+<td>Análise de Componentes Principais (<em>Principal Component
+Analysis</em>)</td>
+</tr>
+<tr>
+<td><strong>PPGCC/UFPI</strong></td>
+<td>Programa de Pós-Graduação em Ciência da Computação da Universidade
+Federal do Piauí</td>
+</tr>
+<tr>
+<td><strong>Prec. / Rec.</strong></td>
+<td>Precisão / revocação (<em>recall</em>)</td>
+</tr>
+<tr>
+<td><strong>SHAP</strong></td>
+<td><em>SHapley Additive exPlanations</em></td>
+</tr>
+<tr>
+<td><strong>SMOTE</strong></td>
+<td><em>Synthetic Minority Over-sampling Technique</em> (sobreamostragem
+sintética)</td>
+</tr>
+<tr>
+<td><strong>SQLite</strong></td>
+<td>Banco de dados relacional leve</td>
+</tr>
+<tr>
+<td><strong>ST</strong></td>
+<td>Segmento ST do eletrocardiograma</td>
+</tr>
+<tr>
+<td><strong>TA/ATA/NAP/ASY</strong></td>
+<td>Angina típica / angina atípica / dor não anginosa /
+assintomático</td>
+</tr>
+<tr>
+<td><strong>TN / TP</strong></td>
+<td>Verdadeiro negativo / verdadeiro positivo</td>
+</tr>
+<tr>
+<td><strong>UCI</strong></td>
+<td><em>University of California, Irvine</em> (repositório de conjuntos
+de dados)</td>
+</tr>
+<tr>
+<td><strong>Y/N</strong></td>
+<td>Sim/não</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="introdução-e-problema">1. Introdução e problema</h2>
+<p>As doenças cardiovasculares estão entre as principais causas de morte
+no mundo. Um modelo de triagem que identifique pacientes com maior
+probabilidade de doença cardíaca pode apoiar a priorização de exames e
+reduzir o tempo até o tratamento. Neste trabalho, o problema é uma
+<strong>classificação binária</strong>:</p>
+<ul>
+<li><strong>Classe 1:</strong> paciente com doença cardíaca
+(<code>HeartDisease = 1</code>);</li>
+<li><strong>Classe 0:</strong> paciente sem doença
+(<code>HeartDisease = 0</code>).</li>
+</ul>
+<p>O erro de maior gravidade clínica é o <strong>falso negativo da
+classe 1</strong>: classificar um paciente doente como “não doente”.
+Nesse caso, o paciente deixa de ser tratado e pode evoluir para óbito.
+Por isso, além da acurácia, este trabalho dá atenção especial ao
+<strong>recall e ao F1 da classe 1</strong> (e ao F1 macro, que
+equilibra as duas classes).</p>
+<p><strong>Objetivo:</strong> avaliar uma <strong>Árvore de
+Decisão</strong>, combinando tratamento dos dados, ajuste de
+hiperparâmetros e engenharia de atributos, e registrar todos os
+experimentos no <strong>MLflow</strong> para comparar ganhos e perdas de
+forma reprodutível.</p>
+<hr />
+<h2 id="base-de-dados">2. Base de dados</h2>
+<h3 id="origem-e-descrição">2.1 Origem e descrição</h3>
+<p>A base é a <strong>Heart Failure Prediction</strong> (Kaggle,
+fedesoriano), derivada do <strong>UCI Heart Disease</strong> (Detrano et
+al., 1989), combinando cinco bases clínicas (Cleveland, Hungria, Suíça,
+Long Beach VA e Statlog). O arquivo <code>bases/heart.csv</code> contém
+<strong>918 registros</strong> e <strong>12 colunas</strong> (11
+atributos + alvo).</p>
+<h3 id="dicionário-de-atributos">2.2 Dicionário de atributos</h3>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Atributo</th>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Age</code></td>
+<td>Numérico</td>
+<td>Idade (anos)</td>
+</tr>
+<tr>
+<td><code>Sex</code></td>
+<td>Categórico</td>
+<td>Sexo (M/F)</td>
+</tr>
+<tr>
+<td><code>ChestPainType</code></td>
+<td>Categórico</td>
+<td>Tipo de dor no peito (TA, ATA, NAP, ASY)</td>
+</tr>
+<tr>
+<td><code>RestingBP</code></td>
+<td>Numérico</td>
+<td>Pressão arterial em repouso (mm Hg)</td>
+</tr>
+<tr>
+<td><code>Cholesterol</code></td>
+<td>Numérico</td>
+<td>Colesterol sérico (mm/dl)</td>
+</tr>
+<tr>
+<td><code>FastingBS</code></td>
+<td>Binário</td>
+<td>Glicemia em jejum &gt; 120 mg/dl (1/0)</td>
+</tr>
+<tr>
+<td><code>RestingECG</code></td>
+<td>Categórico</td>
+<td>ECG em repouso (Normal, ST, LVH)</td>
+</tr>
+<tr>
+<td><code>MaxHR</code></td>
+<td>Numérico</td>
+<td>Frequência cardíaca máxima atingida</td>
+</tr>
+<tr>
+<td><code>ExerciseAngina</code></td>
+<td>Categórico</td>
+<td>Angina induzida por exercício (Y/N)</td>
+</tr>
+<tr>
+<td><code>Oldpeak</code></td>
+<td>Numérico</td>
+<td>Depressão do segmento ST induzida por exercício</td>
+</tr>
+<tr>
+<td><code>ST_Slope</code></td>
+<td>Categórico</td>
+<td>Inclinação do segmento ST no pico (Up/Flat/Down)</td>
+</tr>
+<tr>
+<td><code>HeartDisease</code></td>
+<td>Binário</td>
+<td>Alvo: 1 = doença, 0 = normal</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Legenda das siglas dos atributos:</strong> <code>TA</code> =
+angina típica; <code>ATA</code> = angina atípica; <code>NAP</code> = dor
+não anginosa; <code>ASY</code> = assintomático; <code>M/F</code> =
+masculino/feminino; <code>Y/N</code> = sim/não; <code>ST</code> =
+segmento ST do eletrocardiograma; <code>LVH</code> = hipertrofia
+ventricular esquerda (<em>Left Ventricular Hypertrophy</em>).</p>
+<h3 id="distribuição-e-qualidade">2.3 Distribuição e qualidade</h3>
+<table>
+<thead>
+<tr>
+<th>Classe</th>
+<th>Registros</th>
+<th>Proporção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 (com doença)</td>
+<td>508</td>
+<td>55,34%</td>
+</tr>
+<tr>
+<td>0 (sem doença)</td>
+<td>410</td>
+<td>44,66%</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>918</strong></td>
+<td><strong>100%</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Desbalanceamento leve:</strong> a classe 1 é majoritária
+(55,34%).</li>
+<li><strong>Valores ausentes:</strong> não há <code>NaN</code> original;
+porém <code>Cholesterol</code> tem <strong>172 zeros</strong> e
+<code>RestingBP</code> tem <strong>1 zero</strong>, fisiologicamente
+implausíveis. Esses zeros foram convertidos em <code>NaN</code> e
+imputados <strong>dentro do pipeline</strong> (sem vazamento).</li>
+<li><strong>Duplicatas:</strong> 0.</li>
+<li><strong>Split:</strong> 80/20 estratificado → 734 treino e 184 teste
+(102 da classe 1 e 82 da classe 0 no teste).</li>
+</ul>
+<h3 id="estatísticas-descritivas">2.4 Estatísticas descritivas</h3>
+<table>
+<thead>
+<tr>
+<th>Variável</th>
+<th>Média</th>
+<th>Desvio</th>
+<th>Mín.</th>
+<th>Mediana</th>
+<th>Máx.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Age</td>
+<td>53,51</td>
+<td>9,43</td>
+<td>28</td>
+<td>54</td>
+<td>77</td>
+</tr>
+<tr>
+<td>RestingBP</td>
+<td>132,40</td>
+<td>18,51</td>
+<td>0</td>
+<td>130</td>
+<td>200</td>
+</tr>
+<tr>
+<td>Cholesterol</td>
+<td>198,80</td>
+<td>109,38</td>
+<td>0</td>
+<td>223</td>
+<td>603</td>
+</tr>
+<tr>
+<td>FastingBS</td>
+<td>0,23</td>
+<td>0,42</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>MaxHR</td>
+<td>136,81</td>
+<td>25,46</td>
+<td>60</td>
+<td>138</td>
+<td>202</td>
+</tr>
+<tr>
+<td>Oldpeak</td>
+<td>0,89</td>
+<td>1,07</td>
+<td>−2,6</td>
+<td>0,6</td>
+<td>6,2</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="metodologia">3. Metodologia</h2>
+<h3 id="fluxo-de-processamento-pipeline">3.1 Fluxo de processamento
+(pipeline)</h3>
+<p>O modelo é uma <strong>Árvore de Decisão</strong>
+(<code>DecisionTreeClassifier</code>) dentro de um fluxo de
+processamento (<code>Pipeline</code>):</p>
+<ol type="1">
+<li><strong>Pré-processamento numérico:</strong>
+<code>SimpleImputer</code> (estratégia testada: mediana, média, moda) +
+<code>StandardScaler</code>;</li>
+<li><strong>Pré-processamento categórico:</strong>
+<code>OneHotEncoder</code> ou <code>OrdinalEncoder</code>
+(comparados);</li>
+<li><strong>Modelo:</strong> <code>DecisionTreeClassifier</code>.</li>
+</ol>
+<p>Tudo é ajustado <strong>somente no treino de cada partição
+(fold)</strong> da validação cruzada (CV), evitando vazamento.</p>
+<h3 id="validação-e-seleção">3.2 Validação e seleção</h3>
+<ul>
+<li>Divisão (split) estratificada 80/20 (semente 42); o conjunto de
+teste é reservado até o fim.</li>
+<li><code>RepeatedStratifiedKFold(5 folds × 2 repetições)</code> para a
+busca.</li>
+<li>Busca em grade (<code>GridSearchCV</code>) com métrica de reajuste
+(refit) <strong>F1 da classe 1</strong>; acurácia, precisão e recall
+também são medidos.</li>
+<li>Grade de hiperparâmetros: imputação (3) × <code>criterion</code> (2)
+× <code>max_depth</code> (4) × <code>min_samples_split</code> (3) ×
+<code>min_samples_leaf</code> (3) × <code>max_features</code> (2) ×
+<code>class_weight</code> (2) = <strong>864 combinações</strong> por
+codificação; 8.640 ajustes (<em>fits</em>) por codificação;
+<strong>17.280 ajustes</strong> no total (one-hot + ordinal).</li>
+</ul>
+<p><strong>Valores testados em cada hiperparâmetro:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parâmetro</th>
+<th>Valores testados</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prep__num__imp__strategy</code></td>
+<td><code>median</code>, <code>mean</code>,
+<code>most_frequent</code></td>
+</tr>
+<tr>
+<td><code>modelo__criterion</code></td>
+<td><code>gini</code>, <code>entropy</code></td>
+</tr>
+<tr>
+<td><code>modelo__max_depth</code></td>
+<td><code>3</code>, <code>5</code>, <code>7</code>,
+<code>None</code></td>
+</tr>
+<tr>
+<td><code>modelo__min_samples_split</code></td>
+<td><code>2</code>, <code>5</code>, <code>10</code></td>
+</tr>
+<tr>
+<td><code>modelo__min_samples_leaf</code></td>
+<td><code>1</code>, <code>3</code>, <code>5</code></td>
+</tr>
+<tr>
+<td><code>modelo__max_features</code></td>
+<td><code>None</code>, <code>sqrt</code></td>
+</tr>
+<tr>
+<td><code>modelo__class_weight</code></td>
+<td><code>None</code>, <code>balanced</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Avaliação no conjunto de teste: acurácia, precisão, recall e F1 para
+<strong>as duas classes</strong>, F1 macro, IC 95% do F1 da classe 1
+(bootstrap com 1.000 reamostragens) e matriz de confusão.</li>
+</ul>
+<h3 id="fases-do-notebook">3.3 Fases do notebook</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fase</th>
+<th>O que faz</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Configuração</td>
+<td>Semente, MLflow (SQLite), pasta
+<code>resultados/execucao_&lt;timestamp&gt;/</code></td>
+</tr>
+<tr>
+<td>2. Carga/limpeza</td>
+<td>Lê <code>bases/heart.csv</code>; zeros de
+<code>Cholesterol</code>/<code>RestingBP</code> → <code>NaN</code></td>
+</tr>
+<tr>
+<td>3. Preparação</td>
+<td><code>ColumnTransformer</code> (imputação + encoding + scaler),
+split 80/20, CV 5×2</td>
+</tr>
+<tr>
+<td>4. Grid search</td>
+<td>864 combinações por codificação; one-hot e ordinal; log no
+MLflow</td>
+</tr>
+<tr>
+<td>5. Avaliação</td>
+<td>Métricas das duas classes, IC 95%, matriz de confusão,
+importâncias</td>
+</tr>
+<tr>
+<td>6. Baseline</td>
+<td><code>DummyClassifier(most_frequent)</code> como referência</td>
+</tr>
+<tr>
+<td>7. Interpretação</td>
+<td>Importâncias, plot da árvore, verificação de invariância à
+escala</td>
+</tr>
+<tr>
+<td>8. Ablação</td>
+<td>Remove 1 atributo por vez; mesmos hiperparâmetros; ambas as
+classes</td>
+</tr>
+<tr>
+<td>9. Engenharia</td>
+<td>5 razões/interações clínicas; comparação sem/com</td>
+</tr>
+<tr>
+<td>10. Exportação</td>
+<td>CSVs, JSON, PNGs e ZIP na pasta da execução; artefatos no
+MLflow</td>
+</tr>
+<tr>
+<td>11. MLflow</td>
+<td>Runs pai/filhas, parâmetros, métricas, modelos e artefatos</td>
+</tr>
+</tbody>
+</table>
+<h3 id="engenharia-de-atributos-testada">3.4 Engenharia de atributos
+testada</h3>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Atributo derivado</th>
+<th>Fórmula</th>
+<th>Motivação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FC_pct_teorica</code></td>
+<td><code>MaxHR / (220 − Age)</code></td>
+<td>% da FC máxima teórica</td>
+</tr>
+<tr>
+<td><code>Chol_por_Idade</code></td>
+<td><code>Cholesterol / Age</code></td>
+<td>colesterol relativo à idade</td>
+</tr>
+<tr>
+<td><code>BP_por_Idade</code></td>
+<td><code>RestingBP / Age</code></td>
+<td>pressão relativa à idade</td>
+</tr>
+<tr>
+<td><code>Oldpeak_por_FC</code></td>
+<td><code>Oldpeak / MaxHR</code></td>
+<td>depressão ST por batimento</td>
+</tr>
+<tr>
+<td><code>Angina_x_Oldpeak</code></td>
+<td><code>(ExerciseAngina == 'Y') × Oldpeak</code></td>
+<td>interação angina × ST</td>
+</tr>
+</tbody>
+</table>
+<p>As razões são calculadas <strong>linha a linha</strong>, antes da
+divisão (split), sem vazamento.</p>
+<hr />
+<h2 id="resultados">4. Resultados</h2>
+<h3 id="busca-em-grade-grid-search-e-hiperparâmetros-selecionados">4.1
+Busca em grade (grid search) e hiperparâmetros selecionados</h3>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr>
+<th>Codificação</th>
+<th>Imputação</th>
+<th>class_weight</th>
+<th>criterion</th>
+<th>max_depth</th>
+<th>max_features</th>
+<th>min_samples_leaf</th>
+<th>min_samples_split</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>one-hot</td>
+<td>mediana</td>
+<td>balanced</td>
+<td>entropy</td>
+<td>3</td>
+<td>None</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>ordinal</td>
+<td>moda</td>
+<td>None</td>
+<td>gini</td>
+<td>3</td>
+<td>sqrt</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>A árvore escolhida ficou <strong>rasa (profundidade 3)</strong> nas
+duas codificações. A busca avaliou 864 combinações por codificação
+(17.280 ajustes no total), com F1 da classe 1 como critério.</p>
+<h3
+id="comparação-entre-codificações-one-hot-e-ordinal-no-conjunto-de-teste">4.2
+Comparação entre codificações one-hot e ordinal no conjunto de
+teste</h3>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr>
+<th>Codificação</th>
+<th>Acurácia</th>
+<th>Prec_c0</th>
+<th>Rec_c0</th>
+<th>F1_c0</th>
+<th>Prec_c1</th>
+<th>Rec_c1</th>
+<th>F1_c1</th>
+<th>F1_macro</th>
+<th>IC95 F1_c1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ordinal</td>
+<td>0,8098</td>
+<td>0,8406</td>
+<td>0,7073</td>
+<td>0,7682</td>
+<td>0,7913</td>
+<td><strong>0,8922</strong></td>
+<td><strong>0,8387</strong></td>
+<td>0,8035</td>
+<td>0,7817–0,8879</td>
+</tr>
+<tr>
+<td>one-hot</td>
+<td><strong>0,8207</strong></td>
+<td>0,7692</td>
+<td><strong>0,8537</strong></td>
+<td>0,8092</td>
+<td><strong>0,8710</strong></td>
+<td>0,7941</td>
+<td>0,8308</td>
+<td><strong>0,8200</strong></td>
+<td>0,7650–0,8865</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretação:</strong> a codificação
+<strong>ordinal</strong> tem maior <strong>F1_c1</strong> e
+<strong>recall_c1</strong> (melhor para não deixar doentes sem
+diagnóstico), enquanto a <strong>one-hot</strong> tem maior acurácia,
+precisão_c1 e F1_macro. Os intervalos de confiança do F1_c1 se
+sobrepõem, então a diferença não é conclusiva.</p>
+<h3 id="referência-baseline-da-classe-majoritária">4.3 Referência
+(baseline) da classe majoritária</h3>
+<p>O classificador ingênuo (<code>DummyClassifier</code>, estratégia
+<code>most_frequent</code>) prediz sempre a classe 1:</p>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Acurácia</td>
+<td>0,5543</td>
+</tr>
+<tr>
+<td>Precisão_c1</td>
+<td>0,5543</td>
+</tr>
+<tr>
+<td>Recall_c1</td>
+<td>1,0000</td>
+</tr>
+<tr>
+<td>F1_c1</td>
+<td>0,7133</td>
+</tr>
+<tr>
+<td>F1_c0</td>
+<td>0,0000</td>
+</tr>
+<tr>
+<td>F1_macro</td>
+<td>0,3566</td>
+</tr>
+</tbody>
+</table>
+<p>Ou seja, classificar sempre a classe majoritária já resulta em F1_c1
+= 0,71; o modelo precisa superar essa referência — e supera (0,8387 no
+ordinal). A referência tem <strong>0 falsos negativos da classe
+1</strong> (revocação da classe 1 = 1), mas <strong>82 falsos
+positivos</strong> (toda a classe 0 incorreta), o que evidencia por que
+a acurácia isolada pode ser enganosa.</p>
+<h3 id="ablação-de-atributos-seleção-de-variáveis">4.4 Ablação de
+atributos (seleção de variáveis)</h3>
+<p>Cada atributo foi removido individualmente, mantendo os melhores
+hiperparâmetros e <code>class_weight=None</code>.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>Cenário</th>
+<th>Atributo removido</th>
+<th>Acurácia</th>
+<th>F1_c0</th>
+<th>F1_c1</th>
+<th>F1_macro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>todos</td>
+<td>nenhum</td>
+<td>0,8098</td>
+<td>0,7682</td>
+<td><strong>0,8387</strong></td>
+<td>0,8035</td>
+</tr>
+<tr>
+<td>sem_RestingBP</td>
+<td>RestingBP</td>
+<td>0,8207</td>
+<td><strong>0,8136</strong></td>
+<td>0,8272</td>
+<td><strong>0,8204</strong></td>
+</tr>
+<tr>
+<td>sem_Cholesterol</td>
+<td>Cholesterol</td>
+<td>0,8207</td>
+<td><strong>0,8136</strong></td>
+<td>0,8272</td>
+<td><strong>0,8204</strong></td>
+</tr>
+<tr>
+<td>sem_FastingBS</td>
+<td>FastingBS</td>
+<td>0,8207</td>
+<td><strong>0,8136</strong></td>
+<td>0,8272</td>
+<td><strong>0,8204</strong></td>
+</tr>
+<tr>
+<td>sem_Age</td>
+<td>Age</td>
+<td>0,8152</td>
+<td>0,8068</td>
+<td>0,8229</td>
+<td>0,8149</td>
+</tr>
+<tr>
+<td>sem_ExerciseAngina</td>
+<td>ExerciseAngina</td>
+<td>0,7989</td>
+<td>0,7933</td>
+<td>0,8042</td>
+<td>0,7988</td>
+</tr>
+<tr>
+<td>sem_ST_Slope</td>
+<td>ST_Slope</td>
+<td>0,7772</td>
+<td>0,7630</td>
+<td>0,7897</td>
+<td>0,7764</td>
+</tr>
+<tr>
+<td>sem_MaxHR</td>
+<td>MaxHR</td>
+<td>0,7500</td>
+<td>0,6933</td>
+<td>0,7890</td>
+<td>0,7412</td>
+</tr>
+<tr>
+<td>sem_Sex</td>
+<td>Sex</td>
+<td>0,7391</td>
+<td>0,7073</td>
+<td>0,7647</td>
+<td>0,7360</td>
+</tr>
+<tr>
+<td>sem_ChestPainType</td>
+<td>ChestPainType</td>
+<td>0,7391</td>
+<td>0,7073</td>
+<td>0,7647</td>
+<td>0,7360</td>
+</tr>
+<tr>
+<td>sem_RestingECG</td>
+<td>RestingECG</td>
+<td>0,7391</td>
+<td>0,7073</td>
+<td>0,7647</td>
+<td>0,7360</td>
+</tr>
+<tr>
+<td>sem_Oldpeak</td>
+<td>Oldpeak</td>
+<td>0,7391</td>
+<td>0,7073</td>
+<td>0,7647</td>
+<td>0,7360</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretação:</strong> - <strong>Nenhuma remoção melhorou o
+F1_c1</strong>: o conjunto completo é o melhor (0,8387). - Remover
+<code>RestingBP</code>, <code>Cholesterol</code> ou
+<code>FastingBS</code> <strong>melhora a acurácia (0,8207), o F1_c0
+(0,8136) e o F1_macro (0,8204)</strong>, mas <strong>piora o recall/F1
+da classe 1</strong> — compromisso entre as classes. - Remover
+<code>ST_Slope</code> ou <code>MaxHR</code> <strong>piora</strong> o
+F1_c1, indicando que são informativos. - Remover <code>Sex</code>,
+<code>ChestPainType</code>, <code>RestingECG</code> ou
+<code>Oldpeak</code> leva o F1_c1 a 0,7647 (a árvore passa a usar outro
+caminho de decisão). - Conclusão: para <strong>maximizar F1_c1</strong>,
+manter todos os atributos; para <strong>equilibrar as classes
+(F1_macro)</strong>, remover
+<code>RestingBP</code>/<code>Cholesterol</code>/<code>FastingBS</code> é
+uma alternativa.</p>
+<h3 id="engenharia-de-atributos-razões-e-interações-clínicas">4.5
+Engenharia de atributos (razões e interações clínicas)</h3>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr>
+<th>Cenário</th>
+<th>Nº atributos</th>
+<th>Acurácia</th>
+<th>F1_c0</th>
+<th>F1_c1</th>
+<th>F1_macro</th>
+<th>F1_CV</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sem_engenharia</td>
+<td>11</td>
+<td>0,8098</td>
+<td>0,7682</td>
+<td>0,8387</td>
+<td>0,8035</td>
+<td><strong>0,8604</strong></td>
+</tr>
+<tr>
+<td>com_engenharia</td>
+<td>16</td>
+<td><strong>0,8261</strong></td>
+<td><strong>0,7838</strong></td>
+<td><strong>0,8545</strong></td>
+<td><strong>0,8192</strong></td>
+<td>0,7946</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Melhora no conjunto de teste:</strong> F1_c1 +0,0158 (0,8387
+→ 0,8545), recall_c1 +0,0294 (0,8922 → 0,9216), acurácia +0,0163,
+F1_macro +0,0157.</p>
+<p><strong>Limitação importante:</strong> o <strong>F1 da validação
+cruzada (CV) apresentou redução</strong> (0,8604 → 0,7946). Ou seja, a
+melhora no conjunto de teste <strong>não é confirmada pela CV</strong> e
+pode ser efeito da divisão específica (184 amostras). A engenharia deve
+ser tratada como <strong>com potencial, porém não conclusiva</strong>,
+até validação externa.</p>
+<h3 id="matrizes-de-confusão-e-o-erro-de-maior-gravidade-clínica">4.6
+Matrizes de confusão e o erro de maior gravidade clínica</h3>
+<p>Com o teste de 184 pacientes (82 da classe 0 e 102 da classe 1):</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr>
+<th>Modelo</th>
+<th>TN</th>
+<th>FP</th>
+<th>FN (classe 1)</th>
+<th>TP</th>
+<th>Recall_c1</th>
+<th>F1_c1</th>
+<th>F1_CV</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>com_engenharia</strong></td>
+<td>58</td>
+<td>24</td>
+<td><strong>8</strong></td>
+<td>94</td>
+<td><strong>0,9216</strong></td>
+<td><strong>0,8545</strong></td>
+<td>0,7946</td>
+</tr>
+<tr>
+<td>ordinal</td>
+<td>58</td>
+<td>24</td>
+<td>11</td>
+<td>91</td>
+<td>0,8922</td>
+<td>0,8387</td>
+<td><strong>0,8604</strong></td>
+</tr>
+<tr>
+<td>one-hot</td>
+<td>70</td>
+<td>12</td>
+<td>21</td>
+<td>81</td>
+<td>0,7941</td>
+<td>0,8308</td>
+<td>0,8550</td>
+</tr>
+<tr>
+<td>baseline</td>
+<td>0</td>
+<td>82</td>
+<td>0</td>
+<td>102</td>
+<td>1,0000</td>
+<td>0,7133</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img src="figuras/confusion_matrix_com_engenharia.png"
+alt="Matriz de confusão — com engenharia (melhor no teste para triagem)" />
+<figcaption aria-hidden="true">Matriz de confusão — com engenharia
+(melhor no teste para triagem)</figcaption>
+</figure>
+<figure>
+<img src="figuras/confusion_matrix_ordinal.png"
+alt="Matriz de confusão — ordinal" />
+<figcaption aria-hidden="true">Matriz de confusão — ordinal</figcaption>
+</figure>
+<figure>
+<img src="figuras/confusion_matrix_onehot.png"
+alt="Matriz de confusão — one-hot" />
+<figcaption aria-hidden="true">Matriz de confusão — one-hot</figcaption>
+</figure>
+<p><strong>O erro de maior gravidade clínica:</strong> o <strong>falso
+negativo da classe 1</strong> (paciente doente previsto como “não
+doente”). No conjunto de teste, o
+<strong><code>com_engenharia</code></strong> é o melhor para triagem:
+<strong>8 falsos negativos</strong> contra 11 do ordinal e 21 do
+one-hot, com o <strong>mesmo número de falsos positivos (24)</strong> e
+o maior <strong>F1_c1 (0,8545)</strong>. <strong>Limitação:</strong> o
+<strong>F1 da CV apresentou redução</strong> (0,7946 vs 0,8604 do
+ordinal), então a melhora no teste <strong>não é confirmada pela
+CV</strong> e pode refletir a variância do conjunto de teste reservado.
+Os dois melhores para triagem são <strong><code>com_engenharia</code> e
+ordinal</strong> (8 e 11 falsos negativos); a escolha é um compromisso
+entre desempenho no teste e robustez na CV, e exige validação
+externa.</p>
+<h3 id="síntese-das-transformações-e-impacto-nas-métricas">4.7 Síntese
+das transformações e impacto nas métricas</h3>
+<p>Em consonância com a solicitação da atividade, a tabela abaixo resume
+as principais transformações de preparação dos dados e o efeito nas
+métricas (melhoria ou piora):</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Transformação</th>
+<th>Antes</th>
+<th>Depois</th>
+<th>Efeito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Codificação one-hot → ordinal</td>
+<td>F1_c1 0,8308</td>
+<td><strong>0,8387</strong></td>
+<td>ganho no F1_c1/recall</td>
+</tr>
+<tr>
+<td>Imputação (mediana × moda)</td>
+<td>—</td>
+<td>—</td>
+<td>escolhida pela grade</td>
+</tr>
+<tr>
+<td><code>class_weight=balanced</code></td>
+<td>≈ igual</td>
+<td>≈ igual</td>
+<td><strong>sem efeito</strong> (desbalanceamento leve)</td>
+</tr>
+<tr>
+<td>Escalonamento (<code>StandardScaler</code>)</td>
+<td>idêntico</td>
+<td>idêntico</td>
+<td><strong>invariante</strong> (árvore)</td>
+</tr>
+<tr>
+<td>Remover
+<code>RestingBP</code>/<code>Cholesterol</code>/<code>FastingBS</code></td>
+<td>F1_c1 0,8387</td>
+<td>0,8272</td>
+<td><strong>piora F1_c1</strong>, melhora F1_macro</td>
+</tr>
+<tr>
+<td>Remover <code>ST_Slope</code>/<code>MaxHR</code></td>
+<td>F1_c1 0,8387</td>
+<td>0,7897 / 0,7890</td>
+<td><strong>piora</strong></td>
+</tr>
+<tr>
+<td>Engenharia de atributos</td>
+<td>F1_c1 0,8387</td>
+<td><strong>0,8545</strong> (teste)</td>
+<td>melhora no teste, <strong>redução na CV</strong></td>
+</tr>
+<tr>
+<td>Variação de hiperparâmetros one-hot (<code>max_depth=4</code>,
+<code>min_samples_leaf=10</code>)</td>
+<td>F1 0,8308</td>
+<td>0,8119</td>
+<td><strong>piora</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="mlflow-registro-e-tabulação-dos-experimentos">5. MLflow:
+registro e tabulação dos experimentos</h2>
+<p>Todos os experimentos foram registrados no MLflow, no experimento
+<strong><code>heart_failure_arvore_decisao</code></strong>, com
+rastreamento (tracking) local em SQLite (<code>mlflow.db</code>) e
+artefatos em <code>mlruns/</code>.</p>
+<ul>
+<li><strong>111 execuções (runs)</strong> registradas (execuções pai e
+filhas).</li>
+<li>Cada execução (run) guarda: <strong>parâmetros</strong>
+(codificação, imputação, hiperparâmetros, atributo removido, engenharia,
+<code>class_weight</code>), <strong>métricas</strong> (F1, acurácia,
+precisão, recall, F1 macro, IC 95%), <strong>modelo</strong>
+(<code>mlflow.sklearn.log_model</code>) e <strong>artefatos</strong>
+(CSVs, JSON, PNGs, ZIP).</li>
+<li>A tabela completa está em
+<strong><code>docs/mlflow_runs.csv</code></strong> (exportada via
+<code>mlflow.search_runs</code>), com as colunas de execução (run),
+status, data, parâmetros e métricas.</li>
+</ul>
+<p><strong>Execuções principais:</strong> <code>arvore_onehot</code>,
+<code>arvore_ordinal</code>, <code>baseline_classe_majoritaria</code>,
+<code>ablacao_atributos</code> (com 12 execuções filhas),
+<code>engenharia_features</code> (com <code>sem_engenharia</code> e
+<code>com_engenharia</code>) e <code>relatorio_artefatos</code>.</p>
+<hr />
+<h2 id="avaliação-comparativa-entre-execuções">6. Avaliação comparativa
+entre execuções</h2>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Execução</th>
+<th>O que mudou</th>
+<th>Melhor F1_c1</th>
+<th>F1_macro</th>
+<th>Efeito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>20261022_081800</code></td>
+<td>Versão inicial: one-hot × ordinal + baseline</td>
+<td>0,8387</td>
+<td>—</td>
+<td>referência (só classe 1)</td>
+</tr>
+<tr>
+<td><code>20261022_083734</code></td>
+<td>+ ablação com <code>class_weight</code> None/balanced</td>
+<td>0,8387</td>
+<td>0,8035</td>
+<td><code>balanced</code> ≈ <code>None</code></td>
+</tr>
+<tr>
+<td><code>20261022_090449</code></td>
+<td>Ablação simplificada (sem <code>balanced</code>)</td>
+<td>0,8387</td>
+<td>—</td>
+<td>foco didático</td>
+</tr>
+<tr>
+<td><code>20261022_093147</code></td>
+<td>+ engenharia de atributos</td>
+<td><strong>0,8545</strong> (com)</td>
+<td><strong>0,8192</strong> (com)</td>
+<td>melhora no teste, <strong>redução na CV</strong></td>
+</tr>
+<tr>
+<td><code>20261022_094826</code></td>
+<td>Variação de hiperparâmetros one-hot (<code>max_depth=4</code>,
+<code>min_samples_leaf=10</code>)</td>
+<td>0,8119 (one-hot)</td>
+<td>—</td>
+<td><strong>piorou</strong> o teste</td>
+</tr>
+<tr>
+<td><code>20261026_075517</code></td>
+<td>Métricas para as duas classes (versão final)</td>
+<td>0,8387 (ordinal) / 0,8545 (com eng.)</td>
+<td>0,8035 / 0,8192</td>
+<td>versão consolidada</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Considerações sobre a evolução:</strong> 1. Os
+<strong>hiperparâmetros</strong> escolhidos pela grade ficaram estáveis
+(profundidade 3), exceto a variação de <code>094826</code>, que
+<strong>piorou</strong> o teste. 2. A <strong>engenharia de
+atributos</strong> foi a única mudança que <strong>apresentou melhora no
+conjunto de teste</strong> (F1_c1 0,8387 → 0,8545), mas
+<strong>apresentou redução na CV</strong> (0,8604 → 0,7946) — ganho
+<strong>não robusto</strong>. 3. A <strong>ablação</strong> mostrou que
+remover atributos <strong>não melhora o F1_c1</strong>; só melhora o
+F1_macro ao custo da revocação (recall) da classe 1. 4.
+<code>class_weight='balanced'</code> <strong>não teve efeito</strong>
+relevante, coerente com o desbalanceamento leve (55/45). 5. A mudança
+para <strong>reportar as duas classes</strong> alterou a interpretação:
+o que parecia “melhor” pela classe 1 nem sempre é melhor no
+F1_macro.</p>
+<hr />
+<h2 id="discussão-e-trabalhos-relacionados">7. Discussão e trabalhos
+relacionados</h2>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Trabalho</th>
+<th>Contribuição</th>
+<th>Relação com este trabalho</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qadri et al. (2023), IEEE Access</td>
+<td>Técnica de engenharia de atributos (<em>feature engineering</em>)
+para predição de doença cardíaca</td>
+<td>Justifica a criação de atributos derivados</td>
+</tr>
+<tr>
+<td>Abass &amp; Bathla (2025), Springer</td>
+<td>Aprendizado de máquina + engenharia de atributos</td>
+<td>Reforça a engenharia como etapa</td>
+</tr>
+<tr>
+<td>Gárate-Escamilla et al. (2020), Informatics in Medicine
+Unlocked</td>
+<td>Seleção de atributos + PCA</td>
+<td>Compara seleção/transformação</td>
+</tr>
+<tr>
+<td>Hasnat et al. (2025), arXiv</td>
+<td>Engenharia de atributos + SHAP + árvores substitutas</td>
+<td>Interpretabilidade</td>
+</tr>
+<tr>
+<td>Page et al. (1970), Circulation</td>
+<td>Idade, colesterol e triglicerídeos na predição de DAC</td>
+<td>Base para <code>Chol_por_Idade</code></td>
+</tr>
+<tr>
+<td>Folsom et al. (2003), Diabetes Care</td>
+<td>Fatores de risco para DAC</td>
+<td>Contexto clínico</td>
+</tr>
+<tr>
+<td>Detrano et al. (1989) / Janosi et al. (1988)</td>
+<td>Base UCI Heart Disease</td>
+<td>Origem dos dados</td>
+</tr>
+<tr>
+<td>Fox et al. (1971)</td>
+<td>Fórmula <code>FCmax ≈ 220 − idade</code></td>
+<td>Base de <code>FC_pct_teorica</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Justificativa das razões:</strong> as variáveis originais
+(<code>MaxHR</code>, <code>Oldpeak</code>, <code>Cholesterol</code>,
+<code>RestingBP</code>, <code>ExerciseAngina</code>) são indicadores
+clínicos conhecidos. As razões buscam normalizar por idade/FC e capturar
+interações (angina × depressão ST), o que ajuda a árvore a representar
+relações “diagonais” com menos cortes. A literatura apoia a engenharia
+de atributos em doença cardíaca, mas <strong>as razões específicas aqui
+testadas são hipóteses exploratórias</strong> e precisam de validação
+externa.</p>
+<p><strong>Limitações:</strong> - Base pequena (918) e teste de apenas
+184 pacientes → intervalos de confiança largos. - Uma única árvore (sem
+ensemble) e sem validação externa. - A engenharia apresentou melhora no
+conjunto de teste, mas redução na CV → ganho não conclusivo. - Não foram
+testados ajuste de limiar, SMOTE (<em>Synthetic Minority Over-sampling
+Technique</em>) ou outros modelos.</p>
+<hr />
+<h2 id="conclusão-e-recomendações">8. Conclusão e recomendações</h2>
+<ul>
+<li><strong>Melhor modelo para triagem no conjunto de teste:</strong>
+<code>com_engenharia</code> (codificação ordinal + 5 atributos
+derivados), com <strong>8 falsos negativos</strong>, revocação da classe
+1 (<em>recall_c1</em>) = 0,9216 e F1_c1 = 0,8545 — mesmo número de
+falsos positivos (24) do ordinal.</li>
+<li><strong>Modelo mais robusto na CV:</strong> ordinal sem engenharia,
+com F1_CV = 0,8604 (o <code>com_engenharia</code> tem F1_CV =
+0,7946).</li>
+<li><strong>Engenharia de atributos:</strong> apresentou melhora no
+conjunto de teste, mas <strong>não confirmou o ganho na CV</strong> →
+tratar como com potencial e não conclusiva.</li>
+<li><strong>Ablação:</strong> manter todos os atributos maximiza o
+F1_c1; remover
+<code>RestingBP</code>/<code>Cholesterol</code>/<code>FastingBS</code>
+melhora o F1_macro, mas aumenta o risco de falso negativo da classe
+1.</li>
+<li><strong>Recomendação clínica:</strong> para triagem, priorizar
+<strong>recall/F1 da classe 1</strong> (<code>com_engenharia</code> no
+teste, ordinal como alternativa robusta), avaliar <strong>ajuste de
+limiar</strong> e validar em base externa antes de uso real.</li>
+<li><strong>MLflow:</strong> as 111 execuções (runs) permitem reproduzir
+e comparar todos os experimentos.</li>
+</ul>
+<hr />
+<h2 id="referências">9. Referências</h2>
+<ol type="1">
+<li>FEDESORIANO. <strong>Heart Failure Prediction Dataset</strong>.
+Kaggle, 2021. Disponível em:
+https://www.kaggle.com/datasets/fedesoriano/heart-failure-prediction</li>
+<li>DETRANO, R. et al. International application of a new probability
+algorithm for the diagnosis of coronary artery disease. <strong>American
+Journal of Cardiology</strong>, 1989.</li>
+<li>JANOSI, A.; STEINBRUNN, W.; PFISTERER, M.; DETRANO, R. <strong>Heart
+Disease</strong>. UCI Machine Learning Repository, 1988.</li>
+<li>QADRI, A. M. et al. Effective Feature Engineering Technique for
+Heart Disease Prediction With Machine Learning. <strong>IEEE
+Access</strong>, 2023.</li>
+<li>ABASS, A.; BATHLA, G. Heart Disease Prediction Using Machine
+Learning with Feature Engineering. <strong>Springer</strong>, 2025.</li>
+<li>GÁRATE-ESCAMILLA, A. K.; HAJJAM EL HASSANI, A.; ANDRÈS, E.
+Classification models for heart disease prediction using feature
+selection and PCA. <strong>Informatics in Medicine Unlocked</strong>,
+2020.</li>
+<li>HASNAT, M. A. et al. Interpretable Heart Disease Prediction via a
+Weighted Ensemble Model. <strong>arXiv:2511.01947</strong>, 2025.</li>
+<li>PAGE, I. H. et al. Prediction of Coronary Heart Disease Based on
+Clinical Suspicion, Age, Total Cholesterol, and Triglyceride.
+<strong>Circulation</strong>, 1970.</li>
+<li>FOLSOM, A. R. et al. Prediction of Coronary Heart Disease in
+Middle-Aged Adults With Diabetes. <strong>Diabetes Care</strong>,
+2003.</li>
+<li>FOX, S. M.; NAUGHTON, J. P.; HASKELL, W. L. Physical activity and
+the prevention of coronary heart disease. <strong>Annals of Clinical
+Research</strong>, 1971.</li>
+</ol>
+</body>
+</html>
