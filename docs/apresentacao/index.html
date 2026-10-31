@@ -22,7 +22,7 @@
         <button onclick="fz(1)" title="Aumentar tamanho da fonte">A+</button>
       </div>
       <button class="bpb" id="bp" onclick="openPresenter()">Modo apresentador</button>
-      <span class="ct" id="ctr">1 / 16</span>
+      <span class="ct" id="ctr">1 / 13</span>
       <span class="modo-tag">APRESENTAÇÃO</span>
     </div>
   </header>
@@ -205,48 +205,34 @@
       </div>
     </div>
 
-    <!-- SLIDE 5 - METODOLOGIA -->
+    <!-- SLIDE 5 - METODOLOGIA E FASES -->
     <div class="sl" id="s5">
       <div class="slhd"><span class="num">5</span>
-        <h2>Metodologia</h2>
+        <h2>Metodologia: pipeline e fases do notebook</h2>
       </div>
       <div class="slbd">
         <ol class="passos">
-          <li><strong>Pipeline:</strong> imputação (mediana/média/moda) + encoding (one-hot ou ordinal) +
-            <code>DecisionTreeClassifier</code>.</li>
-          <li><strong>Split</strong> 80/20 estratificado.</li>
+          <li><strong>Carga e limpeza:</strong> zeros de <code>Cholesterol</code>/<code>RestingBP</code> →
+            <code>NaN</code>.</li>
+          <li><strong>Preparação:</strong> imputação (mediana/média/moda) + encoding (one-hot/ordinal) + escala →
+            <code>DecisionTreeClassifier</code>; split 80/20 estratificado.</li>
           <li><strong>Validação:</strong> <code>RepeatedStratifiedKFold</code> 5 folds × 2 repetições.</li>
-          <li><strong>Grid search:</strong> 864 combinações por rodada (17.280 no total), reajuste por <strong>F1 da
-              classe 1</strong>.</li>
-          <li><strong>Avaliação:</strong> acurácia, precisão, recall e F1 para as duas classes, F1 macro e IC 95%
-            bootstrap (amostragem com reposição).</li>
+          <li><strong>Grid search:</strong> 864 combinações por rodada (17.280 no total), reajuste por
+            <strong>F1 da classe 1</strong>.</li>
+          <li><strong>Avaliação:</strong> acurácia, precisão, recall e F1 por classe, F1 macro, IC 95% bootstrap e
+            matriz de confusão.</li>
+          <li><strong>Ablação:</strong> remove 1 atributo por vez e compara.</li>
+          <li><strong>Engenharia de features:</strong> razões e interações clínicas (5 atributos).</li>
+          <li><strong>MLflow:</strong> parâmetros, métricas, modelos e artefatos.</li>
         </ol>
         <div class="dc"><strong>Sem vazamento:</strong> imputação, encoding e escala são ajustados apenas no treino de
           cada fold.</div>
       </div>
     </div>
 
-    <!-- SLIDE 6 - FASES -->
+    <!-- SLIDE 6 - GRID -->
     <div class="sl" id="s6">
       <div class="slhd"><span class="num">6</span>
-        <h2>Fases do notebook</h2>
-      </div>
-      <div class="slbd">
-        <ol class="passos">
-          <li><strong>Carga e limpeza:</strong> zeros → NaN.</li>
-          <li><strong>Preparação:</strong> imputação + encoding + escala, split e CV (validação cruzada).</li>
-          <li><strong>Grid search:</strong> one-hot × ordinal, 864 combinações cada.</li>
-          <li><strong>Avaliação no teste:</strong> ambas as classes, IC 95% e matriz de confusão.</li>
-          <li><strong>Ablação:</strong> remove 1 atributo por vez e compara.</li>
-          <li><strong>Engenharia de features:</strong> razões/interações clínicas.</li>
-          <li><strong>MLflow:</strong> parâmetros, métricas, modelos e artefatos.</li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- SLIDE 7 - GRID -->
-    <div class="sl" id="s7">
-      <div class="slhd"><span class="num">7</span>
         <h2>Grid search e hiperparâmetros</h2>
       </div>
       <div class="slbd">
@@ -327,9 +313,9 @@
       </div>
     </div>
 
-    <!-- SLIDE 8 - ONE-HOT X ORDINAL -->
-    <div class="sl" id="s8">
-      <div class="slhd"><span class="num">8</span>
+    <!-- SLIDE 7 - ONE-HOT X ORDINAL -->
+    <div class="sl" id="s7">
+      <div class="slhd"><span class="num">7</span>
         <h2>One-hot × ordinal (teste)</h2>
       </div>
       <div class="slbd">
@@ -368,13 +354,14 @@
       </div>
     </div>
 
-    <!-- SLIDE 9 - ENGENHARIA DE FEATURES TESTADA (3.4) -->
-    <div class="sl" id="s9">
-      <div class="slhd"><span class="num">9</span>
+    <!-- SLIDE 8 - ENGENHARIA DE FEATURES: ATRIBUTOS E IMPACTO -->
+    <div class="sl" id="s8">
+      <div class="slhd"><span class="num">8</span>
         <h2>Engenharia de features</h2>
       </div>
       <div class="slbd">
-        <table class="tb2">
+        <p style="font-size:13px; color:#5C5C5C; margin:0 0 4px;"><strong>5 atributos derivados</strong>:</p>
+        <table class="tb2 mini">
           <tr>
             <th>Feature</th>
             <th>Fórmula</th>
@@ -406,16 +393,9 @@
             <td>Interação angina × ST</td>
           </tr>
         </table>
-      </div>
-    </div>
-
-    <!-- SLIDE 10 - ENGENHARIA -->
-    <div class="sl" id="s10">
-      <div class="slhd"><span class="num">10</span>
-        <h2>Engenharia de features</h2>
-      </div>
-      <div class="slbd">
-        <table class="tb2">
+        <p style="font-size:13px; color:#5C5C5C; margin:0 0 4px;"><strong>Impacto</strong> no teste
+          (184 pacientes) e na validação cruzada:</p>
+        <table class="tb2 mini">
           <tr>
             <th>Cenário</th>
             <th>Nº atributos</th>
@@ -444,19 +424,21 @@
             <td>0,7946</td>
           </tr>
         </table>
-        <ul>
-          <li><strong>Ganho no teste:</strong> F1_c1 +0,0158; recall_c1 +0,0294 (0,8922 → 0,9216).</li>
-          <li><strong>Ressalva:</strong> o F1 da CV caiu (0,8604 → 0,7946) → ganho <strong>não confirmado</strong> pela
-            validação cruzada.</li>
-        </ul>
-        <div class="dc"><strong>Conclusão:</strong> promissor no teste, mas inconclusivo precisa de validação externa.
+        <div style="display:flex; gap:16px; align-items:stretch;">
+          <ul style="flex:1 1 55%; margin:0; font-size:14px;">
+            <li><strong>Ganho no teste:</strong> F1_c1 +0,0158; recall_c1 +0,0294 (0,8922 → 0,9216).</li>
+            <li><strong>Ressalva:</strong> o F1 da CV caiu (0,8604 → 0,7946) → ganho <strong>não confirmado</strong>
+              pela validação cruzada.</li>
+          </ul>
+          <div class="dc" style="flex:1 1 45%; margin:0; font-size:14px;"><strong>Conclusão:</strong>
+            promissor no teste, mas inconclusivo — precisa de validação externa.</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 11 - ABLACAO -->
-    <div class="sl" id="s11">
-      <div class="slhd"><span class="num">11</span>
+    <!-- SLIDE 9 - ABLACAO -->
+    <div class="sl" id="s9">
+      <div class="slhd"><span class="num">9</span>
         <h2>Ablação de atributos</h2>
       </div>
       <div class="slbd">
@@ -513,9 +495,9 @@
       </div>
     </div>
 
-    <!-- SLIDE 12 - CONFUSAO -->
-    <div class="sl" id="s12">
-      <div class="slhd"><span class="num">12</span>
+    <!-- SLIDE 10 - CONFUSAO -->
+    <div class="sl" id="s10">
+      <div class="slhd"><span class="num">10</span>
         <h2>Matriz de confusão: melhor modelo para triagem</h2>
       </div>
       <div class="slbd">
@@ -593,9 +575,9 @@
       </div>
     </div>
 
-    <!-- SLIDE 13 - ARVORES DOS MODELOS PROMISSORES -->
-    <div class="sl" id="s13">
-      <div class="slhd"><span class="num">13</span>
+    <!-- SLIDE 11 - ARVORES DOS MODELOS PROMISSORES -->
+    <div class="sl arv" id="s11">
+      <div class="slhd"><span class="num">11</span>
         <h2>Árvore de decisão: os dois modelos promissores</h2>
       </div>
       <div class="slbd">
@@ -616,9 +598,9 @@
       </div>
     </div>
 
-    <!-- SLIDE 14 - MLFLOW / EVOLUCAO -->
-    <div class="sl" id="s14">
-      <div class="slhd"><span class="num">14</span>
+    <!-- SLIDE 12 - MLFLOW / EVOLUCAO -->
+    <div class="sl" id="s12">
+      <div class="slhd"><span class="num">12</span>
         <h2>MLflow e evolução das execuções</h2>
       </div>
       <div class="slbd">
@@ -664,68 +646,69 @@
       </div>
     </div>
 
-    <!-- SLIDE 15 - TRABALHOS RELACIONADOS -->
-    <div class="sl" id="s15">
-      <div class="slhd"><span class="num">15</span>
-        <h2>Trabalhos relacionados</h2>
+    <!-- SLIDE 13 - TRABALHOS RELACIONADOS E CONCLUSAO -->
+    <div class="sl" id="s13">
+      <div class="slhd"><span class="num">13</span>
+        <h2>Trabalhos relacionados e conclusão</h2>
       </div>
       <div class="slbd">
-        <table class="tb2">
-          <tr>
-            <th>Trabalho</th>
-            <th>Contribuição</th>
-          </tr>
-          <tr>
-            <td>Qadri et al. (2023), IEEE Access</td>
-            <td>Feature engineering para doença cardíaca</td>
-          </tr>
-          <tr>
-            <td>Abass et al. (2025), Springer</td>
-            <td>ML + feature engineering</td>
-          </tr>
-          <tr>
-            <td>Gárate-Escamilla et al. (2020)</td>
-            <td>Seleção de features + PCA</td>
-          </tr>
-          <tr>
-            <td>Hasnat et al. (2025), arXiv</td>
-            <td>Feature engineering + SHAP</td>
-          </tr>
-          <tr>
-            <td>Page et al. (1970), Circulation</td>
-            <td>Idade/colesterol na predição de DAC</td>
-          </tr>
-          <tr>
-            <td>Fox et al. (1971)</td>
-            <td>Fórmula FCmax ≈ 220 − idade</td>
-          </tr>
-        </table>
-        <div class="dc"><strong>As razões testadas são hipóteses exploratórias</strong>, apoiadas pela literatura
-          clínica, mas precisam de validação externa.</div>
-      </div>
-    </div>
-
-    <!-- SLIDE 16 - CONCLUSAO -->
-    <div class="sl" id="s16">
-      <div class="slhd"><span class="num">16</span>
-        <h2>Conclusão</h2>
-      </div>
-      <div class="slbd">
-        <ul>
-          <li><strong>Melhor no teste para triagem:</strong> <code>com_engenharia</code>: 8 FN, recall_c1 0,9216 e
-            F1_c1 0,8545; o <code>ordinal</code> é a alternativa mais robusta por possuir a melhor validação cruzada (11 FN, F1_CV 0,8604).</li>
-          <li><strong>Engenharia de features:</strong> melhorou o teste (F1_c1 0,8545), mas <strong>piorou a CV</strong>
-            → inconclusivo.</li>
-          <li><strong>Ablação:</strong> manter todos os atributos maximiza o F1_c1. Remover alguns melhora o F1_macro,
-            mas aumenta o risco de falso negativo.</li>
-          <li><strong>MLflow:</strong> 111 runs registradas, permitindo reproduzir e comparar todas as execuções.</li>
-        </ul>
-        <p style="margin-bottom: 0;">
-          Os modelos <code>com_engenharia</code> e <code>ordinal</code> (8 e 11 FN) são os
-          dois promissores para a triagem. O próximo passo é <strong>validar em uma base de dados
-            externa</strong>.
-        </p>
-        <div class="dc" style="text-align:center; margin-top: 18px;"><strong>Obrigado!</strong></div>
+        <div style="display:flex; gap:20px; align-items:flex-start;">
+          <div style="flex:0 0 46%;">
+            <p style="font-size:13px; color:#5C5C5C; margin:0 0 4px;"><strong>Literatura</strong> que apoia as
+              escolhas:</p>
+            <table class="tb2 mini">
+              <tr>
+                <th>Trabalho</th>
+                <th>Contribuição</th>
+              </tr>
+              <tr>
+                <td>Qadri et al. (2023)</td>
+                <td>Feature engineering para doença cardíaca</td>
+              </tr>
+              <tr>
+                <td>Abass et al. (2025)</td>
+                <td>ML + feature engineering</td>
+              </tr>
+              <tr>
+                <td>Gárate-Escamilla et al. (2020)</td>
+                <td>Seleção de features + PCA</td>
+              </tr>
+              <tr>
+                <td>Hasnat et al. (2025)</td>
+                <td>Feature engineering + SHAP</td>
+              </tr>
+              <tr>
+                <td>Page et al. (1970)</td>
+                <td>Idade/colesterol na predição de DAC</td>
+              </tr>
+              <tr>
+                <td>Fox et al. (1971)</td>
+                <td>Fórmula FCmax ≈ 220 − idade</td>
+              </tr>
+            </table>
+            <div class="dc" style="font-size:12.5px; margin:0;"><strong>As razões testadas são hipóteses
+                exploratórias</strong>, apoiadas pela literatura clínica, mas precisam de validação externa.</div>
+          </div>
+          <div style="flex:1 1 54%;">
+            <h3 style="margin-top:0;">Conclusão</h3>
+            <ul style="font-size:15px; margin:0;">
+              <li><strong>Melhor no teste para triagem:</strong> <code>com_engenharia</code>: 8 FN, recall_c1 0,9216 e
+                F1_c1 0,8545; o <code>ordinal</code> é a alternativa mais robusta por possuir a melhor validação
+                cruzada (11 FN, F1_CV 0,8604).</li>
+              <li><strong>Engenharia de features:</strong> melhorou o teste (F1_c1 0,8545), mas <strong>piorou a
+                  CV</strong> → inconclusivo.</li>
+              <li><strong>Ablação:</strong> manter todos os atributos maximiza o F1_c1. Remover alguns melhora o
+                F1_macro, mas aumenta o risco de falso negativo.</li>
+              <li><strong>MLflow:</strong> 111 runs registradas, permitindo reproduzir e comparar todas as execuções.
+              </li>
+            </ul>
+            <p style="font-size:15px; margin:8px 0 0;">
+              Os modelos <code>com_engenharia</code> e <code>ordinal</code> (8 e 11 FN) são os dois promissores para a
+              triagem. O próximo passo é <strong>validar em uma base de dados externa</strong>.
+            </p>
+            <div class="dc" style="text-align:center; margin:12px 0 0;"><strong>Obrigado!</strong></div>
+          </div>
+        </div>
       </div>
     </div>
 
