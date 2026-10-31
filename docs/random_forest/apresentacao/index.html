@@ -6,8 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Predição de Doença Cardíaca — Random Forest × Árvore de Decisão</title>
   <link rel="stylesheet" href="estilo.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-</head>
+  </head>
 
 <body>
   <header class="tb">
@@ -21,15 +20,17 @@
         <span id="fzpct">100%</span>
         <button onclick="fz(1)" title="Aumentar tamanho da fonte">A+</button>
       </div>
+      <button class="bpb" id="bnt" onclick="toggleNotas()" title="Mostrar/ocultar roteiro de fala (tecla N)">Roteiro</button>
+      <button class="tmr" id="tmr" onclick="toggleTimer()" ondblclick="resetTimer()" title="Iniciar/pausar cronômetro (tecla T); duplo clique zera">00:00 / 10:00</button>
       <button class="bpb" id="bp" onclick="openPresenter()">Modo apresentador</button>
-      <span class="ct" id="ctr">1 / 13</span>
+      <span class="ct" id="ctr">1 / 9</span>
       <span class="modo-tag">APRESENTAÇÃO</span>
     </div>
   </header>
   <div class="fita"></div>
   <div class="sc">
 
-    <!-- SLIDE 1 - CAPA -->
+    <!-- SLIDE 1 - CAPA (~0:20) -->
     <div class="sl" id="s1">
       <div class="capa">
         <div class="esq">
@@ -37,7 +38,6 @@
           <h1>Predição de Doença Cardíaca:<br>Random Forest × Árvore de Decisão</h1>
           <div class="meta">
             <span>Mesmo protocolo de avaliação, dois modelos</span>
-            <span>Comparação de resultados e otimizações</span>
           </div>
           <div class="faixa"></div>
           <div class="sub">Integrantes:
@@ -49,149 +49,94 @@
           </div>
           <div class="sub">Professor:
             <ul>
-              <li>Doutor Vinicius Ponte Machado</li>
-            </ul>
-          </div>
-          <div class="sub">Disciplina:
-            <ul>
-              <li>Aprendizado de Máquina — PPGCC/UFPI</li>
+              <li>Dr. Vinicius Ponte Machado</li>
             </ul>
           </div>
         </div>
         <div class="dir">
           <img src="img/logo_full.png" alt="PPGCC — UFPI">
+          <div class="pergunta"><small>Pergunta de pesquisa</small>Trocar <b>1 árvore</b> por uma floresta de
+            <b>300 árvores</b> melhora a triagem de doença cardíaca?</div>
           <img class="marca" src="img/marca.png" alt="">
         </div>
       </div>
+      <div class="nt"><strong>~20 s.</strong> Apresentar o grupo e ler a pergunta de pesquisa: “repetimos com Random
+        Forest tudo o que fizemos com a Árvore de Decisão e comparamos os resultados”.</div>
     </div>
 
-    <!-- SLIDE 2 - DESENHO DA COMPARAÇÃO -->
+    <!-- SLIDE 2 - PROBLEMA E DESENHO (~1:00) -->
     <div class="sl" id="s2">
       <div class="slhd"><span class="num">2</span>
-        <h2>O que estamos comparando</h2>
+        <h2>Problema e desenho da comparação</h2>
       </div>
-      <div class="slbd">
-        <p><strong>Pergunta:</strong> mantendo exatamente o mesmo tratamento dos dados, a mesma busca e as
-          mesmas métricas, o que muda quando trocamos uma <strong>árvore única</strong> por uma
-          <strong>floresta de 300 árvores</strong>?</p>
-        <div class="c2">
-          <div>
-            <h3 style="margin-top:0;">Mantido igual</h3>
-            <ul style="font-size:14.5px;">
-              <li>Base Heart Failure (918 registros, 11 atributos).</li>
-              <li>Split estratificado 80/20, semente 42 → 734 treino / 184 teste.</li>
-              <li><code>RepeatedStratifiedKFold</code> 5 × 2 na busca.</li>
-              <li>Grade de <strong>864 combinações</strong> por codificação.</li>
-              <li>Refit por <strong>F1 da classe 1</strong>.</li>
-              <li>Ablação, engenharia de features, baseline e IC 95%.</li>
+      <div class="slbd g" style="grid-template-rows:auto 1fr auto;">
+        <div class="chips">
+          <span>Classificação binária</span><span>Heart Failure (Kaggle)</span><span>918 registros</span>
+          <span>11 atributos</span><span>Teste: 184 pacientes</span>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1.1fr 1.1fr; gap:14px;">
+          <div class="card er">
+            <h3>Erro mais grave</h3>
+            <div class="big">Falso negativo da classe 1</div>
+            <p>O paciente doente classificado como sadio fica <strong>sem tratamento</strong>.</p>
+            <div class="stat"><b>102</b><span>doentes no conjunto de teste — cada FN é um deles sem diagnóstico</span></div>
+            <div class="rod"><strong>Métricas-guia:</strong> recall e F1 da classe 1, além do F1 macro.</div>
+          </div>
+          <div class="card">
+            <h3>Mantido igual</h3>
+            <ul>
+              <li>Split estratificado 80/20, semente 42 (734 / 184).</li>
+              <li>CV <code>RepeatedStratifiedKFold</code> 5 × 2.</li>
+              <li>Grade de <strong>864 combinações</strong>, refit por F1_c1.</li>
+              <li>Ablação, engenharia, baseline e IC 95%.</li>
             </ul>
           </div>
-          <div>
-            <h3 style="margin-top:0;">O que muda</h3>
-            <ul style="font-size:14.5px;">
-              <li><strong>Estimador:</strong> 1 árvore (profundidade 3) × 300 árvores.</li>
+          <div class="card vd">
+            <h3>O que muda</h3>
+            <div class="duelo" style="flex:0 0 auto; margin-bottom:8px;">
+              <div><small>Antes</small><b>1 árvore</b></div>
+              <div class="rf"><small>Agora</small><b>300 árvores</b></div>
+            </div>
+            <ul>
               <li><strong>Aleatoriedade:</strong> bootstrap + <code>max_features</code> por nó.</li>
-              <li><strong>Métricas extra:</strong> OOB score e dispersão das importâncias.</li>
-              <li><strong>Novo eixo:</strong> sensibilidade ao nº de árvores.</li>
-              <li><strong>Interpretação:</strong> caminho único × importância agregada.</li>
+              <li><strong>Extras:</strong> OOB, dispersão das importâncias e nº de árvores.</li>
             </ul>
           </div>
         </div>
-        <div class="dc"><strong>Por que é uma comparação justa:</strong> o estimador é a única variável
-          alterada — qualquer diferença de resultado é atribuível ao modelo, não ao protocolo.</div>
+        <div class="faixa-az"><span>O estimador é a <b>única variável
+            alterada</b> → a diferença de resultado é atribuível ao modelo, não ao protocolo.</span></div>
       </div>
+      <div class="nt"><strong>~1 min.</strong> Reforçar que o protocolo é idêntico ao da árvore; o único fator
+        alterado é o estimador. Explicar rapidamente por que o falso negativo é o erro que guia a escolha das
+        métricas.</div>
     </div>
 
-    <!-- SLIDE 3 - PIPELINE -->
+    <!-- SLIDE 3 - BUSCA, CUSTO E MLFLOW (~0:50) -->
     <div class="sl" id="s3">
       <div class="slhd"><span class="num">3</span>
-        <h2>Pipeline e fases da execução</h2>
-      </div>
-      <div class="slbd">
-        <div class="c2">
-          <div>
-            <ol class="passos">
-              <li><strong>Limpeza:</strong> zeros de <code>Cholesterol</code>/<code>RestingBP</code> → <code>NaN</code>.</li>
-              <li><strong>Pré-processamento:</strong> imputação (mediana/média/moda) + escala; categóricas em one-hot ou ordinal.</li>
-              <li><strong>Modelo:</strong> <code>RandomForestClassifier(n_estimators=300)</code>.</li>
-              <li><strong>Busca:</strong> 864 combinações × 10 folds, refit em F1_c1.</li>
-              <li><strong>Teste reservado:</strong> acurácia, precisão, recall, F1 por classe, F1 macro, IC 95%, FN/FP.</li>
-            </ol>
-          </div>
-          <div>
-            <ol class="passos" start="6">
-              <li><strong>Interpretação:</strong> importância média, dispersão entre árvores e permutação.</li>
-              <li><strong>Ablação:</strong> remove 1 atributo por vez.</li>
-              <li><strong>Engenharia:</strong> 5 razões/interações clínicas.</li>
-              <li><strong>Nº de árvores:</strong> 100, 300, 500 e 800.</li>
-              <li><strong>Comparação:</strong> tabelas e deltas contra a árvore.</li>
-            </ol>
-            <div class="dc" style="font-size:13px; margin-top:6px;"><strong>MLflow:</strong> 26 runs no
-              experimento <code>heart_failure_random_forest</code>, no mesmo banco da árvore.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 4 - BUSCA E CUSTO -->
-    <div class="sl" id="s4">
-      <div class="slhd"><span class="num">4</span>
         <h2>Busca em grade: mesma grade, custo maior</h2>
       </div>
-      <div class="slbd">
-        <div class="c2">
-          <table class="tb2" style="font-size:13px;">
+      <div class="slbd g" style="grid-template-columns:1.15fr 1fr;">
+        <div class="col">
+          <table class="tb2 fill">
             <tr>
-              <th>Parâmetro</th>
-              <th>Valores</th>
-            </tr>
-            <tr>
-              <td>Imputação</td>
-              <td><code>median</code>, <code>mean</code>, <code>most_frequent</code></td>
-            </tr>
-            <tr>
-              <td>criterion</td>
-              <td><code>gini</code>, <code>entropy</code></td>
-            </tr>
-            <tr>
-              <td>max_depth</td>
-              <td><code>3</code>, <code>5</code>, <code>7</code>, <code>None</code></td>
-            </tr>
-            <tr>
-              <td>min_samples_split</td>
-              <td><code>2</code>, <code>5</code>, <code>10</code></td>
-            </tr>
-            <tr>
-              <td>min_samples_leaf</td>
-              <td><code>1</code>, <code>3</code>, <code>5</code></td>
-            </tr>
-            <tr>
-              <td>max_features</td>
-              <td><code>None</code>, <code>sqrt</code></td>
-            </tr>
-            <tr>
-              <td>class_weight</td>
-              <td><code>None</code>, <code>balanced</code></td>
-            </tr>
-            <tr>
-              <td>n_estimators</td>
-              <td><code>300</code> (fixo; testado à parte)</td>
-            </tr>
-          </table>
-          <table class="tb2" style="font-size:13px;">
-            <tr>
-              <th>Item</th>
+              <th>Selecionado pela busca (RF)</th>
               <th>one-hot</th>
               <th>ordinal</th>
             </tr>
             <tr>
-              <td>Combinações</td>
-              <td colspan="2" style="text-align:center;">864 (17.280 fits no total)</td>
+              <td>Comum às duas</td>
+              <td colspan="2" class="cen"><code>entropy</code> · <code>sqrt</code> · <code>balanced</code></td>
             </tr>
             <tr>
-              <td>Tempo de busca</td>
-              <td>12,0 min</td>
-              <td>14,4 min</td>
+              <td>max_depth / min_samples_leaf</td>
+              <td>None / 5</td>
+              <td>7 / 1</td>
+            </tr>
+            <tr>
+              <td>Imputação</td>
+              <td>mediana</td>
+              <td>média</td>
             </tr>
             <tr>
               <td>Melhor F1_CV</td>
@@ -204,94 +149,41 @@
               <td>0,8583</td>
             </tr>
             <tr>
-              <td>max_depth</td>
-              <td>None</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>min_samples_leaf</td>
-              <td>5</td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td>Imputação</td>
-              <td>median</td>
-              <td>mean</td>
+              <td>Tempo de busca</td>
+              <td>12,0 min</td>
+              <td>14,4 min</td>
             </tr>
           </table>
         </div>
-        <ul style="font-size:14px;">
-          <li>As duas codificações convergiram para <code>entropy</code>, <code>sqrt</code> e
-            <code>balanced</code>.</li>
-          <li><strong>Floresta:</strong> árvores profundas (média 9,9 e 7,0) combinadas por média.</li>
-          <li><strong>Árvore:</strong> profundidade 3 — a busca preferiu um modelo raso.</li>
-          <li><strong>Custo:</strong> poucos segundos (árvore) → ~26 min (floresta, duas codificações).</li>
-        </ul>
+        <div class="col">
+          <div class="duelo">
+            <div class="tt">Profundidade das árvores</div>
+            <div><small>Árvore única</small><b>3</b></div>
+            <div class="rf"><small>Floresta (média)</small><b>7,0 – 9,9</b></div>
+          </div>
+          <div class="duelo">
+            <div class="tt">Tempo de busca</div>
+            <div><small>Árvore única</small><b>segundos</b></div>
+            <div class="rf"><small>Floresta</small><b>~26 min</b></div>
+          </div>
+          <div class="duelo">
+            <div class="tt">Runs no MLflow (mesmo banco SQLite)</div>
+            <div><small>Árvore única</small><b>111</b></div>
+            <div class="rf"><small>Floresta</small><b>26</b></div>
+          </div>
+        </div>
       </div>
+      <div class="nt"><strong>~50 s.</strong> A árvore precisou ser rasa (profundidade 3) para generalizar; a
+        floresta usa árvores profundas e reduz a variância pela média. O preço é o tempo de busca. Tudo está no
+        MLflow, no mesmo banco da árvore, o que permite comparar lado a lado.</div>
     </div>
 
-    <!-- SLIDE 5 - RF NO TESTE -->
-    <div class="sl" id="s5">
-      <div class="slhd"><span class="num">5</span>
-        <h2>Random Forest no teste: one-hot × ordinal</h2>
+    <!-- SLIDE 4 - RESULTADO PRINCIPAL (~1:30) -->
+    <div class="sl" id="s4">
+      <div class="slhd"><span class="num">4</span>
+        <h2>Resultado principal: a floresta vence nos 4 cenários</h2>
       </div>
-      <div class="slbd">
-        <table class="tb2">
-          <tr>
-            <th>Codificação</th>
-            <th>Acurácia</th>
-            <th>Prec_c1</th>
-            <th>Rec_c1</th>
-            <th>F1_c0</th>
-            <th>F1_c1</th>
-            <th>F1_macro</th>
-            <th>FN</th>
-            <th>FP</th>
-            <th>IC 95% F1_c1</th>
-          </tr>
-          <tr>
-            <td>ordinal</td>
-            <td><strong>0,8859</strong></td>
-            <td><strong>0,9091</strong></td>
-            <td>0,8824</td>
-            <td><strong>0,8743</strong></td>
-            <td><strong>0,8955</strong></td>
-            <td><strong>0,8849</strong></td>
-            <td>12</td>
-            <td><strong>9</strong></td>
-            <td>0,8469–0,9368</td>
-          </tr>
-          <tr>
-            <td>one-hot</td>
-            <td>0,8804</td>
-            <td>0,8846</td>
-            <td><strong>0,9020</strong></td>
-            <td>0,8642</td>
-            <td>0,8932</td>
-            <td>0,8787</td>
-            <td><strong>10</strong></td>
-            <td>12</td>
-            <td>0,8442–0,9347</td>
-          </tr>
-        </table>
-        <ul style="font-size:15px;">
-          <li><strong>Ordinal:</strong> melhor F1_c1, melhor precisão da classe 1 e apenas 9 falsos positivos.</li>
-          <li><strong>One-hot:</strong> melhor recall da classe 1 (0,9020) e 10 falsos negativos.</li>
-          <li><strong>Baseline</strong> (classe majoritária): F1_c1 0,7133 com 82 falsos positivos → a floresta
-            supera com folga.</li>
-        </ul>
-        <div class="dc"><strong>CV ≠ teste:</strong> a melhor na validação cruzada foi a one-hot (0,8809) e a
-          melhor no teste foi a ordinal (0,8955). A diferença entre as duas não é conclusiva (IC 95% se
-          sobrepõem).</div>
-      </div>
-    </div>
-
-    <!-- SLIDE 6 - COMPARAÇÃO PRINCIPAL -->
-    <div class="sl" id="s6">
-      <div class="slhd"><span class="num">6</span>
-        <h2>Random Forest × Árvore: resultado no teste</h2>
-      </div>
-      <div class="slbd">
+      <div class="slbd g" style="grid-template-rows:auto 1fr;">
         <table class="tb2">
           <tr>
             <th>Cenário</th>
@@ -323,7 +215,7 @@
             <td>0,8035</td>
             <td>0,8849</td>
           </tr>
-          <tr>
+          <tr class="hl">
             <td>sem engenharia</td>
             <td>0,8387</td>
             <td><strong>0,9091</strong></td>
@@ -335,488 +227,343 @@
           </tr>
           <tr>
             <td>com engenharia</td>
-            <td><strong>0,8545</strong></td>
+            <td>0,8545</td>
             <td>0,8558</td>
             <td>+0,0012</td>
-            <td><strong>8</strong></td>
+            <td>8</td>
             <td>13</td>
             <td>0,8192</td>
             <td>0,8341</td>
           </tr>
         </table>
-        <div style="display:flex; gap:16px; align-items:flex-start; margin-top:6px;">
-          <img src="img/comparacao_rf_vs_arvore.png" style="flex:1 1 62%; width:62%;" alt="Gráfico comparativo de F1_c1 e falsos negativos">
-          <ul style="flex:1 1 38%; margin:0; font-size:13.5px;">
-            <li><strong>A floresta venceu nos 4 cenários</strong> (ΔF1_c1 de +0,0012 a +0,0704).</li>
-            <li>Melhor geral: RF sem engenharia — <strong>7 FN</strong>, 12 FP, F1_c1 0,9091.</li>
-            <li>Melhor árvore: com engenharia — 8 FN, mas <strong>24 FP</strong> e F1_macro 0,8192.</li>
-            <li>No ordinal, a RF troca 15 falsos positivos por 1 falso negativo.</li>
-          </ul>
+        <div style="display:grid; grid-template-columns:1.75fr 1fr; gap:14px; min-height:0;">
+          <div class="fig"><img src="img/comparacao_rf_vs_arvore.png" alt="Gráfico comparativo de F1_c1 e falsos negativos"></div>
+          <div class="kpi" style="grid-template-rows:repeat(3,1fr);">
+            <div><b>+0,0704</b><span>maior ganho de F1_c1 — RF com os 11 atributos chega a <strong>0,9091</strong></span></div>
+            <div><b>11 → 7 FN</b><span>menos doentes sem diagnóstico no mesmo cenário</span></div>
+            <div><b>24 → 12 FP</b><span>vs. melhor árvore (com engenharia, 8 FN). Baseline: F1_c1 0,7133 e 82 FP</span></div>
+          </div>
         </div>
       </div>
+      <div class="nt"><strong>~1 min 30 s — slide central.</strong> Ler a linha destacada: com todos os atributos,
+        a floresta sobe o F1_c1 de 0,8387 para 0,9091 e cai de 11 para 7 falsos negativos. A vantagem aparece nos
+        quatro cenários (Δ de +0,0012 a +0,0704), também no F1 macro. Citar o baseline para mostrar que 0,71 é o
+        piso.</div>
     </div>
 
-    <!-- SLIDE 7 - FALSOS NEGATIVOS -->
-    <div class="sl" id="s7">
-      <div class="slhd"><span class="num">7</span>
+    <!-- SLIDE 5 - FALSOS NEGATIVOS (~1:15) -->
+    <div class="sl" id="s5">
+      <div class="slhd"><span class="num">5</span>
         <h2>O erro que mais importa: falsos negativos</h2>
       </div>
-      <div class="slbd">
-        <div style="display:flex; gap:18px; align-items:flex-start;">
-          <table class="tb2" style="flex:1 1 58%; font-size:14px;">
+      <div class="slbd g" style="grid-template-columns:1.3fr 1fr;">
+        <div class="col">
+          <table class="tb2 fill">
             <tr>
-              <th>Modelo</th>
-              <th>TN</th>
+              <th>Modelo (teste: 82 sadios, 102 doentes)</th>
               <th>FP</th>
               <th>FN</th>
-              <th>TP</th>
               <th>Recall_c1</th>
               <th>F1_c1</th>
             </tr>
-            <tr>
+            <tr class="hl">
               <td>RF sem engenharia</td>
-              <td>70</td>
               <td>12</td>
               <td><strong>7</strong></td>
-              <td>95</td>
               <td><strong>0,9314</strong></td>
               <td><strong>0,9091</strong></td>
             </tr>
             <tr>
               <td>RF ordinal</td>
-              <td>73</td>
               <td><strong>9</strong></td>
               <td>12</td>
-              <td>90</td>
               <td>0,8824</td>
               <td>0,8955</td>
             </tr>
             <tr>
               <td>RF one-hot</td>
-              <td>70</td>
               <td>12</td>
               <td>10</td>
-              <td>92</td>
               <td>0,9020</td>
               <td>0,8932</td>
             </tr>
             <tr>
               <td>Árvore com engenharia</td>
-              <td>58</td>
               <td>24</td>
               <td>8</td>
-              <td>94</td>
               <td>0,9216</td>
               <td>0,8545</td>
             </tr>
             <tr>
               <td>Árvore ordinal</td>
-              <td>58</td>
               <td>24</td>
               <td>11</td>
-              <td>91</td>
               <td>0,8922</td>
               <td>0,8387</td>
             </tr>
             <tr>
               <td>Árvore one-hot</td>
-              <td>70</td>
               <td>12</td>
-              <td>21</td>
-              <td>81</td>
+              <td class="ruim">21</td>
               <td>0,7941</td>
               <td>0,8308</td>
             </tr>
-            <tr style="background:#f6f2e8;">
+            <tr class="bs">
               <td>Baseline (maioria)</td>
-              <td>0</td>
               <td>82</td>
               <td>0</td>
-              <td>102</td>
               <td>1,0000</td>
               <td>0,7133</td>
             </tr>
           </table>
-          <div style="flex:1 1 42%;">
-            <img src="img/confusion_matrix_rf_ordinal.png" style="width:82%;" alt="Matriz de confusão do Random Forest ordinal">
-            <div class="dc" style="font-size:12.5px; margin-top:4px;"><strong>Trade-off explícito:</strong> a RF
-              ordinal tem só 9 FP (menos alarmes falsos), mas 12 FN; a RF sem engenharia reduz para 7 FN com 12
-              FP.</div>
+        </div>
+        <div class="col">
+          <div class="fig"><img src="img/confusion_matrix_rf_ordinal.png" alt="Matriz de confusão do Random Forest ordinal"></div>
+          <div class="cap">RF ordinal: menos alarmes falsos (9 FP), mas 12 FN</div>
+          <div class="card vd">
+            <h3>Trade-off</h3>
+            <p style="margin:0;">A melhor floresta erra <strong>menos doentes</strong> que a melhor árvore (7 × 8 FN)
+              com <strong>metade dos falsos positivos</strong> (12 × 24). O baseline tem 0 FN, mas erra os 82 sadios.
+            </p>
           </div>
         </div>
-        <p style="font-size:14px; margin:6px 0 0;"><strong>Leitura clínica:</strong> o baseline "chutar a
-          maioria" tem 0 FN, mas erra todos os 82 sadios — por isso a acurácia isolada engana e o F1 macro é
-          necessário.</p>
       </div>
+      <div class="nt"><strong>~1 min 15 s.</strong> Focar na coluna FN. A RF ordinal (na matriz) é a que menos
+        gera alarmes falsos (9 FP), mas deixa 12 doentes sem diagnóstico; a RF com os 11 atributos é o melhor
+        compromisso para triagem. O baseline mostra por que a acurácia isolada engana.</div>
     </div>
 
-    <!-- SLIDE 8 - ABLAÇÃO COMPARADA -->
+    <!-- SLIDE 6 - ABLAÇÃO E ENGENHARIA (~1:45) -->
+    <div class="sl" id="s6">
+      <div class="slhd"><span class="num">6</span>
+        <h2>Otimizações: ablação e engenharia de atributos</h2>
+      </div>
+      <div class="slbd g" style="grid-template-columns:1fr 1fr; grid-template-rows:1fr auto;">
+        <div class="card">
+          <h3>Ablação — F1_c1 ao remover um atributo</h3>
+          <table class="tb2 fill">
+            <tr>
+              <th>Cenário</th>
+              <th>Árvore</th>
+              <th>RF</th>
+            </tr>
+            <tr class="hl">
+              <td>todos os atributos</td>
+              <td><strong>0,8387</strong></td>
+              <td><strong>0,9091</strong></td>
+            </tr>
+            <tr>
+              <td>sem Oldpeak</td>
+              <td class="ruim">0,7647</td>
+              <td>0,9005</td>
+            </tr>
+            <tr>
+              <td>sem MaxHR</td>
+              <td class="ruim">0,7890</td>
+              <td>0,9005</td>
+            </tr>
+            <tr>
+              <td>sem ST_Slope</td>
+              <td class="ruim">0,7897</td>
+              <td>0,8600</td>
+            </tr>
+            <tr>
+              <td>sem ChestPainType</td>
+              <td class="ruim">0,7647</td>
+              <td>0,8400</td>
+            </tr>
+          </table>
+          <div class="rod">RF vence nos <strong>12 cenários</strong> (Δ de +0,0585 a +0,1358). Nas duas abordagens,
+            manter todos os atributos é o melhor.</div>
+        </div>
+        <div class="col">
+          <h3 style="margin:0 !important;">Engenharia: +5
+            razões clínicas</h3>
+          <div class="evo">
+            <div class="t">Árvore de Decisão — sem → com</div>
+            <div class="r"><span>F1_c1 no teste</span><b class="up">0,8387 → 0,8545 ▲</b></div>
+            <div class="r"><span>F1_CV</span><b class="down">0,8604 → 0,7946 ▼</b></div>
+            <div class="v">Ganho no teste não confirmado pela CV.</div>
+          </div>
+          <div class="evo rf">
+            <div class="t">Random Forest — sem → com</div>
+            <div class="r"><span>F1_c1 no teste</span><b class="down">0,9091 → 0,8558 ▼</b></div>
+            <div class="r"><span>Falsos negativos</span><b class="down">7 → 13 ▼</b></div>
+            <div class="r"><span>F1_CV</span><b class="eq">0,8744 → 0,8775 ≈</b></div>
+            <div class="v">Efeito oposto: piora a floresta no teste.</div>
+          </div>
+        </div>
+        <div class="faixa-az" style="grid-column:1/3;"><span>O ensemble compensa a
+          variável ausente e já combina cortes para formar interações — as razões, criadas para a árvore, viram ruído na
+          floresta. <b>Engenharia deve ser testada por modelo.</b></span></div>
+      </div>
+      <div class="nt"><strong>~1 min 45 s.</strong> Ablação: a árvore despenca para 0,76–0,79 sem Oldpeak, MaxHR
+        ou ChestPainType; a floresta se mantém entre 0,84 e 0,91 — é a redução de variância na prática. Engenharia:
+        na árvore, ganho no teste não confirmado pela CV; na floresta, piora no teste. Conclusão: não é ganho
+        universal.</div>
+    </div>
+
+    <!-- SLIDE 7 - IMPORTÂNCIA (~1:00) -->
+    <div class="sl" id="s7">
+      <div class="slhd"><span class="num">7</span>
+        <h2>O que a floresta usa para decidir</h2>
+      </div>
+      <div class="slbd g" style="grid-template-columns:1.05fr 1fr;">
+        <div class="fig"><img src="img/importancia_variaveis_top10_rf.png" alt="Top 10 importâncias médias do Random Forest"></div>
+        <div class="col">
+          <table class="tb2">
+            <tr>
+              <th>Variável</th>
+              <th>Impureza</th>
+              <th>Desvio</th>
+              <th>Permutação ΔF1</th>
+            </tr>
+            <tr class="hl">
+              <td>ST_Slope</td>
+              <td><strong>0,2687</strong></td>
+              <td>0,1328</td>
+              <td><strong>0,1367</strong></td>
+            </tr>
+            <tr>
+              <td>ChestPainType</td>
+              <td>0,1432</td>
+              <td>0,0913</td>
+              <td>0,0391</td>
+            </tr>
+            <tr>
+              <td>MaxHR</td>
+              <td>0,1083</td>
+              <td>0,0539</td>
+              <td>0,0158</td>
+            </tr>
+            <tr>
+              <td>Oldpeak</td>
+              <td>0,1030</td>
+              <td>0,0602</td>
+              <td>0,0226</td>
+            </tr>
+          </table>
+          <div class="card grow">
+            <h3>ST_Slope domina</h3>
+            <p style="margin:0;">Lidera nas duas medidas, mas com <strong>desvio alto</strong> entre as árvores: em
+              algumas decide quase tudo, em outras é secundária.</p>
+          </div>
+          <div class="card vd grow">
+            <h3>Árvore × floresta</h3>
+            <p style="margin:0;"><strong>Árvore:</strong> ExerciseAngina e ST_Slope na raiz.
+              <strong>Floresta:</strong> decisão distribuída; ChestPainType sobe para 2º.</p>
+          </div>
+        </div>
+      </div>
+      <div class="nt"><strong>~1 min.</strong> A importância por impureza e a por permutação concordam no topo
+        (ST_Slope). O desvio alto mostra que em algumas árvores ela decide quase tudo e em outras é secundária — por
+        isso reportamos a dispersão. A interpretação deixa de ser “um caminho” e passa a ser “quais variáveis reduzem
+        mais a impureza”.</div>
+    </div>
+
+    <!-- SLIDE 8 - ROBUSTEZ (~1:00) -->
     <div class="sl" id="s8">
       <div class="slhd"><span class="num">8</span>
-        <h2>Ablação: a floresta é mais robusta</h2>
+        <h2>A vantagem é robusta? CV, IC 95% e nº de árvores</h2>
       </div>
-      <div class="slbd">
-        <table class="tb2">
-          <tr>
-            <th>Cenário</th>
-            <th>F1_c1 árvore</th>
-            <th>F1_c1 RF</th>
-            <th>ΔF1_c1</th>
-            <th>F1_macro árvore</th>
-            <th>F1_macro RF</th>
-          </tr>
-          <tr>
-            <td>todos os atributos</td>
-            <td><strong>0,8387</strong></td>
-            <td><strong>0,9091</strong></td>
-            <td>+0,0704</td>
-            <td>0,8035</td>
-            <td><strong>0,8948</strong></td>
-          </tr>
-          <tr>
-            <td>sem ST_Slope</td>
-            <td>0,7897</td>
-            <td>0,8600</td>
-            <td>+0,0703</td>
-            <td>0,7764</td>
-            <td>0,8467</td>
-          </tr>
-          <tr>
-            <td>sem ChestPainType</td>
-            <td>0,7647</td>
-            <td>0,8400</td>
-            <td>+0,0753</td>
-            <td>0,7360</td>
-            <td>0,8248</td>
-          </tr>
-          <tr>
-            <td>sem MaxHR</td>
-            <td>0,7890</td>
-            <td>0,9005</td>
-            <td>+0,1115</td>
-            <td>0,7412</td>
-            <td>0,8834</td>
-          </tr>
-          <tr>
-            <td>sem Oldpeak</td>
-            <td>0,7647</td>
-            <td>0,9005</td>
-            <td><strong>+0,1358</strong></td>
-            <td>0,7360</td>
-            <td>0,8834</td>
-          </tr>
-          <tr>
-            <td>sem ExerciseAngina</td>
-            <td>0,8042</td>
-            <td>0,8627</td>
-            <td>+0,0585</td>
-            <td>0,7988</td>
-            <td>0,8460</td>
-          </tr>
-        </table>
-        <ul style="font-size:14.5px;">
-          <li><strong>RF venceu nos 12 cenários</strong> (ΔF1_c1 de +0,0585 a +0,1358).</li>
-          <li><strong>Árvore:</strong> remover <code>Oldpeak</code>, <code>MaxHR</code> ou
-            <code>ChestPainType</code> derruba o F1_c1 para 0,76–0,79.</li>
-          <li><strong>Floresta:</strong> fica entre 0,8400 e 0,9091 — o ensemble compensa a variável ausente.</li>
-          <li>Nas duas abordagens, manter todos os atributos maximiza o F1_c1.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- SLIDE 9 - ENGENHARIA COMPARADA -->
-    <div class="sl" id="s9">
-      <div class="slhd"><span class="num">9</span>
-        <h2>Engenharia de features: efeito oposto</h2>
-      </div>
-      <div class="slbd">
-        <table class="tb2">
-          <tr>
-            <th>Modelo / cenário</th>
-            <th>Nº atributos</th>
-            <th>F1_c1 (teste)</th>
-            <th>F1_macro</th>
-            <th>FN</th>
-            <th>F1_CV</th>
-          </tr>
-          <tr>
-            <td>Árvore — sem engenharia</td>
-            <td>11</td>
-            <td>0,8387</td>
-            <td>0,8035</td>
-            <td>11</td>
-            <td><strong>0,8604</strong></td>
-          </tr>
-          <tr>
-            <td>Árvore — com engenharia</td>
-            <td>16</td>
-            <td><strong>0,8545</strong></td>
-            <td><strong>0,8192</strong></td>
-            <td><strong>8</strong></td>
-            <td>0,7946</td>
-          </tr>
-          <tr>
-            <td>RF — sem engenharia</td>
-            <td>11</td>
-            <td><strong>0,9091</strong></td>
-            <td><strong>0,8948</strong></td>
-            <td><strong>7</strong></td>
-            <td>0,8744</td>
-          </tr>
-          <tr>
-            <td>RF — com engenharia</td>
-            <td>16</td>
-            <td>0,8558</td>
-            <td>0,8341</td>
-            <td>13</td>
-            <td><strong>0,8775</strong></td>
-          </tr>
-        </table>
-        <ul style="font-size:14.5px;">
-          <li><strong>Árvore:</strong> engenharia melhora o teste (+0,0158) e <strong>piora a CV</strong>
-            (−0,0658) → ganho não confirmado.</li>
-          <li><strong>Floresta:</strong> engenharia <strong>piora o teste</strong> (−0,0533) e mantém a CV
-            estável (+0,0031).</li>
-          <li>Hipótese: o ensemble já constrói interações combinando cortes; as 5 razões viram ruído e diluem o
-            sorteio de atributos por nó.</li>
-        </ul>
-        <div class="dc"><strong>Conclusão prática:</strong> engenharia de features deve ser testada
-          <em>por modelo</em> — não é um ganho universal.</div>
-      </div>
-    </div>
-
-    <!-- SLIDE 10 - IMPORTÂNCIA -->
-    <div class="sl" id="s10">
-      <div class="slhd"><span class="num">10</span>
-        <h2>Importância das variáveis e estabilidade</h2>
-      </div>
-      <div class="slbd">
-        <div style="display:flex; gap:18px; align-items:flex-start;">
-          <div style="flex:1 1 50%;">
-            <table class="tb2" style="font-size:13px;">
-              <tr>
-                <th>Variável</th>
-                <th>Impureza (média)</th>
-                <th>Desvio</th>
-                <th>Permutação (ΔF1)</th>
-              </tr>
-              <tr>
-                <td>ST_Slope</td>
-                <td><strong>0,2687</strong></td>
-                <td>0,1328</td>
-                <td><strong>0,1367</strong></td>
-              </tr>
-              <tr>
-                <td>ChestPainType</td>
-                <td>0,1432</td>
-                <td>0,0913</td>
-                <td>0,0391</td>
-              </tr>
-              <tr>
-                <td>MaxHR</td>
-                <td>0,1083</td>
-                <td>0,0539</td>
-                <td>0,0158</td>
-              </tr>
-              <tr>
-                <td>Oldpeak</td>
-                <td>0,1030</td>
-                <td>0,0602</td>
-                <td>0,0226</td>
-              </tr>
-              <tr>
-                <td>ExerciseAngina</td>
-                <td>0,0860</td>
-                <td>0,0916</td>
-                <td>0,0259</td>
-              </tr>
-              <tr>
-                <td>Cholesterol</td>
-                <td>0,0739</td>
-                <td>0,0328</td>
-                <td>0,0163</td>
-              </tr>
-            </table>
-            <div class="dc" style="font-size:12.5px; margin-top:4px;"><strong>Desvio alto em ST_Slope:</strong>
-              em algumas árvores ela domina a decisão, em outras é secundária — daí a importância de reportar a
-              dispersão.</div>
-          </div>
-          <div style="flex:1 1 50%;">
-            <img src="img/importancia_variaveis_top10_rf.png" style="width:100%;" alt="Top 10 importâncias médias do Random Forest">
-          </div>
-        </div>
-        <p style="font-size:13.5px; margin:6px 0 0;"><strong>Contraste com a árvore:</strong> a árvore usa
-          <code>ExerciseAngina</code> e <code>ST_Slope</code> na raiz; na floresta a decisão é distribuída e
-          <code>ChestPainType</code> sobe para a segunda posição.</p>
-      </div>
-    </div>
-
-    <!-- SLIDE 11 - ROBUSTEZ -->
-    <div class="sl" id="s11">
-      <div class="slhd"><span class="num">11</span>
-        <h2>Robustez: CV, nº de árvores e OOB</h2>
-      </div>
-      <div class="slbd">
-        <div style="display:flex; gap:18px; align-items:flex-start;">
-          <table class="tb2" style="flex:1 1 48%; font-size:13px;">
+      <div class="slbd g" style="grid-template-columns:1.2fr 1fr;">
+        <div class="col">
+          <table class="tb2">
             <tr>
-              <th>Modelo / cenário</th>
+              <th>Modelo</th>
               <th>F1_CV</th>
               <th>F1_c1 teste</th>
+              <th>IC 95% F1_c1</th>
             </tr>
             <tr>
               <td>Árvore ordinal</td>
               <td>0,8604</td>
               <td>0,8387</td>
+              <td>0,7817–0,8879</td>
             </tr>
             <tr>
               <td>Árvore one-hot</td>
               <td>0,8550</td>
               <td>0,8308</td>
+              <td>0,7650–0,8865</td>
             </tr>
-            <tr>
+            <tr class="hl">
               <td>RF ordinal</td>
-              <td><strong>0,8799</strong></td>
-              <td><strong>0,8955</strong></td>
+              <td>0,8799</td>
+              <td>0,8955</td>
+              <td>0,8469–0,9368</td>
             </tr>
-            <tr>
+            <tr class="hl">
               <td>RF one-hot</td>
               <td><strong>0,8809</strong></td>
               <td>0,8932</td>
-            </tr>
-            <tr>
-              <td>RF sem engenharia</td>
-              <td>0,8744</td>
-              <td><strong>0,9091</strong></td>
-            </tr>
-            <tr>
-              <th>Nº de árvores</th>
-              <th>F1_c1</th>
-              <th>FN</th>
-            </tr>
-            <tr>
-              <td>100</td>
-              <td>0,8878</td>
-              <td>11</td>
-            </tr>
-            <tr>
-              <td>300</td>
-              <td>0,8932</td>
-              <td>10</td>
-            </tr>
-            <tr>
-              <td>500</td>
-              <td><strong>0,8976</strong></td>
-              <td><strong>10</strong></td>
-            </tr>
-            <tr>
-              <td>800</td>
-              <td><strong>0,8976</strong></td>
-              <td><strong>10</strong></td>
+              <td>0,8442–0,9347</td>
             </tr>
           </table>
-          <div style="flex:1 1 52%;">
-            <img src="img/sensibilidade_n_arvores.png" style="width:100%;" alt="Curva de sensibilidade ao número de árvores">
+          <div style="display:grid; grid-template-columns:1fr 1fr 1.45fr; gap:12px; flex:1; min-height:0;">
+            <div class="card vd">
+              <h3>CV</h3>
+              <p style="margin:0;">F1_CV <strong>maior em todas</strong> as configurações: o ganho não depende só do
+                teste.</p>
+            </div>
+            <div class="card er">
+              <h3>IC 95%</h3>
+              <p style="margin:0;">Intervalos <strong>se sobrepõem</strong>: vantagem consistente, mas não conclusiva
+                com 184 pacientes.</p>
+            </div>
+            <div class="card">
+              <h3>OOB (<em>out-of-bag</em>)</h3>
+              <p style="margin:0;">Cada árvore é avaliada nas amostras que ficaram <strong>fora do seu bootstrap</strong>
+                — uma validação interna, sem usar o teste. <strong>0,8583</strong> (630 de 734), coerente com a CV.</p>
+            </div>
           </div>
         </div>
-        <ul style="font-size:13.5px;">
-          <li><strong>Ganho decrescente:</strong> 100 → 300 sobe +0,0054; 300 → 500 sobe +0,0044; 500 e 800 são
-            idênticos.</li>
-          <li><strong>OOB score 0,8583</strong> (630 de 734 corretos fora do bootstrap) — validação interna
-            coerente com a CV.</li>
-          <li><strong>IC 95% ainda se sobrepõem</strong> entre RF e árvore: vantagem consistente, mas não
-            estatisticamente conclusiva com 184 pacientes.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- SLIDE 12 - MLFLOW -->
-    <div class="sl" id="s12">
-      <div class="slhd"><span class="num">12</span>
-        <h2>MLflow: dois experimentos, uma comparação</h2>
-      </div>
-      <div class="slbd">
-        <div class="c2">
-          <table class="tb2" style="font-size:13px;">
-            <tr>
-              <th>Experimento</th>
-              <th>Modelo</th>
-              <th>Runs</th>
-            </tr>
-            <tr>
-              <td><code>heart_failure_random_forest</code></td>
-              <td>RandomForest (300)</td>
-              <td>26</td>
-            </tr>
-            <tr>
-              <td><code>heart_failure_arvore_decisao</code></td>
-              <td>DecisionTree</td>
-              <td>111</td>
-            </tr>
-          </table>
-          <div>
-            <p style="font-size:13px; margin:0 0 4px;"><strong>Runs da floresta</strong></p>
-            <ul style="font-size:12.5px; margin:0;">
-              <li><code>random_forest_onehot</code> / <code>random_forest_ordinal</code></li>
-              <li><code>ablacao_atributos</code> + 12 filhas</li>
-              <li><code>engenharia_features</code> (2 filhas)</li>
-              <li><code>sensibilidade_n_estimators</code> (4 filhas)</li>
-              <li><code>comparacao_rf_vs_arvore</code> — deltas registrados como métricas</li>
-              <li><code>relatorio_artefatos</code> — CSVs, PNGs e ZIP</li>
-            </ul>
+        <div class="col">
+          <div class="fig"><img src="img/sensibilidade_n_arvores.png" alt="Curva de sensibilidade ao número de árvores"></div>
+          <div class="kpi" style="grid-template-columns:repeat(3,1fr);">
+            <div><b>+0,0054</b><span>100 → 300 árvores</span></div>
+            <div><b>+0,0044</b><span>300 → 500 árvores</span></div>
+            <div><b>0</b><span>500 → 800 (idênticos)</span></div>
           </div>
         </div>
-        <p style="font-size:13.5px; margin:6px 0 4px;"><strong>Reproduzir e comparar:</strong></p>
-        <pre style="font-size:12.5px; margin:0 0 6px;">mlflow ui --backend-store-uri sqlite:///mlflow.db</pre>
-        <ul style="font-size:13.5px;">
-          <li>Mesmo banco SQLite → os dois experimentos aparecem lado a lado na UI.</li>
-          <li>Na aba <em>Compare</em>: <code>f1_cv</code>, <code>F1_c1</code>, <code>F1_macro</code>,
-            <code>FN</code>, <code>tempo_busca_s</code> e <code>oob_score</code>.</li>
-          <li>Cada run guarda parâmetros, métricas, modelo treinado e artefatos.</li>
-        </ul>
-        <div class="dc"><strong>Rastreabilidade:</strong> todos os números desta apresentação saem de
-          <code>docs/handle_forest/resultados/execucao_20261030_205115/</code>.</div>
       </div>
+      <div class="nt"><strong>~1 min.</strong> Pergunta provável da banca: “é sorte do split?”. Resposta: a CV
+        repetida também favorece a floresta; porém os IC ainda se sobrepõem, então somos cautelosos. O número de
+        árvores tem retorno decrescente — 300 já capturam quase todo o ganho.</div>
     </div>
 
-    <!-- SLIDE 13 - CONCLUSÃO -->
-    <div class="sl" id="s13">
-      <div class="slhd"><span class="num">13</span>
+    <!-- SLIDE 9 - CONCLUSÃO (~1:00) -->
+    <div class="sl" id="s9">
+      <div class="slhd"><span class="num">9</span>
         <h2>Conclusão</h2>
       </div>
-      <div class="slbd">
-        <div style="display:flex; gap:20px; align-items:flex-start;">
-          <div style="flex:1 1 58%;">
-            <ul style="font-size:14.5px;">
-              <li><strong>Melhor no teste:</strong> Random Forest com todos os atributos — F1_c1
-                <strong>0,9091</strong>, <strong>7 FN</strong>, 12 FP, F1_macro 0,8948.</li>
-              <li><strong>Mais robusto na CV:</strong> RF one-hot — F1_CV <strong>0,8809</strong> (árvore:
-                0,8604).</li>
-              <li><strong>RF superior em todos os cenários:</strong> ΔF1_c1 de +0,0012 a +0,0704 nos cenários
-                principais e de +0,0585 a +0,1358 na ablação.</li>
-              <li><strong>Engenharia de features:</strong> ajudou a árvore e prejudicou a floresta → testar por
-                modelo.</li>
-              <li><strong>Custo:</strong> busca ~26 min (RF) contra segundos (árvore); predição continua
-                barata.</li>
-              <li><strong>Interpretabilidade:</strong> a árvore oferece um caminho auditável; a floresta exige
-                importância agregada + permutação.</li>
-            </ul>
+      <div class="slbd g" style="grid-template-rows:auto 1fr auto;">
+        <div class="kpi kpi4">
+          <div><b>0,9091</b><span>F1_c1 da melhor floresta (árvore: 0,8545)</span></div>
+          <div><b>7 FN</b><span>contra 8 da melhor árvore, com metade dos FP</span></div>
+          <div><b>0,8809</b><span>F1_CV da floresta (árvore: 0,8604)</span></div>
+          <div><b>~26 min</b><span>de busca, contra segundos da árvore</span></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1.25fr 1fr; gap:14px; min-height:0;">
+          <div class="col">
+            <div class="lin"><div><b>Desempenho</b>A floresta foi <strong>superior em
+                  todos os cenários</strong> — F1_c1, F1 macro e falsos positivos.</div></div>
+            <div class="lin"><div><b>Engenharia de atributos</b>Ajudou a árvore e
+                <strong>prejudicou a floresta</strong> → deve ser testada por modelo.</div></div>
+            <div class="lin"><div><b>Interpretabilidade</b>A árvore oferece um
+                <strong>caminho auditável</strong>; a floresta exige importância agregada e permutação.</div></div>
           </div>
-          <div style="flex:1 1 42%;">
-            <div class="dc" style="margin:0 0 8px; font-size:13.5px;"><strong>Recomendação:</strong> para
-              triagem, usar a floresta com os 11 atributos (menos falsos negativos); manter a árvore quando a
-              explicabilidade do caminho for requisito.</div>
-            <p style="font-size:13px; color:#5C5C5C; margin:0 0 6px;"><strong>Próximos passos</strong></p>
-            <ul style="font-size:13px; margin:0;">
-              <li>Ajuste de limiar de decisão para reduzir FN.</li>
-              <li>Calibração de probabilidades e SHAP.</li>
-              <li>Validação em base externa.</li>
-              <li>Comparação com Gradient Boosting.</li>
-            </ul>
+          <div class="col">
+            <div class="card vd grow" style="justify-content:center;">
+              <h3>Recomendação</h3>
+              <p style="margin:0;">Para <strong>triagem</strong>, usar o Random Forest com os 11 atributos. Manter a
+                árvore quando a <strong>explicabilidade</strong> do caminho de decisão for requisito.</p>
+            </div>
           </div>
         </div>
-        <div class="dc" style="text-align:center; margin:12px 0 0;"><strong>Obrigado!</strong></div>
+        <div class="faixa-az fim"><span>Obrigado! Perguntas?</span></div>
       </div>
+      <div class="nt"><strong>~1 min.</strong> Fechar com os quatro números e a recomendação.</div>
     </div>
 
   </div>

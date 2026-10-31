@@ -32,7 +32,7 @@ docs/handle_forest/
 ├── mlflow_runs_arvore_decisao.csv
 ├── mlruns/                     # artefatos do MLflow deste experimento
 └── apresentacao/
-    ├── index.html              # 13 slides focados na comparação
+    ├── index.html              # 9 slides (10 min) + roteiro de fala e cronômetro
     ├── estilo.css
     ├── script.js
     └── img/

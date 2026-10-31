@@ -1339,3 +1339,115 @@ pre.pc .nb {
 @media (max-width: 768px) {
     .padf { height: 420px }
 }
+
+/* ===== Versão de 10 minutos (9 slides) — layout em grade que ocupa a tela ===== */
+/* controles do apresentador */
+.tmr { background:#1E2B36; color:#E6EDF3; border:1px solid #2C3C49; border-radius:6px; padding:4px 10px;
+  font:700 13px/1.2 'Segoe UI',Arial,sans-serif; font-variant-numeric:tabular-nums; cursor:pointer }
+.tmr.run { background:#2D9A39; border-color:#2D9A39; color:#fff }
+.tmr.alerta { background:#C77C00; border-color:#C77C00; color:#fff }
+.tmr.estouro { background:#B3261E; border-color:#B3261E; color:#fff }
+#bnt.on { background:#2D9A39; color:#fff }
+body.notas .sl .nt { display:block; margin:0 22px 10px; flex-shrink:0 }
+body.modo-presenter #bnt, body.modo-presenter .tmr { display:none }
+
+/* corpo do slide ocupa toda a área disponível */
+.sl.ac .slbd.g { flex:1; min-height:0; margin:0; padding:14px 22px; display:grid; gap:14px; font-size:17px }
+.g > * { min-height:0; min-width:0 }
+.g li, .g p { line-height:1.4 }
+.col { display:flex; flex-direction:column; gap:12px; min-height:0 }
+.grow { flex:1; min-height:0 }
+
+/* cartões */
+.card { background:#F7F9FA; border:1px solid #E1E7EC; border-radius:12px; padding:12px 16px; display:flex; flex-direction:column; min-height:0 }
+.card h3 { margin:0 0 6px !important; display:flex; align-items:center; gap:8px }
+.card h3 i { color:var(--ve) }
+.card.er { background:#FBEDEC; border-color:#F0C7C3 }
+.card.er h3, .card.er h3 i { color:#B3261E }
+.card.az { background:linear-gradient(135deg,#0B1922,#1B3A5C); border:0; color:#fff }
+.card.az h3 { color:#8FE39B }
+.card.vd { background:#EAF4EC; border-color:#CBE7D3 }
+.card ul { margin:0 }
+.card .rod { margin-top:auto; padding-top:8px; border-top:1px dashed rgba(0,0,0,.15); font-size:15px }
+.big { font-size:1.55em; font-weight:800; line-height:1.15; margin:4px 0 6px; color:#7A1C16 }
+
+/* faixa de conclusão */
+.faixa-az { background:linear-gradient(90deg,#07121A,#1B3A5C); color:#fff; border-radius:10px; padding:10px 18px;
+  display:flex; align-items:center; gap:12px; font-weight:600 }
+.faixa-az i { color:#8FE39B; font-size:1.2em }
+.faixa-az b { color:#8FE39B }
+
+/* chips de contexto */
+.chips { display:flex; flex-wrap:wrap; gap:8px }
+.chips span { background:#EAF0F6; color:var(--bem2); border:1px solid #C9D7E5; border-radius:20px; padding:3px 12px; font-size:14.5px; font-weight:700 }
+
+/* duelo árvore × floresta */
+.duelo { display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:12px; overflow:hidden; border:1px solid #E1E7EC; flex:1; min-height:0 }
+.duelo .tt { grid-column:1/3; background:#0B1922; color:#fff; font-weight:700; font-size:14.5px; padding:5px 12px; display:flex; gap:8px; align-items:center }
+.duelo .tt i { color:#8FE39B }
+.duelo > div:not(.tt) { padding:6px 12px; display:flex; flex-direction:column; justify-content:center; background:#fff }
+.duelo > div.rf { background:#EAF4EC }
+.duelo small { font-size:12.5px; color:#5C5C5C; font-weight:700; text-transform:uppercase; letter-spacing:.06em }
+.duelo b { font-size:1.5em; line-height:1.1; color:var(--az) }
+.duelo .rf b { color:#1F7A2C }
+
+/* indicadores */
+.kpi { display:grid; gap:12px }
+.kpi > div { background:linear-gradient(135deg,#0B1922,#1B3A5C); color:#fff; border-radius:12px; padding:10px 14px; display:flex; flex-direction:column; justify-content:center }
+.kpi b { display:block; font-size:1.7em; line-height:1.1; color:#8FE39B }
+.kpi span { display:block; font-size:14px; opacity:.92; margin-top:3px }
+.kpi4 { grid-template-columns:repeat(4,1fr) }
+
+/* imagens que preenchem o espaço */
+.fig { flex:1; min-height:0; display:flex; align-items:center; justify-content:center; background:#fff; border:1px solid #E1E7EC; border-radius:12px; padding:8px }
+.fig img { max-width:100%; max-height:100%; object-fit:contain; display:block }
+.cap { font-size:14px; color:#45525C; text-align:center; margin-top:-4px }
+
+/* tabelas */
+.tb2.fill { height:100% }
+.tb2 td.cen { text-align:center }
+.tb2 tr.hl td { background:#E6F3E9 !important; font-weight:600 }
+.tb2 tr.bs td { background:#F6F2E8 !important; color:#6B5E44 }
+.tb2 td.ruim { color:#B3261E; font-weight:700 }
+.tb2 td.bom { color:#1F7A2C; font-weight:700 }
+
+/* evolução sem → com engenharia */
+.evo { background:#fff; border:1px solid #E1E7EC; border-left:6px solid var(--bem); border-radius:12px; padding:10px 14px; display:flex; flex-direction:column; gap:4px; flex:1; justify-content:center }
+.evo.rf { border-left-color:var(--ve) }
+.evo .t { font-weight:800; color:var(--az) }
+.evo .r { display:flex; justify-content:space-between; align-items:baseline; gap:10px; border-bottom:1px dashed #E1E7EC; padding:2px 0 }
+.evo .r span { color:#45525C; font-size:15px }
+.evo .r b { font-size:1.15em; font-variant-numeric:tabular-nums }
+.evo .up { color:#1F7A2C } .evo .down { color:#B3261E } .evo .eq { color:#5C5C5C }
+.evo .v { font-size:14.5px; color:#45525C; font-style:italic; margin-top:2px }
+
+/* capa */
+.capa .dir { flex-direction:column; gap:18px }
+.capa .dir img { max-height:48% }
+.capa .pergunta { max-width:78%; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25); border-left:5px solid var(--ve);
+  border-radius:10px; color:#fff; padding:14px 18px; font-size:19px; line-height:1.4 }
+.capa .pergunta small { display:block; color:#B4D89F; font-size:12.5px; letter-spacing:.18em; text-transform:uppercase; margin-bottom:4px; font-weight:700 }
+.capa .pergunta b { color:#8FE39B }
+
+.obrigado { font-size:1.15em; font-weight:800; white-space:nowrap; margin-left:auto }
+.g .card p, .g .card li { font-size:17.5px }
+.stat { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid #F0C7C3; border-radius:10px; padding:8px 12px; margin:auto 0 }
+.stat b { font-size:2.3em; line-height:1; color:#B3261E }
+.stat span { font-size:15px; color:#5A2A26 }
+#s4 .tb2 td, #s4 .tb2 th { padding-top:5px; padding-bottom:5px }
+#s4 .kpi b { font-size:1.45em }
+#s4 .kpi span { font-size:13.5px }
+.lin { flex:1; display:flex; align-items:center; gap:14px; background:#F7F9FA; border:1px solid #E1E7EC; border-left:6px solid var(--ve); border-radius:12px; padding:10px 16px; min-height:0 }
+.lin > i { font-size:1.6em; color:var(--ve); width:34px; text-align:center }
+.lin b { display:block; color:var(--bem); font-size:1.02em; margin-bottom:2px }
+.lin div { font-size:17.5px; line-height:1.4 }
+.faixa-az.fim { justify-content:center; font-size:1.3em; font-weight:800; padding:8px 18px }
+/* sem ícones: conclusões com numeração discreta */
+#s9 .col:first-child { counter-reset: cl }
+.lin::before { counter-increment: cl; content: counter(cl); flex-shrink:0; width:30px; height:30px; border-radius:50%; background:var(--az); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:15px }
+.card h3 { display:block }
+#s8 .card p { font-size:16px; line-height:1.35 }
+#s8 .card { padding:10px 12px }
+#s9 .card.vd { padding:18px 24px; border-left:6px solid var(--ve) }
+#s9 .card.vd h3 { font-size:1.25em; margin-bottom:10px !important }
+#s9 .card.vd p { font-size:21px; line-height:1.5 }
