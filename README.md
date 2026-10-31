@@ -1,10 +1,14 @@
-# Heart Failure — Árvore de Decisão com MLflow
+# Heart Failure — Árvore de Decisão e Random Forest com MLflow
 
-Este projeto executa a **Árvore de Decisão** na base
+Este projeto executa a **Árvore de Decisão** e o **Random Forest** na base
 [Heart Failure Prediction (Kaggle)](https://www.kaggle.com/datasets/fedesoriano/heart-failure-prediction),
 combinando **tratamento dos dados** e **ajuste de hiperparâmetros** para maximizar
 **acurácia, precisão e F1**. Todos os resultados são registrados no **MLflow** para
-apoiar a construção do relatório.
+apoiar a construção do relatório e a **comparação entre as duas abordagens**.
+
+> **Etapa 2 — Random Forest:** notebook, resultados, relatório (`.docx`/`.pdf`/`.html`)
+> e apresentação estão em [`docs/handle_forest/`](docs/handle_forest/README.md).
+> O experimento `heart_failure_random_forest` fica no mesmo `mlflow.db` da árvore.
 
 ## Estrutura
 
