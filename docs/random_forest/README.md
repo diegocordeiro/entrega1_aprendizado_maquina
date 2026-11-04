@@ -93,7 +93,9 @@ Detalhes, tabelas e discussão completa estão em `relatorio_formatado.docx` (24
 
 ## Apresentação
 
-`apresentacao/index.html` abre direto no navegador, sem servidor. Atalhos: `←`/`→` navegam, `Home`/`End` vão ao primeiro/último slide, `N` mostra o roteiro de fala, `T` liga o cronômetro de 10 minutos e `F` entra em tela cheia.
+`apresentacao/index.html` abre direto no navegador, sem servidor. Atalhos: `←`/`→` navegam, `Home`/`End` vão ao primeiro/último slide, `N` mostra o roteiro de fala, `T` liga o cronômetro e `F` entra em tela cheia.
+
+O cronômetro tem **limite configurável**: o padrão é `TMR_CONF.limiteMin` (10 min) no topo do bloco do cronômetro em `script.js`; para trocar sem editar o arquivo use `index.html?limite=12` na URL ou **Shift+clique** no próprio cronômetro (o valor fica salvo no navegador via `localStorage`). Cores: **verde até 60%** do limite, **amarelo de 60% a 90%** e **vermelho acima de 90%**. Duplo clique zera.
 
 Para gerar o PDF: use o botão **Exportar PDF** na barra de navegação (ao lado de "Próximo"; na janela de impressão escolha *Salvar como PDF*, margens *Nenhuma* e mantenha *Gráficos de fundo*) ou rode
 

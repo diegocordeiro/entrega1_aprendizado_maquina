@@ -1424,7 +1424,7 @@ pre.pc .nb {
 .tmr { background:#1E2B36; color:#E6EDF3; border:1px solid #2C3C49; border-radius:6px; padding:4px 10px;
   font:700 13.5px/1.2 var(--fonte); font-variant-numeric:tabular-nums; cursor:pointer }
 .tmr.run { background:#2D9A39; border-color:#2D9A39; color:#fff }
-.tmr.alerta { background:#C77C00; border-color:#C77C00; color:#fff }
+.tmr.alerta { background:#E3B341; border-color:#E3B341; color:#1B1B1B }
 .tmr.estouro { background:#B3261E; border-color:#B3261E; color:#fff }
 #bnt.on { background:#2D9A39; color:#fff }
 body.notas .sl .nt { display:block; margin:0 24px 12px; flex-shrink:0 }
@@ -1537,6 +1537,19 @@ body.modo-presenter #bnt, body.modo-presenter .tmr { display:none }
 #s9 .card.vd { padding:18px 24px; border-left:6px solid var(--ve) }
 #s9 .card.vd h3 { font-size:1.2em; margin-bottom:10px !important; color:var(--vd-tx) }
 #s9 .card.vd p { font-size:19px; line-height:1.55 }
+
+/* slide 3: duas tabelas com a mesma moldura e a mesma proporção de colunas */
+#s3 .card { padding:12px 14px; justify-content:center; flex:1 1 auto }
+#s3 .tb2 { margin:0; table-layout:fixed }
+#s3 .tb2 th:first-child, #s3 .tb2 td:first-child { width:46% }
+#s3 .tb2 th:nth-child(2), #s3 .tb2 td:nth-child(2),
+#s3 .tb2 th:nth-child(3), #s3 .tb2 td:nth-child(3) { width:27% }
+#s3 .tb2 th { padding:8px 12px }
+#s3 .tb2 td { padding:9px 12px }
+#s3 .tb2 tr.grp td { background:var(--azc) !important }
+#s3 .tb2 tr.grp td:first-child { box-shadow:inset 3px 0 0 var(--bem) }
+#s3 .tb2 td.floresta { background:var(--vd-bg); color:var(--vd-tx); font-weight:700 }
+#s3 .cap { margin:8px 0 0 }
 
 /* ===== Exportação em PDF (botão "Exportar PDF" ou Ctrl/Cmd+P) ===== */
 @media print {

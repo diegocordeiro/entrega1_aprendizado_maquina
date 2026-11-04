@@ -44,7 +44,7 @@ window.addEventListener('resize',function(){if(!zoomManual){fzLevel=autoZoom();a
 function openPresenter(){
   var bp=document.getElementById('bp');
   if(win && !win.closed){win.close();win=null;if(bp)bp.textContent='Modo apresentador';return}
-  var url=location.href.split('?')[0].split('#')[0]+'?modo=apresentador&c='+c+(zoomManual?'&fz='+fzLevel:'');
+  var url=location.href.split('?')[0].split('#')[0]+'?modo=apresentador&c='+c+(zoomManual?'&fz='+fzLevel:'')+'&limite='+(TMR_LIM/60);
   win=window.open(url,'rf_apresentador','menubar=no,toolbar=no,location=no,width=1280,height=800');
   if(win && bp)bp.textContent='Fechar apresentação';
 }
@@ -94,11 +94,39 @@ if(new URLSearchParams(location.search).get('pdf')==='1'){zoomManual=true;fzLeve
 
 /* ===== Roteiro de fala e cronômetro (versão de 10 minutos) ===== */
 function toggleNotas(){document.body.classList.toggle('notas');var b=document.getElementById('bnt');if(b)b.classList.toggle('on',document.body.classList.contains('notas'))}
-var tmrIni=null,tmrAcum=0,tmrId=null,TMR_LIM=600;
+var tmrIni=null,tmrAcum=0,tmrId=null;
+/* Limite do cronômetro: ?limite=<min> na URL > localStorage (Shift+clique) > valor abaixo */
+var TMR_CONF={limiteMin:10},TMR_CHAVE='rf_tmr_lim';
+function tmrNum(v){var n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:NaN}
+function tmrLimiteMin(){
+  var q=new URLSearchParams(location.search).get('limite');
+  if(q!==null&&tmrNum(q)>0)return tmrNum(q);
+  try{var ls=tmrNum(localStorage.getItem(TMR_CHAVE));if(ls>0)return ls}catch(e){}
+  return TMR_CONF.limiteMin;
+}
+var TMR_LIM=Math.round(tmrLimiteMin()*60);
 function tmrSeg(){return Math.floor((tmrAcum+(tmrIni?Date.now()-tmrIni:0))/1000)}
 function tmrFmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
-function tmrDraw(){var el=document.getElementById('tmr');if(!el)return;var s=tmrSeg();el.textContent=tmrFmt(s)+' / 10:00';
-  el.classList.toggle('run',!!tmrIni&&s<TMR_LIM-60);el.classList.toggle('alerta',s>=TMR_LIM-60&&s<TMR_LIM);el.classList.toggle('estouro',s>=TMR_LIM)}
+/* verde até 60% do limite, amarelo de 60% a 90%, vermelho de 90% em diante */
+function tmrDraw(){
+  var el=document.getElementById('tmr');if(!el)return;
+  var s=tmrSeg(),p=TMR_LIM?s/TMR_LIM:0;
+  el.textContent=tmrFmt(s)+' / '+tmrFmt(TMR_LIM);
+  el.classList.toggle('run',s>0&&p<=0.6);
+  el.classList.toggle('alerta',s>0&&p>0.6&&p<=0.9);
+  el.classList.toggle('estouro',p>0.9);
+  el.title='Iniciar/pausar (T) · duplo clique zera · Shift+clique define o limite (agora '+tmrFmt(TMR_LIM)+')';
+}
+function tmrDefinirLimite(){
+  var v=prompt('Limite do cronômetro em minutos (0,5 a 180):',String(+(TMR_LIM/60)).replace('.',','));
+  if(v===null)return;
+  var n=tmrNum(v);
+  if(!(n>=0.5&&n<=180)){alert('Valor inválido: informe um número entre 0,5 e 180 minutos.');return}
+  TMR_LIM=Math.round(n*60);
+  try{localStorage.setItem(TMR_CHAVE,String(n))}catch(e){}
+  tmrDraw();
+}
 function toggleTimer(){if(tmrIni){tmrAcum+=Date.now()-tmrIni;tmrIni=null;clearInterval(tmrId)}else{tmrIni=Date.now();tmrId=setInterval(tmrDraw,500)}tmrDraw()}
 function resetTimer(){if(tmrIni){clearInterval(tmrId)}tmrIni=null;tmrAcum=0;tmrDraw()}
 document.addEventListener('keydown',function(e){if(isPresenter)return;if(e.key==='n'||e.key==='N')toggleNotas();else if(e.key==='t'||e.key==='T')toggleTimer()});
+tmrDraw();
