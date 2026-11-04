@@ -1,3 +1,13 @@
+/* ===== Tipografia: Inter (variável 400–800) servida localmente, funciona offline ===== */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/inter-latin-var.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+
 /* ===== Identidade visual PPGCC / UFPI ===== */
 :root {
     --az: #0B1922;
@@ -12,7 +22,29 @@
     --b: #fff;
     --er: #B3261E;
     --bem: #3E7CB6;
-    --bem2: #1B3A5C
+    --bem2: #1B3A5C;
+    /* tipografia: Inter local + fallback do sistema */
+    --fonte: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --fonte-tit: var(--fonte);
+    /* escala tipográfica da apresentação (o zoom do .sc cuida da escala por tela) */
+    --fs-capa: clamp(32px, 2.6vw, 40px);
+    --fs-h2: clamp(25px, 1.95vw, 28px);
+    --fs-h3: 17.5px;
+    --fs-corpo: 17px;
+    --fs-tab: 16.5px;
+    --fs-apoio: 15px;
+    --fs-min: 13.5px;
+    --fs-kpi: 29px;
+    /* cores semânticas (antes repetidas em hex solto) */
+    --er-bg: #FBEDEC;
+    --er-bd: #F0C7C3;
+    --er-tx: #8A1F18;
+    --vd-bg: #EAF4EC;
+    --vd-bd: #CBE7D3;
+    --vd-tx: #1F7A2C;
+    --aviso-bg: #F8F4E9;
+    --aviso-tx: #6B5E44;
+    --tx-apoio: #45525C
 }
 
 * {
@@ -21,8 +53,15 @@
     padding: 0
 }
 
+button,
+input,
+select,
+textarea {
+    font-family: inherit
+}
+
 body {
-    font-family: 'Proxima Nova', 'Segoe UI', Arial, sans-serif;
+    font-family: var(--fonte);
     background: #EEF1F3;
     color: var(--p);
     overflow: hidden;
@@ -56,8 +95,8 @@ body {
 }
 
 .tb h2 {
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
-    font-size: 1.08em;
+    font-family: var(--fonte-tit);
+    font-size: 1em;
     font-weight: 700;
     line-height: 1.1;
     white-space: nowrap;
@@ -101,7 +140,7 @@ body {
     cursor: pointer;
     padding: 4px 9px;
     border-radius: 6px;
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
+    font-family: var(--fonte-tit);
     line-height: 1
 }
 
@@ -164,7 +203,7 @@ body {
 .slhd {
     background: linear-gradient(90deg, var(--aze), var(--az));
     color: #fff;
-    padding: 14px 26px;
+    padding: 16px 28px;
     display: flex;
     align-items: center;
     gap: 14px;
@@ -175,23 +214,23 @@ body {
     background: #fff;
     color: var(--az);
     border-radius: 8px;
-    min-width: 40px;
-    height: 40px;
+    min-width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
+    font-family: var(--fonte-tit);
     font-weight: 800;
-    font-size: 1.05em;
+    font-size: 1.15em;
     box-shadow: 0 2px 6px rgba(0, 0, 0, .25)
 }
 
 .slhd h2 {
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
-    font-size: 1.5em;
+    font-family: var(--fonte-tit);
+    font-size: var(--fs-h2);
     font-weight: 700;
-    letter-spacing: .2px;
-    line-height: 1.1
+    letter-spacing: -.2px;
+    line-height: 1.15
 }
 
 .slbd {
@@ -202,15 +241,16 @@ body {
 
 .sl h3 {
     color: var(--bem);
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
-    font-size: 1.05em;
+    font-family: var(--fonte-tit);
+    font-size: var(--fs-h3);
+    letter-spacing: .1px;
     margin: 12px 0 6px
 }
 
 .sl p,
 .sl li {
     font-size: 1em;
-    line-height: 1.5;
+    line-height: 1.45;
     margin: 5px 0
 }
 
@@ -225,12 +265,14 @@ body {
 }
 
 .sl ul>li::before {
-    content: "❑";
-    color: var(--ve);
-    font-size: 13px;
+    content: "";
     position: absolute;
-    left: 0;
-    top: 6px
+    left: 2px;
+    top: .62em;
+    width: .45em;
+    height: .45em;
+    border-radius: 2px;
+    background: var(--ve)
 }
 
 .mk {
@@ -290,22 +332,25 @@ body {
     width: 100%;
     border-collapse: collapse;
     margin: 12px 0;
-    font-size: 16px
+    font-size: var(--fs-tab);
+    font-variant-numeric: tabular-nums
 }
 
 .tb2 th {
     background: var(--az);
     color: #fff;
-    padding: 9px 12px;
+    padding: 8px 12px;
     text-align: left;
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
-    font-size: 15px
+    font-family: var(--fonte-tit);
+    font-size: var(--fs-tab);
+    letter-spacing: .02em;
+    font-weight: 700
 }
 
 .tb2 td {
     border: 1px solid #D8DFE3;
-    padding: 9px 12px;
-    vertical-align: top
+    padding: 8px 12px;
+    vertical-align: middle
 }
 
 .tb2 tr:nth-child(even) td {
@@ -336,7 +381,7 @@ body {
     color: #fff;
     cursor: pointer;
     transition: background .15s;
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif
+    font-family: var(--fonte-tit)
 }
 
 .bpb:hover {
@@ -408,16 +453,16 @@ body.modo-presenter .ctr .dot.ac {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 9px;
+    padding: 8px;
     background: #fff;
     border-top: 2px solid #E1E7EB
 }
 
 .ctr button {
-    padding: 10px 24px;
+    padding: 8px 22px;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     transition: transform .15s
@@ -549,6 +594,28 @@ body.modo-presenter .ctr .dot.ac {
     color: #fff
 }
 
+/* botão de exportação em PDF, na barra de navegação */
+.ctr .bp {
+    background: #fff;
+    color: var(--az);
+    border: 1px solid #C7D1D9;
+    margin-left: 8px
+}
+
+.ctr .bp:hover {
+    background: #E9EEF3
+}
+
+body.modo-presenter .ctr .bp {
+    background: #1E2B36;
+    color: #E6EDF3;
+    border-color: #2C3C49
+}
+
+body.modo-presenter .ctr .bp:hover {
+    background: #2A3B49
+}
+
 .dc {
     background: #F1F6F0;
     border-left: 6px solid #9AC3A5;
@@ -586,7 +653,7 @@ body.modo-presenter .ctr .dot.ac {
     line-height: 26px;
     font-weight: 800;
     margin-bottom: 4px;
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif
+    font-family: var(--fonte-tit)
 }
 
 .fluxo .st {
@@ -831,7 +898,7 @@ pre.pc .nb {
     text-align: center;
     font-weight: 800;
     font-size: 15px;
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif
+    font-family: var(--fonte-tit)
 }
 
 .sl .nt {
@@ -841,7 +908,8 @@ pre.pc .nb {
     background: #F0F7F3;
     border: 2px solid #BFD9CB;
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 15.5px;
+    line-height: 1.45;
     color: #3C4A44
 }
 
@@ -870,24 +938,26 @@ pre.pc .nb {
 }
 
 .capa .esq h1 {
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
-    font-size: 36px;
-    line-height: 1.15;
-    margin: 6px 0 4px
+    font-family: var(--fonte-tit);
+    font-size: var(--fs-capa);
+    line-height: 1.16;
+    letter-spacing: -.5px;
+    margin: 6px 0 6px
 }
 
 .capa .esq .rot {
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
-    font-size: 13px;
-    letter-spacing: .22em;
+    font-family: var(--fonte-tit);
+    font-size: 12.5px;
+    letter-spacing: .24em;
     text-transform: uppercase;
     color: #B4D89F
 }
 
 .capa .esq .sub {
-    font-size: 17px;
+    font-size: 17.5px;
+    line-height: 1.45;
     opacity: .92;
-    margin-top: 6px
+    margin-top: 8px
 }
 
 .capa .esq .meta {
@@ -921,13 +991,13 @@ pre.pc .nb {
 }
 
 .capa .dir img {
-    max-width: 78%;
-    max-height: 78%;
+    max-width: 90%;
+    max-height: 66%;
     width: auto;
     height: auto;
     object-fit: contain;
     display: block;
-    padding: 20px
+    padding: 8px
 }
 
 .capa .dir .marca {
@@ -962,7 +1032,7 @@ pre.pc .nb {
 }
 
 .divisor .in .rot {
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
+    font-family: var(--fonte-tit);
     font-size: 13px;
     letter-spacing: .22em;
     text-transform: uppercase;
@@ -970,7 +1040,7 @@ pre.pc .nb {
 }
 
 .divisor h1 {
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
+    font-family: var(--fonte-tit);
     font-size: 38px;
     line-height: 1.2;
     margin-top: 6px
@@ -1008,8 +1078,8 @@ pre.pc .nb {
 }
 
 .ft .txt {
-    font-family: 'Proxima Nova Semibold', 'Segoe UI', Arial, sans-serif;
-    font-size: 12px;
+    font-family: var(--fonte-tit);
+    font-size: 12.5px;
     color: var(--c);
     font-weight: 700;
     letter-spacing: .02em;
@@ -1103,6 +1173,15 @@ pre.pc .nb {
 
     .capa {
         grid-template-columns: 1fr
+    }
+
+    .topo {
+        grid-template-columns: 1fr;
+        gap: 12px
+    }
+
+    .pergunta {
+        font-size: 15.5px
     }
 
     .capa .esq {
@@ -1343,111 +1422,152 @@ pre.pc .nb {
 /* ===== Versão de 10 minutos (9 slides) — layout em grade que ocupa a tela ===== */
 /* controles do apresentador */
 .tmr { background:#1E2B36; color:#E6EDF3; border:1px solid #2C3C49; border-radius:6px; padding:4px 10px;
-  font:700 13px/1.2 'Segoe UI',Arial,sans-serif; font-variant-numeric:tabular-nums; cursor:pointer }
+  font:700 13.5px/1.2 var(--fonte); font-variant-numeric:tabular-nums; cursor:pointer }
 .tmr.run { background:#2D9A39; border-color:#2D9A39; color:#fff }
 .tmr.alerta { background:#C77C00; border-color:#C77C00; color:#fff }
 .tmr.estouro { background:#B3261E; border-color:#B3261E; color:#fff }
 #bnt.on { background:#2D9A39; color:#fff }
-body.notas .sl .nt { display:block; margin:0 22px 10px; flex-shrink:0 }
+body.notas .sl .nt { display:block; margin:0 24px 12px; flex-shrink:0 }
 body.modo-presenter #bnt, body.modo-presenter .tmr { display:none }
 
-/* corpo do slide ocupa toda a área disponível */
-.sl.ac .slbd.g { flex:1; min-height:0; margin:0; padding:14px 22px; display:grid; gap:14px; font-size:17px }
+/* corpo do slide ocupa toda a área disponível (vale também na exportação em PDF) */
+.sl .slbd.g { flex:1; min-height:0; margin:0; padding:16px 24px; display:grid; gap:16px; font-size:var(--fs-corpo) }
 .g > * { min-height:0; min-width:0 }
-.g li, .g p { line-height:1.4 }
-.col { display:flex; flex-direction:column; gap:12px; min-height:0 }
+.g li, .g p { line-height:1.45 }
+.col { display:flex; flex-direction:column; gap:14px; min-height:0 }
 .grow { flex:1; min-height:0 }
 
 /* cartões */
-.card { background:#F7F9FA; border:1px solid #E1E7EC; border-radius:12px; padding:12px 16px; display:flex; flex-direction:column; min-height:0 }
-.card h3 { margin:0 0 6px !important; display:flex; align-items:center; gap:8px }
-.card h3 i { color:var(--ve) }
-.card.er { background:#FBEDEC; border-color:#F0C7C3 }
-.card.er h3, .card.er h3 i { color:#B3261E }
+.card { background:#F7F9FA; border:1px solid #E1E7EC; border-radius:14px; padding:13px 17px; display:flex; flex-direction:column; min-height:0 }
+.card h3 { margin:0 0 8px !important; display:block; color:var(--bem) }
+.card.er { background:var(--er-bg); border-color:var(--er-bd) }
+.card.er h3 { color:var(--er) }
 .card.az { background:linear-gradient(135deg,#0B1922,#1B3A5C); border:0; color:#fff }
 .card.az h3 { color:#8FE39B }
-.card.vd { background:#EAF4EC; border-color:#CBE7D3 }
+.card.vd { background:var(--vd-bg); border-color:var(--vd-bd) }
+.card.vd h3 { color:var(--vd-tx) }
 .card ul { margin:0 }
-.card .rod { margin-top:auto; padding-top:8px; border-top:1px dashed rgba(0,0,0,.15); font-size:15px }
-.big { font-size:1.55em; font-weight:800; line-height:1.15; margin:4px 0 6px; color:#7A1C16 }
+.card .rod { margin-top:auto; padding-top:9px; border-top:1px dashed rgba(0,0,0,.15); font-size:var(--fs-apoio); line-height:1.4 }
+.big { font-size:1.6em; font-weight:800; line-height:1.15; letter-spacing:-.01em; margin:4px 0 8px; color:var(--er-tx) }
 
 /* faixa de conclusão */
-.faixa-az { background:linear-gradient(90deg,#07121A,#1B3A5C); color:#fff; border-radius:10px; padding:10px 18px;
-  display:flex; align-items:center; gap:12px; font-weight:600 }
-.faixa-az i { color:#8FE39B; font-size:1.2em }
+.faixa-az { background:linear-gradient(90deg,#07121A,#1B3A5C); color:#fff; border-radius:12px; padding:11px 20px;
+  display:flex; align-items:center; gap:12px; font-weight:600; line-height:1.4 }
 .faixa-az b { color:#8FE39B }
 
 /* chips de contexto */
-.chips { display:flex; flex-wrap:wrap; gap:8px }
-.chips span { background:#EAF0F6; color:var(--bem2); border:1px solid #C9D7E5; border-radius:20px; padding:3px 12px; font-size:14.5px; font-weight:700 }
+.chips { display:flex; flex-wrap:wrap; gap:8px; align-content:center }
+.chips span { background:#EAF0F6; color:var(--bem2); border:1px solid #C9D7E5; border-radius:20px; padding:4px 13px;
+  font-size:var(--fs-apoio); font-weight:700 }
+
+/* pergunta de pesquisa — abre o slide 2 */
+.topo { display:grid; grid-template-columns:1.25fr 1fr; gap:16px; align-items:center }
+.pergunta { background:#EAF0F6; border:1px solid #C9D7E5; border-left:5px solid var(--ve); border-radius:12px;
+  padding:10px 16px; font-size:16.5px; line-height:1.42; color:var(--az); font-weight:600 }
+.pergunta small { display:block; color:var(--vd-tx); font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+  margin-bottom:3px; font-weight:800 }
+.pergunta b { color:var(--vd-tx) }
 
 /* duelo árvore × floresta */
-.duelo { display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:12px; overflow:hidden; border:1px solid #E1E7EC; flex:1; min-height:0 }
-.duelo .tt { grid-column:1/3; background:#0B1922; color:#fff; font-weight:700; font-size:14.5px; padding:5px 12px; display:flex; gap:8px; align-items:center }
-.duelo .tt i { color:#8FE39B }
-.duelo > div:not(.tt) { padding:6px 12px; display:flex; flex-direction:column; justify-content:center; background:#fff }
-.duelo > div.rf { background:#EAF4EC }
-.duelo small { font-size:12.5px; color:#5C5C5C; font-weight:700; text-transform:uppercase; letter-spacing:.06em }
-.duelo b { font-size:1.5em; line-height:1.1; color:var(--az) }
-.duelo .rf b { color:#1F7A2C }
+.duelo { display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:14px; overflow:hidden; border:1px solid #E1E7EC; flex:1 1 auto; min-height:0 }
+.duelo .tt { grid-column:1/3; background:#0B1922; color:#fff; font-weight:700; font-size:var(--fs-apoio); padding:6px 14px; display:flex; gap:8px; align-items:center; line-height:1.35 }
+.duelo > div:not(.tt) { padding:7px 14px; display:flex; flex-direction:column; justify-content:center; background:#fff }
+.duelo > div.rf { background:var(--vd-bg) }
+.duelo small { font-size:13px; color:var(--c); font-weight:700; text-transform:uppercase; letter-spacing:.06em }
+.duelo b { font-size:1.6em; line-height:1.1; color:var(--az); font-variant-numeric:tabular-nums }
+.duelo .rf b { color:var(--vd-tx) }
 
 /* indicadores */
 .kpi { display:grid; gap:12px }
-.kpi > div { background:linear-gradient(135deg,#0B1922,#1B3A5C); color:#fff; border-radius:12px; padding:10px 14px; display:flex; flex-direction:column; justify-content:center }
-.kpi b { display:block; font-size:1.7em; line-height:1.1; color:#8FE39B }
-.kpi span { display:block; font-size:14px; opacity:.92; margin-top:3px }
+.kpi > div { background:linear-gradient(135deg,#0B1922,#1B3A5C); color:#fff; border-radius:14px; padding:12px 16px; display:flex; flex-direction:column; justify-content:center }
+.kpi b { display:block; font-size:var(--fs-kpi); line-height:1.1; color:#8FE39B; font-variant-numeric:tabular-nums }
+.kpi span { display:block; font-size:var(--fs-apoio); line-height:1.35; opacity:.95; margin-top:4px }
 .kpi4 { grid-template-columns:repeat(4,1fr) }
-
 /* imagens que preenchem o espaço */
-.fig { flex:1; min-height:0; display:flex; align-items:center; justify-content:center; background:#fff; border:1px solid #E1E7EC; border-radius:12px; padding:8px }
-.fig img { max-width:100%; max-height:100%; object-fit:contain; display:block }
-.cap { font-size:14px; color:#45525C; text-align:center; margin-top:-4px }
+.fig { flex:1; min-height:0; display:flex; align-items:center; justify-content:center; background:#fff; border:1px solid #E1E7EC; border-radius:14px; padding:6px }
+.fig img { width:100%; height:100%; max-width:100%; max-height:100%; object-fit:contain; display:block }
+.cap { font-size:var(--fs-apoio); color:var(--tx-apoio); text-align:center; margin-top:-6px }
 
 /* tabelas */
 .tb2.fill { height:100% }
 .tb2 td.cen { text-align:center }
 .tb2 tr.hl td { background:#E6F3E9 !important; font-weight:600 }
-.tb2 tr.bs td { background:#F6F2E8 !important; color:#6B5E44 }
-.tb2 td.ruim { color:#B3261E; font-weight:700 }
-.tb2 td.bom { color:#1F7A2C; font-weight:700 }
+.tb2 tr.hl td:first-child { box-shadow:inset 3px 0 0 var(--ve) }
+.tb2 tr.bs td { background:var(--aviso-bg) !important; color:var(--aviso-tx) }
+.tb2 td.ruim { color:var(--er); font-weight:700 }
+.tb2 td.bom { color:var(--vd-tx); font-weight:700 }
+/* colunas numéricas centralizadas (sem tocar no HTML) */
+.slbd.g .tb2 tr > *:nth-child(n+2) { text-align:center }
 
 /* evolução sem → com engenharia */
-.evo { background:#fff; border:1px solid #E1E7EC; border-left:6px solid var(--bem); border-radius:12px; padding:10px 14px; display:flex; flex-direction:column; gap:4px; flex:1; justify-content:center }
+.evo { background:#fff; border:1px solid #E1E7EC; border-left:6px solid var(--bem); border-radius:14px; padding:11px 15px;
+  display:flex; flex-direction:column; gap:5px; flex:1 1 auto; justify-content:center; min-height:0 }
 .evo.rf { border-left-color:var(--ve) }
-.evo .t { font-weight:800; color:var(--az) }
+.evo .t { font-weight:800; color:var(--az); font-size:var(--fs-h3) }
 .evo .r { display:flex; justify-content:space-between; align-items:baseline; gap:10px; border-bottom:1px dashed #E1E7EC; padding:2px 0 }
-.evo .r span { color:#45525C; font-size:15px }
-.evo .r b { font-size:1.15em; font-variant-numeric:tabular-nums }
-.evo .up { color:#1F7A2C } .evo .down { color:#B3261E } .evo .eq { color:#5C5C5C }
-.evo .v { font-size:14.5px; color:#45525C; font-style:italic; margin-top:2px }
+.evo .r span { color:var(--tx-apoio); font-size:15.5px }
+.evo .r b { font-size:1.12em; font-variant-numeric:tabular-nums }
+.evo .up { color:var(--vd-tx) } .evo .down { color:var(--er) } .evo .eq { color:var(--c) }
+.evo .v { font-size:var(--fs-apoio); color:var(--tx-apoio); font-style:italic; margin-top:3px }
 
-/* capa */
-.capa .dir { flex-direction:column; gap:18px }
-.capa .dir img { max-height:48% }
-.capa .pergunta { max-width:78%; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25); border-left:5px solid var(--ve);
-  border-radius:10px; color:#fff; padding:14px 18px; font-size:19px; line-height:1.4 }
-.capa .pergunta small { display:block; color:#B4D89F; font-size:12.5px; letter-spacing:.18em; text-transform:uppercase; margin-bottom:4px; font-weight:700 }
-.capa .pergunta b { color:#8FE39B }
-
-.obrigado { font-size:1.15em; font-weight:800; white-space:nowrap; margin-left:auto }
-.g .card p, .g .card li { font-size:17.5px }
-.stat { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid #F0C7C3; border-radius:10px; padding:8px 12px; margin:auto 0 }
-.stat b { font-size:2.3em; line-height:1; color:#B3261E }
-.stat span { font-size:15px; color:#5A2A26 }
-#s4 .tb2 td, #s4 .tb2 th { padding-top:5px; padding-bottom:5px }
-#s4 .kpi b { font-size:1.45em }
-#s4 .kpi span { font-size:13.5px }
-.lin { flex:1; display:flex; align-items:center; gap:14px; background:#F7F9FA; border:1px solid #E1E7EC; border-left:6px solid var(--ve); border-radius:12px; padding:10px 16px; min-height:0 }
-.lin > i { font-size:1.6em; color:var(--ve); width:34px; text-align:center }
-.lin b { display:block; color:var(--bem); font-size:1.02em; margin-bottom:2px }
-.lin div { font-size:17.5px; line-height:1.4 }
-.faixa-az.fim { justify-content:center; font-size:1.3em; font-weight:800; padding:8px 18px }
-/* sem ícones: conclusões com numeração discreta */
+/* conclusão */
+.lin { flex:1; display:flex; align-items:center; gap:14px; background:#F7F9FA; border:1px solid #E1E7EC; border-left:6px solid var(--ve);
+  border-radius:14px; padding:12px 18px; min-height:0 }
+.lin b { display:block; color:var(--bem); font-size:1.02em; margin-bottom:3px }
+.lin div { font-size:var(--fs-corpo); line-height:1.45 }
+.faixa-az.fim { justify-content:center; font-size:1.3em; font-weight:800; padding:9px 20px }
 #s9 .col:first-child { counter-reset: cl }
-.lin::before { counter-increment: cl; content: counter(cl); flex-shrink:0; width:30px; height:30px; border-radius:50%; background:var(--az); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:15px }
-.card h3 { display:block }
-#s8 .card p { font-size:16px; line-height:1.35 }
-#s8 .card { padding:10px 12px }
+.lin::before { counter-increment: cl; content: counter(cl); flex-shrink:0; width:32px; height:32px; border-radius:50%;
+  background:var(--az); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:15px }
+
+/* ajustes finos por slide */
+.g .card p, .g .card li { font-size:var(--fs-corpo) }
+.stat { display:flex; align-items:center; gap:14px; background:#fff; border:1px solid var(--er-bd); border-radius:12px; padding:10px 14px; margin:auto 0 }
+.stat b { font-size:2.2em; line-height:1; color:var(--er); font-variant-numeric:tabular-nums }
+.stat span { font-size:var(--fs-apoio); line-height:1.35; color:#5A2A26 }
+#s2 .card li { margin:7px 0 }
+#s2 .duelo { grid-template-columns:1fr 1.18fr }
+#s2 .duelo b { font-size:1.35em; white-space:nowrap }
+#s4 .tb2 td, #s4 .tb2 th { padding-top:4px; padding-bottom:4px }
+#s4 .kpi > div { padding:8px 14px }
+#s4 .kpi b { font-size:1.42em }
+#s4 .kpi span { font-size:14.5px; line-height:1.3 }
+#s8 .card { padding:11px 13px }
+#s8 .card p { font-size:15.5px; line-height:1.38 }
 #s9 .card.vd { padding:18px 24px; border-left:6px solid var(--ve) }
-#s9 .card.vd h3 { font-size:1.25em; margin-bottom:10px !important }
-#s9 .card.vd p { font-size:21px; line-height:1.5 }
+#s9 .card.vd h3 { font-size:1.2em; margin-bottom:10px !important; color:var(--vd-tx) }
+#s9 .card.vd p { font-size:19px; line-height:1.55 }
+
+/* ===== Exportação em PDF (botão "Exportar PDF" ou Ctrl/Cmd+P) ===== */
+@media print {
+    @page { size: 1280px 720px; margin: 0 }
+
+    html, body { height:auto !important; overflow:visible !important; display:block !important; background:#fff !important }
+    body { -webkit-print-color-adjust:exact; print-color-adjust:exact }
+    .tb, .fita, .ft, .ctr, .fz, .tmr, .nt { display:none !important }
+    .sc { display:block !important; zoom:1 !important; overflow:visible !important }
+    .sl { display:flex !important; flex-direction:column !important; width:1280px !important; height:720px !important;
+        border-radius:0 !important; box-shadow:none !important; overflow:hidden !important;
+        break-inside:avoid; page-break-inside:avoid; break-after:page; page-break-after:always }
+    .sl:last-of-type { break-after:auto; page-break-after:auto }
+    .sl .slbd { animation:none !important }
+    .sl .slbd.g { flex:1 !important; min-height:0 !important; margin:0 !important; padding:16px 24px !important; gap:16px !important }
+
+    /* O layout de impressão do Chrome usa uma viewport estreita (~740px), o que
+       ativaria o @media(max-width:768px) e jogaria o slide no layout de celular.
+       Reafirmo aqui a versão desktop para o PDF sair igual à tela. */
+    .sl { font-size:18px !important }
+    .slhd { padding:16px 28px !important; gap:14px !important }
+    .slhd .num { min-width:44px !important; height:44px !important; font-size:1.15em !important; border-radius:8px !important }
+    .slhd h2 { font-size:var(--fs-h2) !important }
+    .slbd { padding:20px 28px 14px !important }
+    .tb2 { font-size:var(--fs-tab) !important }
+    .tb2 th { font-size:var(--fs-tab) !important }
+    .tb2 th, .tb2 td { padding:8px 12px !important }
+    .capa { grid-template-columns:736px 544px !important }
+    .topo { grid-template-columns:1.25fr 1fr !important; gap:16px !important }
+    .capa .esq { padding:32px !important }
+    .capa .esq h1 { font-size:var(--fs-capa) !important }
+    .capa .dir { min-height:0 !important }
+    .capa .dir .marca { display:block !important }
+}

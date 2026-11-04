@@ -64,6 +64,17 @@ window.addEventListener('message',function(e){var d=e.data||{};if(d.type==='esta
 function rv(e){e.classList.toggle('rv')}
 
 function toggleFullscreen(){if(document.fullscreenElement||document.webkitFullscreenElement){if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();}else{var d=document.documentElement;if(d.requestFullscreen)d.requestFullscreen();else if(d.webkitRequestFullscreen)d.webkitRequestFullscreen();}}
+
+/* Exporta os 9 slides em PDF pela janela de impressão (CSS @media print em estilo.css).
+   O zoom aplicado ao .sc na tela é neutralizado durante a impressão. */
+function exportarPDF(){
+  var sc=document.querySelector('.sc'),antes=sc?sc.style.zoom:'';
+  if(sc)sc.style.zoom='1';
+  function restaurar(){if(sc)sc.style.zoom=antes;window.removeEventListener('afterprint',restaurar)}
+  window.addEventListener('afterprint',restaurar);
+  window.print();
+  setTimeout(restaurar,1500);
+}
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight')nx();else if(e.key==='ArrowLeft')pv();else if(e.key==='Home'){e.preventDefault();go(0)}else if(e.key==='End'){e.preventDefault();go(t-1)}else if(e.key==='f'||e.key==='F')toggleFullscreen()});
 
 if(isPresenter){
@@ -77,6 +88,9 @@ applyZoom();
 buildDots();
 sh(c);
 sync();
+
+/* ?pdf=1 — usado pelo exportar_pdf.sh: mantém o zoom em 1 para o PDF sair no tamanho de projeto */
+if(new URLSearchParams(location.search).get('pdf')==='1'){zoomManual=true;fzLevel=1;applyZoom()}
 
 /* ===== Roteiro de fala e cronômetro (versão de 10 minutos) ===== */
 function toggleNotas(){document.body.classList.toggle('notas');var b=document.getElementById('bnt');if(b)b.classList.toggle('on',document.body.classList.contains('notas'))}

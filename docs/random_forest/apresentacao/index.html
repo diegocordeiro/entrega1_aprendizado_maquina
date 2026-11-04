@@ -55,13 +55,11 @@
         </div>
         <div class="dir">
           <img src="img/logo_full.png" alt="PPGCC — UFPI">
-          <div class="pergunta"><small>Pergunta de pesquisa</small>Trocar <b>1 árvore</b> por uma floresta de
-            <b>300 árvores</b> melhora a triagem de doença cardíaca?</div>
           <img class="marca" src="img/marca.png" alt="">
         </div>
       </div>
-      <div class="nt"><strong>~20 s.</strong> Apresentar o grupo e ler a pergunta de pesquisa: “repetimos com Random
-        Forest tudo o que fizemos com a Árvore de Decisão e comparamos os resultados”.</div>
+      <div class="nt"><strong>~20 s.</strong> Apresentar o grupo. A pergunta de pesquisa abre o próximo slide:
+        “repetimos com Random Forest tudo o que fizemos com a Árvore de Decisão e comparamos os resultados”.</div>
     </div>
 
     <!-- SLIDE 2 - PROBLEMA E DESENHO (~1:00) -->
@@ -70,9 +68,13 @@
         <h2>Problema e desenho da comparação</h2>
       </div>
       <div class="slbd g" style="grid-template-rows:auto 1fr auto;">
-        <div class="chips">
-          <span>Classificação binária</span><span>Heart Failure (Kaggle)</span><span>918 registros</span>
-          <span>11 atributos</span><span>Teste: 184 pacientes</span>
+        <div class="topo">
+          <div class="pergunta"><small>Pergunta de pesquisa</small>Trocar <b>1 árvore</b> por uma floresta de
+            <b>300 árvores</b> melhora a triagem de doença cardíaca?</div>
+          <div class="chips">
+            <span>Classificação binária</span><span>Heart Failure (Kaggle)</span><span>918 registros</span>
+            <span>11 atributos</span><span>Teste: 184 pacientes</span>
+          </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1.1fr 1.1fr; gap:14px;">
           <div class="card er">
@@ -576,6 +578,7 @@
     <button class="bz" id="bprev" onclick="pv()">Anterior</button>
     <div class="dots" id="dots" role="group" aria-label="Ir para o slide"></div>
     <button class="bv" id="bnext" onclick="nx()">Próximo</button>
+    <button class="bp" id="bexp" onclick="exportarPDF()" title="Exportar os 9 slides em PDF — na janela de impressão escolha 'Salvar como PDF', margens 'Nenhuma' e mantenha 'Gráficos de fundo'">Exportar PDF</button>
   </nav>
   <script src="script.js"></script>
 </body>

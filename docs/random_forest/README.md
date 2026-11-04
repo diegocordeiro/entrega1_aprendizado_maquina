@@ -33,8 +33,10 @@ docs/handle_forest/
 ├── mlruns/                     # artefatos do MLflow deste experimento
 └── apresentacao/
     ├── index.html              # 9 slides (10 min) + roteiro de fala e cronômetro
-    ├── estilo.css
+    ├── estilo.css              # tema visual + CSS de impressão (exportação em PDF)
     ├── script.js
+    ├── exportar_pdf.sh         # gera o PDF dos 9 slides sem abrir a janela de impressão
+    ├── fonts/                  # Inter (woff2 variável 400–800, licença SIL OFL) — funciona offline
     └── img/
 ```
 
@@ -88,3 +90,16 @@ A referência usada (`<referencia.docx>`) é a referência padrão do pandoc com
 - Na ablação, a floresta venceu nos 12 cenários e é bem menos sensível à remoção de atributos.
 
 Detalhes, tabelas e discussão completa estão em `relatorio_formatado.docx` (24 páginas) e em `apresentacao/index.html`.
+
+## Apresentação
+
+`apresentacao/index.html` abre direto no navegador, sem servidor. Atalhos: `←`/`→` navegam, `Home`/`End` vão ao primeiro/último slide, `N` mostra o roteiro de fala, `T` liga o cronômetro de 10 minutos e `F` entra em tela cheia.
+
+Para gerar o PDF: use o botão **Exportar PDF** na barra de navegação (ao lado de "Próximo"; na janela de impressão escolha *Salvar como PDF*, margens *Nenhuma* e mantenha *Gráficos de fundo*) ou rode
+
+```bash
+cd docs/random_forest/apresentacao
+./exportar_pdf.sh                       # gera Random_Forest_apresentacao.pdf (9 páginas 16:9)
+```
+
+O PDF sai em 16:9 com uma página por slide, sem a barra de controles nem o roteiro. O tamanho de página é definido por `@page` no `estilo.css`, respeitado por Chrome, Edge e Firefox; no Safari o resultado pode cair em A4 — nesse caso use o script ou o Chrome.
