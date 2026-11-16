@@ -1,0 +1,5 @@
+Alvo,Featurizacao,ROC_AUC
+EGFR,morgan,0.9
+BACE1,morgan,0.8986
+DRD2,morgan,0.8678
+HDAC1,morgan,0.8996

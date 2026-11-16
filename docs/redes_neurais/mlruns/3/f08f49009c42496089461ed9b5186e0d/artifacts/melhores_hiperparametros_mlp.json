@@ -1,0 +1,86 @@
+{
+  "EGFR__morgan": {
+    "f1_cv": 0.8816,
+    "activation": "relu",
+    "alpha": "0.001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "EGFR__descritores": {
+    "f1_cv": 0.8698,
+    "activation": "relu",
+    "alpha": "0.001",
+    "hidden_layer_sizes": "(128,)",
+    "learning_rate_init": "0.001"
+  },
+  "EGFR__combinado": {
+    "f1_cv": 0.8843,
+    "activation": "relu",
+    "alpha": "0.0001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "BACE1__morgan": {
+    "f1_cv": 0.8712,
+    "activation": "relu",
+    "alpha": "0.001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "BACE1__descritores": {
+    "f1_cv": 0.8594,
+    "activation": "relu",
+    "alpha": "0.0001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "BACE1__combinado": {
+    "f1_cv": 0.8688,
+    "activation": "relu",
+    "alpha": "0.0001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "DRD2__morgan": {
+    "f1_cv": 0.8126,
+    "activation": "relu",
+    "alpha": "0.001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "DRD2__descritores": {
+    "f1_cv": 0.8073,
+    "activation": "relu",
+    "alpha": "0.001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "DRD2__combinado": {
+    "f1_cv": 0.8139,
+    "activation": "relu",
+    "alpha": "0.001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "HDAC1__morgan": {
+    "f1_cv": 0.8203,
+    "activation": "relu",
+    "alpha": "0.0001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "HDAC1__descritores": {
+    "f1_cv": 0.822,
+    "activation": "relu",
+    "alpha": "0.001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  },
+  "HDAC1__combinado": {
+    "f1_cv": 0.8291,
+    "activation": "relu",
+    "alpha": "0.0001",
+    "hidden_layer_sizes": "(256, 128)",
+    "learning_rate_init": "0.001"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cenario_referencia": {
+    "imputacao": "descarte",
+    "escala": "nenhuma",
+    "C": "10",
+    "class_weight": "balanced",
+    "gamma": "scale",
+    "kernel": "rbf"
+  },
+  "por_kernel": {
+    "linear": "C=0.1, class_weight=balanced, kernel=linear",
+    "rbf": "C=10, class_weight=balanced, gamma=scale, kernel=rbf",
+    "poly": "C=10, class_weight=balanced, degree=2, gamma=scale, kernel=poly",
+    "sigmoid": "C=1, class_weight=balanced, gamma=auto, kernel=sigmoid"
+  },
+  "com_engenharia": {
+    "C": "10",
+    "class_weight": "balanced",
+    "gamma": "scale",
+    "kernel": "rbf"
+  },
+  "protocolo": {
+    "fracao_teste": 0.2,
+    "semente": 42,
+    "cv": "RepeatedStratifiedKFold(5x2)",
+    "n_combinacoes": 136,
+    "modo": "completa"
+  }
+}

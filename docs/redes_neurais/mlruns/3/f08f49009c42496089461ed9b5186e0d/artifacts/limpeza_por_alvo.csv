@@ -1,0 +1,5 @@
+alvo,politica_tipo,limiar,1_registros_do_alvo,2_apos_filtro_de_tipo,3_apos_remover_dup_e_smiles_vazios,4_apos_validar_smiles,5_moleculas_unicas,ativos,inativos,proporcao_ativos
+EGFR,ic50_ki,6.5,19866,18661,16599,16599,10601,6821,3780,0.6434
+BACE1,ic50_ki,6.5,15698,15237,12952,12952,9990,6165,3825,0.6171
+DRD2,ic50_ki,6.5,12816,12038,10704,10704,8392,4799,3593,0.5719
+HDAC1,ic50_ki,6.5,10356,10232,8840,8840,8003,4292,3711,0.5363
